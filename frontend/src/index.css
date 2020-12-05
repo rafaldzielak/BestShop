@@ -1,13 +1,85 @@
+* {
+  --orange-color: #ffa000;
+  --orange-lighter: #ffba00;
+  --blue-color: #005fff;
+  --blue-secondary: #80afff;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Roboto", "Segoe UI", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* background-color:  */
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+.ml-auto .btn-light:hover {
+  background-color: var(--orange-color);
+}
+
+.two-lines {
+  display: inline-block;
+  height: 2.65rem;
+}
+
+.navbar-brand {
+  text-transform: none;
+  font-size: 2rem;
+}
+.navbar-dark .navbar-brand {
+  transition: all 0.4s ease-in-out;
+}
+.navbar-dark .navbar-brand:hover {
+  color: var(--orange-color);
+}
+.fa-star,
+.fa-star-half-alt {
+  color: var(--orange-color);
+}
+.flex-sort {
+  display: flex;
+  justify-content: flex-end;
+}
+.fa-th,
+.fa-th-large {
+  /* border: 1px solid #333; */
+  padding: 0.4rem 2rem;
+  align-self: center;
+  margin-right: 2rem;
+  color: var(--orange-color);
+  cursor: pointer;
+  background-color: #fff;
+  border-color: #fff;
+  height: 50px;
+}
+.fa-th:hover,
+.fa-th-large:hover {
+  background-color: #e6e6e6;
+  border-color: #dfdfdf;
+}
+.fa-filter {
+  color: var(--orange-color);
+  font-size: 2rem;
+}
+#dropdown-variants-primary.btn {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  height: 50px;
+}
+
+.dropdown-menu {
+  font-size: 1.8rem;
+  text-align: center;
+}
+.fa-dollar-sign {
+  color: #00836d;
+  font-size: 2.2rem;
+}
+.dropdown-menu {
+  border: 1px solid var(--orange-lighter);
+  border-radius: 5px;
 }
