@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import products from "../products";
+import { useDispatch } from "react-redux";
 import { Card, DropdownButton, Row, Col, Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Rating from "../components/Rating";
+import { getProducts } from "../actions/productActions";
 
 const ProductGridScreen = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+
   console.log(products);
   // const sortedProducts = products;
   const [sortedProducts, setSortedProducts] = useState(products);
