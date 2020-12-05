@@ -11,7 +11,6 @@ body {
     "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* background-color:  */
 }
 
 code {
@@ -19,6 +18,10 @@ code {
 }
 .ml-auto .btn-light:hover {
   background-color: var(--orange-color);
+}
+.navbar {
+  padding: 0.5rem 1rem;
+  height: 75px;
 }
 
 .two-lines {
@@ -32,10 +35,18 @@ code {
 }
 .navbar-dark .navbar-brand {
   transition: all 0.4s ease-in-out;
+  width: 200px;
 }
 .navbar-dark .navbar-brand:hover {
   color: var(--orange-color);
+  font-size: 2.2rem;
 }
+/* .card-img-top {
+  padding: 0rem 0.4rem;
+}
+.card-img-top:hover {
+  padding: 0;
+} */
 .fa-star,
 .fa-star-half-alt {
   color: var(--orange-color);
@@ -46,7 +57,6 @@ code {
 }
 .fa-th,
 .fa-th-large {
-  /* border: 1px solid #333; */
   padding: 0.4rem 2rem;
   align-self: center;
   margin-right: 2rem;
@@ -82,4 +92,59 @@ code {
 .dropdown-menu {
   border: 1px solid var(--orange-lighter);
   border-radius: 5px;
+}
+
+h3 {
+  margin-top: 1rem;
+  text-transform: none;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+.desc {
+  margin-top: 1rem;
+  text-transform: none;
+  letter-spacing: 1px;
+  font-weight: 500;
+  font-size: 1.25rem;
+}
+
+/* .bottom {
+  position: absolute;
+  bottom: 1rem;
+  width: 90%;
+} */
+/* 
+.left {
+  width: 40%;
+  left: -1rem;
+  top: -1rem;
+}
+
+.right {
+  position: absolute;
+  width: 40%;
+  right: -1rem;
+  top: -1rem;
+} */
+.item-counter {
+  text-align: center;
+  margin: auto;
+  padding: 1rem;
+  height: 5rem;
+  border: 1px solid #ccc;
+  background-color: #eee;
+  padding-top: 22%;
+}
+
+.btn-primary.orange {
+  background-color: var(--orange-lighter);
+  color: black;
+  font-size: 2rem;
+}
+
+.flex-spread {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
 }

@@ -5,7 +5,7 @@ import NavbarComponent from "../components/NavbarComponent";
 const HomeScreen = () => {
   return (
     <div>
-      <NavbarComponent />
+      {/* <NavbarComponent /> */}
       <ProductScreen />
     </div>
   );
