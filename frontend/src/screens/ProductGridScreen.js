@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from "react";
-import products from "../products";
-import { useDispatch } from "react-redux";
-import { Card, DropdownButton, Row, Col, Dropdown } from "react-bootstrap";
+import Loader from "../components/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { Card, DropdownButton, Row, Col, Dropdown, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Rating from "../components/Rating";
 import { getProducts } from "../actions/productActions";
 
 const ProductGridScreen = () => {
   const dispatch = useDispatch();
+
+  const listProducts = useSelector((state) => state.listProducts);
+  const { loading, products } = listProducts;
+  const [sortedProducts, setSortedProducts] = useState(products);
+  const [colSize, setColSize] = useState(3);
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
 
-  console.log(products);
-  // const sortedProducts = products;
-  const [sortedProducts, setSortedProducts] = useState(products);
-  const [colSize, setColSize] = useState(3);
+  useEffect(() => {
+    setSortedProducts(products);
+  }, [products]);
 
   const toggleGrid = () => {
     if (colSize === 3) setColSize(4);
@@ -46,31 +50,34 @@ const ProductGridScreen = () => {
           </Dropdown.Item>
         </DropdownButton>
       </div>
-
-      <Row>
-        {sortedProducts.map((product) => (
-          <Col key={product._id} md={colSize}>
-            <Card className='my-2 p-2 rounded bg-light'>
-              <Link to={`/product/${product._id}`}>
-                <Card.Img src={product.image} variant='top' />
-              </Link>
-              <Card.Body>
+      {loading ? (
+        <Loader marginTop={10} animation='border' variant='warning' />
+      ) : (
+        <Row>
+          {sortedProducts.map((product) => (
+            <Col key={product._id} md={colSize}>
+              <Card className='my-2 p-2 rounded bg-light'>
                 <Link to={`/product/${product._id}`}>
-                  <Card.Title as='div'>
-                    <strong className='two-lines'>{product.name}</strong>
-                  </Card.Title>
-                  <Card.Text as='div'>
-                    <Rating rating={product.rating} numReviews={`${product.numReviews} reviews`} />
-                  </Card.Text>
-                  <Card.Text as='h3' className='py-3'>
-                    {product.price} PLN
-                  </Card.Text>
+                  <Card.Img src={product.image} variant='top' />
                 </Link>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+                <Card.Body>
+                  <Link to={`/product/${product._id}`}>
+                    <Card.Title as='div'>
+                      <strong className='two-lines'>{product.name}</strong>
+                    </Card.Title>
+                    <Card.Text as='div'>
+                      <Rating rating={product.rating} numReviews={`${product.numReviews} reviews`} />
+                    </Card.Text>
+                    <Card.Text as='h3' className='py-3'>
+                      {product.price} PLN
+                    </Card.Text>
+                  </Link>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      )}
     </>
   );
 };
