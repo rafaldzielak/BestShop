@@ -11,7 +11,7 @@ const ProductGridScreen = () => {
 
   const listProducts = useSelector((state) => state.listProducts);
   const { loading, products } = listProducts;
-  
+
   const [sortedProducts, setSortedProducts] = useState(products);
   const [colSize, setColSize] = useState(3);
 
