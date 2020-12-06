@@ -37,15 +37,12 @@ const ProductGridScreen = () => {
         <i
           onClick={() => toggleGrid()}
           className={`fas fa-3x ${colSize === 3 ? "fa-th-large" : "fa-th"}`}></i>
-        <DropdownButton
-          id='dropdown-variants-primary'
-          variant='secondary'
-          title={<i className='fas fa-filter'></i>}>
+        <DropdownButton id='dropdown-variants-primary' variant='' title={<i className='fas fa-filter'></i>}>
           <Dropdown.Item className='border-bottom' onClick={sortByPrice}>
             <i className='fas fa-dollar-sign'></i> <i className='fas fa-dollar-sign'></i>{" "}
             <i className='fas fa-dollar-sign'></i>
           </Dropdown.Item>
-          <Dropdown.Item onClick={sortByRating}>
+          <Dropdown.Item style={{ fontSize: "1.5rem" }} onClick={sortByRating}>
             <i className='fas fa-star'></i>
             <i className='fas fa-star'></i>
             <i className='fas fa-star'></i>
@@ -57,25 +54,23 @@ const ProductGridScreen = () => {
       ) : (
         <Row>
           {sortedProducts.map((product) => (
-            <Col key={product._id} md={colSize}>
-              <Card className='my-2 p-2 rounded bg-light'>
-                <Link to={`/product/${product._id}`}>
+            <Col key={product._id} sm={colSize + 3} md={colSize + 1} lg={colSize}>
+              <Link to={`/product/${product._id}`}>
+                <Card className='my-2 p-2 rounded bg-light border-hover'>
                   <Card.Img src={product.image} variant='top' />
-                </Link>
-                <Card.Body>
-                  <Link to={`/product/${product._id}`}>
+                  <Card.Body>
                     <Card.Title as='div' className='py-0'>
                       <strong className='two-lines'>{product.name}</strong>
                     </Card.Title>
                     <Card.Text as='div' className='py-0'>
                       <Rating rating={product.rating} numReviews={`${product.numReviews} reviews`} />
                     </Card.Text>
-                    <Card.Text as='h3' className='py-1'>
+                    <Card.Text as='h4' className='py-1'>
                       {product.price} PLN
                     </Card.Text>
-                  </Link>
-                </Card.Body>
-              </Card>
+                  </Card.Body>
+                </Card>
+              </Link>
             </Col>
           ))}
         </Row>

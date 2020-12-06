@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Image, Card, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getProduct } from "../actions/productActions";
+import { addToCart } from "../actions/cartActions";
 import Loader from "../components/Loader";
-const ProductScreen = ({ match }) => {
-  const [addToCartCounter, setAddToCartCounter] = useState(1);
+import AddToCartCounter from "../components/AddToCartCounter";
 
+const ProductScreen = ({ match }) => {
   const productId = match.params.id;
   const dispatch = useDispatch();
   useEffect(() => {
@@ -15,12 +16,6 @@ const ProductScreen = ({ match }) => {
   const listProduct = useSelector((state) => state.listProduct);
   const { error, loading, product } = listProduct;
 
-  const increaseCount = () => {
-    if (addToCartCounter < product.countInStock) setAddToCartCounter((prev) => prev + 1);
-  };
-  const decreaseCount = () => {
-    if (addToCartCounter > 1) setAddToCartCounter((prev) => prev - 1);
-  };
   return (
     <>
       {loading && <Loader marginTop={10} />}
@@ -40,41 +35,7 @@ const ProductScreen = ({ match }) => {
                   <Card.Text>
                     <p className='px-3 desc'>{product.description}</p>
                   </Card.Text>
-
-                  <Row className='align-items-end '>
-                    <Col sm={6}>
-                      <Row className='ml-1'>
-                        <Col sm={4} className='px-2'>
-                          <Button
-                            onClick={decreaseCount}
-                            variant='primary'
-                            className='orange'
-                            block
-                            style={{ height: "4rem", fontSize: "3rem" }}>
-                            -
-                          </Button>
-                        </Col>
-                        <Col sm={4} className='px-2'>
-                          <h1 className='item-counter ml-auto'>{addToCartCounter}</h1>
-                        </Col>
-                        <Col sm={4} className='px-2'>
-                          <Button
-                            className='orange'
-                            onClick={increaseCount}
-                            variant='primary'
-                            block
-                            style={{ height: "4rem", fontSize: "3rem" }}>
-                            +
-                          </Button>
-                        </Col>
-                      </Row>
-                    </Col>
-                    <Col sm={6} className='px-4 orange'>
-                      <Button variant='primary' block style={{ height: "4rem", fontSize: "1.3rem" }}>
-                        Add To Cart
-                      </Button>
-                    </Col>
-                  </Row>
+                  <AddToCartCounter product={product} />
                 </Card.Body>
               </Card>
             </Col>

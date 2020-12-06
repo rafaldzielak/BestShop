@@ -4,6 +4,10 @@
   --blue-color: #005fff;
   --blue-secondary: #80afff;
 }
+.dropdown-item {
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+}
 
 body {
   margin: 0;
@@ -14,6 +18,10 @@ body {
 }
 a {
   color: #000;
+}
+
+a:hover {
+  text-decoration: dashed;
 }
 
 code {
@@ -44,12 +52,16 @@ code {
   color: var(--orange-color);
   font-size: 2.1rem;
 }
-/* .card-img-top {
-  padding: 0rem 0.4rem;
+.card {
+  /* transition: all 0.4s ease-in; */
+  border: 1px solid var(--orange-lighter);
+  /* outline: 0px solid var(--orange-color); */
 }
-.card-img-top:hover {
-  padding: 0;
-} */
+.card.border-hover:hover {
+  outline: 1px solid var(--orange-color);
+
+  /* border: 2px solid var(--orange-color); */
+}
 .fa-star,
 .fa-star-half-alt {
   color: var(--orange-color);
@@ -129,6 +141,9 @@ h3 {
   right: -1rem;
   top: -1rem;
 } */
+strong {
+  font-weight: 900;
+}
 .item-counter {
   text-align: center;
   margin: auto;
@@ -136,11 +151,15 @@ h3 {
   height: 4rem;
   border: 1px solid #ccc;
   background-color: #eee;
-  line-height: 4rem;
+  line-height: calc(height);
   width: 100%;
-  min-width: 40px;
+  min-width: 30px;
   /* margin-left: 10%; */
   font-size: 2rem;
+}
+
+.proceed:hover {
+  color: var(--orange-lighter);
 }
 
 .btn-primary.orange {
@@ -149,9 +168,13 @@ h3 {
   background-color: var(--orange-lighter);
   color: black;
   /* font-size: 10rem; */
-  line-height: 2rem;
+  line-height: 1.8rem;
   width: 100%;
-  min-width: 40px;
+  min-width: 33px;
+}
+
+.btn-primary.orange:hover {
+  background-color: var(--orange-color);
 }
 
 .flex-spread {
@@ -159,4 +182,42 @@ h3 {
   flex-direction: column;
   align-items: stretch;
   justify-content: space-between;
+}
+
+.fas.fa-times {
+  color: red;
+  font-size: 1.25rem;
+  cursor: pointer;
+  background-color: #eee;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  transition: all 0.2s ease-in-out;
+}
+
+.fas.fa-times:hover {
+  background-color: #ddd;
+}
+
+.hover-orange:hover {
+  color: var(--orange-color) !important;
+}
+#basic-nav-dropdown:hover {
+  color: var(--orange-color) !important;
+}
+.dropdown-item:hover {
+  color: var(--orange-color) !important;
+}
+.dropdown-item {
+  color: #2c3e50;
+}
+.dropdown-item.text-primary {
+  color: var(--orange-color) !important;
+}
+.btn.btn-primary {
+  border: var(--orange-color) 1px solid;
+}
+
+.btn.btn-primary:hover {
+  border: var(--orange-color) 1px solid;
 }

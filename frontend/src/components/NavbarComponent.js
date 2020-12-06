@@ -24,17 +24,39 @@ const NavbarComponent = () => {
       <Navbar.Collapse id='basic-navbar-nav '>
         <Form inline className='ml-auto'>
           <FormControl type='text' placeholder='Search For Products' className='mr-sm-2 center' />
-          <Button variant='dark'>Search</Button>
+          <Button variant='primary'>Search</Button>
         </Form>
         <Nav className='ml-auto'>
           {loggedUser ? (
-            <NavDropdown title={loggedUser.name} id='basic-nav-dropdown'>
-              <NavDropdown.Item href='#action/3.1'>Action</NavDropdown.Item>
-              <NavDropdown.Item href='#action/3.2'>Another action</NavDropdown.Item>
-              <NavDropdown.Item href='#action/3.3'>Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
-            </NavDropdown>
+            <>
+              <LinkContainer to='/cart'>
+                <Nav.Link className='hover-orange'>
+                  <i className='fas fa-shopping-cart'></i> Cart
+                </Nav.Link>
+              </LinkContainer>
+              <NavDropdown
+                className='hover-orange pl-4'
+                title={loggedUser.name}
+                id='basic-nav-dropdown'
+                variant='primary'>
+                <NavDropdown.Divider className='my-0' />
+                <LinkContainer to='/profile'>
+                  <NavDropdown.Item>
+                    <i className='fas fa-user-alt'></i> Profile
+                  </NavDropdown.Item>
+                </LinkContainer>
+                <NavDropdown.Divider className='my-0' />
+                <LinkContainer to='/settings'>
+                  <NavDropdown.Item>
+                    <i className='fas fa-cog'></i> Settings
+                  </NavDropdown.Item>
+                </LinkContainer>
+                <NavDropdown.Divider className='my-0' />
+                <NavDropdown.Item onClick={logoutHandler}>
+                  <i className='fas fa-sign-out-alt'></i> Logout
+                </NavDropdown.Item>
+              </NavDropdown>
+            </>
           ) : (
             <>
               <LinkContainer to='/login'>
