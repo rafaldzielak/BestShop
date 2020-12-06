@@ -12,6 +12,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+a {
+  color: #000;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
@@ -34,12 +37,12 @@ code {
   font-size: 2rem;
 }
 .navbar-dark .navbar-brand {
-  transition: all 0.4s ease-in-out;
-  width: 200px;
+  transition: all 0.4s;
+  width: 150px;
 }
 .navbar-dark .navbar-brand:hover {
   color: var(--orange-color);
-  font-size: 2.2rem;
+  font-size: 2.1rem;
 }
 /* .card-img-top {
   padding: 0rem 0.4rem;
@@ -129,17 +132,26 @@ h3 {
 .item-counter {
   text-align: center;
   margin: auto;
-  padding: 1rem;
-  height: 5rem;
+  padding: 0rem 0rem;
+  height: 4rem;
   border: 1px solid #ccc;
   background-color: #eee;
-  padding-top: 22%;
+  line-height: 4rem;
+  width: 100%;
+  min-width: 40px;
+  /* margin-left: 10%; */
+  font-size: 2rem;
 }
 
 .btn-primary.orange {
+  padding-left: 10px !important;
+  padding-right: 10px;
   background-color: var(--orange-lighter);
   color: black;
-  font-size: 2rem;
+  /* font-size: 10rem; */
+  line-height: 2rem;
+  width: 100%;
+  min-width: 40px;
 }
 
 .flex-spread {

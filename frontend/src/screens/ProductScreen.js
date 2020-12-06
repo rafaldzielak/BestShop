@@ -43,34 +43,34 @@ const ProductScreen = ({ match }) => {
 
                   <Row className='align-items-end '>
                     <Col sm={6}>
-                      <Row className='mx-2'>
-                        <Col sm={4}>
+                      <Row className='ml-1'>
+                        <Col sm={4} className='px-2'>
                           <Button
                             onClick={decreaseCount}
                             variant='primary'
                             className='orange'
                             block
-                            style={{ height: "5rem", fontSize: "3rem" }}>
+                            style={{ height: "4rem", fontSize: "3rem" }}>
                             -
                           </Button>
                         </Col>
-                        <Col sm={4}>
-                          <h1 className='item-counter'>{addToCartCounter}</h1>
+                        <Col sm={4} className='px-2'>
+                          <h1 className='item-counter ml-auto'>{addToCartCounter}</h1>
                         </Col>
-                        <Col sm={4}>
+                        <Col sm={4} className='px-2'>
                           <Button
-                            className='mx-2 orange'
+                            className='orange'
                             onClick={increaseCount}
                             variant='primary'
                             block
-                            style={{ height: "5rem", fontSize: "3rem" }}>
+                            style={{ height: "4rem", fontSize: "3rem" }}>
                             +
                           </Button>
                         </Col>
                       </Row>
                     </Col>
-                    <Col sm={6} className='px-3 orange'>
-                      <Button variant='primary' block style={{ height: "5rem", fontSize: "1.3rem" }}>
+                    <Col sm={6} className='px-4 orange'>
+                      <Button variant='primary' block style={{ height: "4rem", fontSize: "1.3rem" }}>
                         Add To Cart
                       </Button>
                     </Col>

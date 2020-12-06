@@ -64,13 +64,13 @@ const ProductGridScreen = () => {
                 </Link>
                 <Card.Body>
                   <Link to={`/product/${product._id}`}>
-                    <Card.Title as='div'>
+                    <Card.Title as='div' className='py-0'>
                       <strong className='two-lines'>{product.name}</strong>
                     </Card.Title>
-                    <Card.Text as='div'>
+                    <Card.Text as='div' className='py-0'>
                       <Rating rating={product.rating} numReviews={`${product.numReviews} reviews`} />
                     </Card.Text>
-                    <Card.Text as='h3' className='py-3'>
+                    <Card.Text as='h3' className='py-1'>
                       {product.price} PLN
                     </Card.Text>
                   </Link>
