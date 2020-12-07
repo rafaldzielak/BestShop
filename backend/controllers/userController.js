@@ -34,4 +34,31 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, registerUser };
+const updateProfile = asyncHandler(async (req, res) => {
+  const { name, newPassword } = req.body;
+
+  const user = await userModel.findById(req.user._id);
+  let userToUpdate = {};
+  if (user) {
+    userToUpdate.name = name || user.name;
+    userToUpdate.password = newPassword || user.password;
+    console.log(userToUpdate);
+  }
+  const updatedUser = await userModel.findByIdAndUpdate(user._id, userToUpdate);
+
+  if (updatedUser) {
+    const token = generateToken(user._id);
+    res.status(200).json({
+      _id: updatedUser._id,
+      email: updatedUser.email,
+      name: updatedUser.name,
+      isAdmin: updatedUser.isAdmin,
+      token,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Server error");
+  }
+});
+
+export { authUser, registerUser, updateProfile };

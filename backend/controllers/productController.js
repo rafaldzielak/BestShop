@@ -14,7 +14,9 @@ export const getProduct = asyncHandler(async (req, res) => {
 });
 
 export const createProduct = asyncHandler(async (req, res) => {
-  const { price, countInStock, name, image, description, brand, category, user } = req.body;
+  const { price, countInStock, name, image, description, brand, category } = req.body;
+  const { user } = req;
+  console.log(user);
 
   const product = await productModel.create({
     price,
@@ -26,9 +28,22 @@ export const createProduct = asyncHandler(async (req, res) => {
     category,
     user,
   });
-  product.save();
-  res.json(product);
+  await product.save();
 
   if (product) res.json(product);
   else throw new Error("Product not found");
+});
+
+export const removeProduct = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const product = await productModel.findById(id);
+
+  if (product) {
+    await product.remove();
+    res.status(200).json({ message: "product deleted" });
+  } else {
+    res.status(404);
+    throw new Error("Product not found");
+  }
 });
