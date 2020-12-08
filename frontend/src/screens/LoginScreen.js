@@ -16,45 +16,49 @@ const LoginScreen = ({ history }) => {
 
   useEffect(() => {
     if (loggedUser) history.push("/");
-  }, [loggedUser]);
+  }, [loggedUser, history]);
 
   const formSubmit = (e) => {
-    console.log("SUBMIT");
     e.preventDefault();
     dispatch(loginAction(email, password));
   };
 
   return (
     <div className='d-flex justify-content-center '>
-      {loading && <Loader />}
-      <Form style={{ width: "400px", paddingTop: "2rem" }} onSubmit={formSubmit}>
-        <Form.Group controlId='email'>
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type='email'
-            placeholder='Enter email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group controlId='password'>
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type='password'
-            placeholder='Password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group controlId='rememberMe'>
-          <Form.Check type='checkbox' label='Remember Me' />
-        </Form.Group>
-        <Button block variant='primary' type='submit'>
-          Log In
-        </Button>
-        <br />
-        Not registered? <Link to='/register'>Register</Link>
-      </Form>
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        { error }
+      ) : (
+        <Form style={{ width: "400px", paddingTop: "2rem" }} onSubmit={formSubmit}>
+          <Form.Group controlId='email'>
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type='email'
+              placeholder='Enter email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group controlId='password'>
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type='password'
+              placeholder='Password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group controlId='rememberMe'>
+            <Form.Check type='checkbox' label='Remember Me' />
+          </Form.Group>
+          <Button block variant='primary' type='submit'>
+            Log In
+          </Button>
+          <br />
+          Not registered? <Link to='/register'>Register</Link>
+        </Form>
+      )}
 
       {/* <LinkContainer to='/register'>Already have an acoount?</LinkContainer> */}
     </div>

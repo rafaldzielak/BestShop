@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Loader from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, DropdownButton, Row, Col, Dropdown, Spinner } from "react-bootstrap";
+import { Card, DropdownButton, Row, Col, Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Rating from "../components/Rating";
 import { getProducts } from "../actions/productActions";
@@ -53,26 +53,31 @@ const ProductGridScreen = () => {
         <Loader marginTop={10} animation='border' variant='warning' />
       ) : (
         <Row>
-          {sortedProducts.map((product) => (
-            <Col key={product._id} sm={colSize + 3} md={colSize + 1} lg={colSize}>
-              <Link to={`/product/${product._id}`}>
-                <Card className='my-2 p-2 rounded bg-light border-hover'>
-                  <Card.Img src={product.image} variant='top' />
-                  <Card.Body>
-                    <Card.Title as='div' className='py-0'>
-                      <strong className='two-lines'>{product.name}</strong>
-                    </Card.Title>
-                    <Card.Text as='div' className='py-0'>
-                      <Rating rating={product.rating} numReviews={`${product.numReviews} reviews`} />
-                    </Card.Text>
-                    <Card.Text as='h4' className='py-1'>
-                      {product.price} PLN
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-              </Link>
-            </Col>
-          ))}
+          {products &&
+            sortedProducts.map((product) => (
+              <Col key={product._id} sm={colSize + 3} md={colSize + 1} lg={colSize}>
+                <Link to={`/product/${product._id}`}>
+                  <Card className='my-2 p-2 rounded bg-light border-hover'>
+                    <Card.Img
+                      src={product.image}
+                      variant='top'
+                      style={{ height: "250px", objectFit: "scale-down" }}
+                    />
+                    <Card.Body>
+                      <Card.Title as='div' className='py-0'>
+                        <strong className='two-lines'>{product.name}</strong>
+                      </Card.Title>
+                      <Card.Text as='div' className='py-0'>
+                        <Rating rating={product.rating} numReviews={`${product.numReviews} reviews`} />
+                      </Card.Text>
+                      <Card.Text as='h4' className='py-1'>
+                        {product.price} PLN
+                      </Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Link>
+              </Col>
+            ))}
         </Row>
       )}
     </>

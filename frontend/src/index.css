@@ -185,7 +185,7 @@ strong {
 }
 
 .fas.fa-times {
-  color: red;
+  color: #e74c3c;
   font-size: 1.25rem;
   cursor: pointer;
   background-color: #eee;
@@ -197,6 +197,7 @@ strong {
 
 .fas.fa-times:hover {
   background-color: #ddd;
+  color: red;
 }
 
 .hover-orange:hover {
@@ -220,4 +221,11 @@ strong {
 
 .btn.btn-primary:hover {
   border: var(--orange-color) 1px solid;
+}
+.pl-0.pr-4.col-lg-2.col-6.order-lg-3.order-4 {
+  width: 10%;
+}
+
+.card-text span {
+  font-size: 1.15rem;
 }

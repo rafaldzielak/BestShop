@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addToCartAction, addOneCartAction, removeOneCartAction } from "../actions/cartActions";
 
 const AddToCartCounter = ({ product, numberOfProducts = 1, updateOnClick = false }) => {
   const dispatch = useDispatch();
-  const [addToCartCounter, setAddToCartCounter] = useState(numberOfProducts);
+  const [cartCounter, setCartCounter] = useState(product.count || numberOfProducts);
   const buttonColSize = updateOnClick ? 12 : 5;
 
   const addToCartHandler = () => {
-    dispatch(addToCartAction(product, addToCartCounter));
+    dispatch(addToCartAction(product, cartCounter));
   };
 
   const increaseCount = async () => {
-    if (addToCartCounter < product.countInStock) {
-      setAddToCartCounter((prev) => prev + 1);
+    if (cartCounter < product.countInStock) {
+      setCartCounter((prev) => prev + 1);
       if (updateOnClick) dispatch(addOneCartAction(product));
     }
   };
   const decreaseCount = () => {
-    if (addToCartCounter > 1) {
-      setAddToCartCounter((prev) => prev - 1);
+    if (cartCounter > 1) {
+      setCartCounter((prev) => prev - 1);
       if (updateOnClick) dispatch(removeOneCartAction(product));
     }
   };
@@ -37,7 +37,7 @@ const AddToCartCounter = ({ product, numberOfProducts = 1, updateOnClick = false
               <Button
                 onClick={decreaseCount}
                 variant='primary'
-                className={`orange ${addToCartCounter === 1 && "disabled"}`}
+                className={`orange ${cartCounter === 1 && "disabled"}`}
                 block
                 style={{ height, fontSize }}>
                 <b>−</b>
@@ -45,12 +45,12 @@ const AddToCartCounter = ({ product, numberOfProducts = 1, updateOnClick = false
             </Col>
             <Col sm={4} className='px-2'>
               <h1 style={{ height, lineHeight: height, fontSize }} className='item-counter ml-auto'>
-                {addToCartCounter}
+                {product.count || cartCounter}
               </h1>
             </Col>
             <Col sm={4} className='px-2'>
               <Button
-                className={`orange ${product.countInStock <= addToCartCounter && "disabled"}`}
+                className={`orange ${product.countInStock <= cartCounter && "disabled"}`}
                 onClick={increaseCount}
                 variant='primary'
                 block

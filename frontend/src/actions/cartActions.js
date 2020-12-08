@@ -1,5 +1,4 @@
 import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../constants/cartConstants";
-import axios from "axios";
 
 export const addToCartAction = (product, quantity) => (dispatch) => {
   console.log("quantity: " + quantity);

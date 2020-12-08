@@ -27,13 +27,13 @@ const NavbarComponent = () => {
           <Button variant='primary'>Search</Button>
         </Form>
         <Nav className='ml-auto'>
+          <LinkContainer to='/cart'>
+            <Nav.Link className='hover-orange'>
+              <i className='fas fa-shopping-cart'></i> Cart
+            </Nav.Link>
+          </LinkContainer>
           {loggedUser ? (
             <>
-              <LinkContainer to='/cart'>
-                <Nav.Link className='hover-orange'>
-                  <i className='fas fa-shopping-cart'></i> Cart
-                </Nav.Link>
-              </LinkContainer>
               <NavDropdown
                 className='hover-orange pl-4'
                 title={loggedUser.name}

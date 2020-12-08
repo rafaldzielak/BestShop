@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import { Row, Col, Image, ListGroup, Button, Card } from "react-bootstrap";
 import AddToCartCounter from "../components/AddToCartCounter";
 import { removeProductFromCartAction } from "../actions/cartActions";
@@ -6,59 +6,63 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 const CartScreen = () => {
   const freeShippingValue = 200;
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [totalItems, setTotalItems] = useState(0);
-  const [shippingPrice, setShippingPrice] = useState(9.99);
-
-  const dispatch = useDispatch();
-
   const cartContentState = useSelector((state) => state.cartContent);
   const { cartContent } = cartContentState;
 
-  useEffect(() => {
-    setTotalPrice(cartContent.reduce((previousValue, curr) => previousValue + curr.price * curr.count, 0));
-    setTotalItems(cartContent.reduce((previousValue, curr) => previousValue + curr.count, 0));
-    setShippingPrice(totalPrice > freeShippingValue ? 0 : 9.99);
+  const totalItems = useMemo(() => cartContent.reduce((prev, curr) => prev + curr.count, 0), [cartContent]);
+  const totalPrice = useMemo(() => cartContent.reduce((prev, curr) => prev + curr.price * curr.count, 0), [
+    cartContent,
+  ]);
+  const shippingPrice = useMemo(() => (totalPrice > freeShippingValue ? 0 : 9.99), [totalPrice]);
 
-    console.log(totalPrice);
-  }, [AddToCartCounter, cartContent]);
+  const dispatch = useDispatch();
 
-  const removeFromCartHandler = (product) => {
-    dispatch(removeProductFromCartAction(product));
-  };
+  const removeFromCartHandler = (product) => dispatch(removeProductFromCartAction(product));
+
   return (
     <>
       <hr />
       <Row>
         {cartContent.length > 0 ? (
           <>
-            <Col md={9} className='px-0'>
+            <Col lg={9} className='px-0'>
               <ListGroup variant='flush'>
                 {cartContent.map((product) => (
-                  <ListGroup.Item>
+                  <ListGroup.Item key={product._id}>
                     <Row className='d-flex align-items-center'>
-                      <Col sm={3} className='py-0 pr-4'>
+                      <Col
+                        lg={{ span: 3, order: 1 }}
+                        xs={{ span: 3, order: 1 }}
+                        className='py-0 pr-4 d-flex justify-content-center'>
                         <Link to={`/product/${product._id}`}>
-                          <Image fluid rounded src={product.image}></Image>
+                          <Image
+                            fluid
+                            rounded
+                            src={product.image}
+                            style={{ height: "10rem", objectFit: "scale-down" }}></Image>
                         </Link>
                       </Col>
-                      <Col sm={3} className='pl-0 pr-0' style={{ fontSize: "1.1rem" }}>
+                      <Col
+                        lg={{ span: 3, order: 2 }}
+                        xs={{ span: 8, order: 2 }}
+                        className='pl-0 pr-0'
+                        style={{ fontSize: "1.1rem" }}>
                         <Link to={`/product/${product._id}`}>{product.name}</Link>
                       </Col>
-                      <Col sm={2} className='pl-0 pr-4'>
-                        <AddToCartCounter
-                          product={product}
-                          numberOfProducts={product.count}
-                          updateOnClick={true}
-                        />
+                      <Col lg={{ span: 2, order: 3 }} xs={{ span: 6, order: 4 }} className='pl-0 pr-4'>
+                        <AddToCartCounter product={product} updateOnClick={true} />
                       </Col>
-                      <Col sm={3} className='px-1'>
+                      <Col lg={{ span: 3, order: 4 }} xs={{ span: 6, order: 5 }} className='px-1'>
                         <h5 style={{ fontSize: "1.1rem" }}>
                           {product.price} * {product.count} ={" "}
                           {((product.price * product.count * 100) / 100).toFixed(2)} PLN
                         </h5>
                       </Col>
-                      <Col sm={1} className='px-0' onClick={(e) => removeFromCartHandler(product)}>
+                      <Col
+                        lg={{ span: 1, order: 5 }}
+                        xs={{ span: 1, order: 3 }}
+                        className='px-0'
+                        onClick={(e) => removeFromCartHandler(product)}>
                         <i className='fas fa-times'></i>
                       </Col>
                     </Row>
@@ -72,7 +76,7 @@ const CartScreen = () => {
                   : `You miss ${(freeShippingValue - totalPrice).toFixed(2)} PLN To Get Free Shipping`}
               </h3>
             </Col>
-            <Col md={3} className='px-3'>
+            <Col lg={3} md={12} className='px-3'>
               <Card style={{}} className='py-3'>
                 <Card.Body>
                   <Card.Title className='text-center'>
@@ -80,17 +84,17 @@ const CartScreen = () => {
                   </Card.Title>
                   <hr />
                   <Card.Text>
-                    <h5>Items: {totalItems}</h5>
+                    <span>Items: {totalItems}</span>
                   </Card.Text>
                   <Card.Text>
-                    <h5>Price: {totalPrice.toFixed(2)} PLN </h5>
+                    <span>Price: {totalPrice.toFixed(2)} PLN </span>
                   </Card.Text>
                   <Card.Text>
-                    <h5>Shipping: {shippingPrice.toFixed(2)} PLN </h5>
+                    <span>Shipping: {shippingPrice.toFixed(2)} PLN </span>
                   </Card.Text>
                   <hr />
                   <Card.Text>
-                    <h5>Total Price: {(totalPrice + shippingPrice).toFixed(2)} PLN</h5>
+                    <span>Total Price: {(totalPrice + shippingPrice).toFixed(2)} PLN</span>
                   </Card.Text>
                   <Button block variant='primary' className='mt-5 py-3 proceed'>
                     Proceed To Checkout

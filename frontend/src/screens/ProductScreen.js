@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Row, Col, Image, Card, Button } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Row, Col, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getProduct } from "../actions/productActions";
-import { addToCart } from "../actions/cartActions";
 import Loader from "../components/Loader";
 import AddToCartCounter from "../components/AddToCartCounter";
 
@@ -25,13 +24,13 @@ const ProductScreen = ({ match }) => {
           <Row className='px-3 py-2 justify-content-center'>
             <h1>{product.name}</h1>
           </Row>
-          <Row>
-            <Col xs={6}>
-              <Image src={product.image} fluid rounded />
+          <Row className='d-flex align-content-center'>
+            <Col xs={6} className='d-flex align-content-center'>
+              <Image src={product.image} fluid rounded style={{ objectFit: "scale-down" }} />
             </Col>
             <Col sm={6}>
               <Card style={{ height: "100%" }}>
-                <Card.Body className='flex-spread'>
+                <Card.Body className='flex-spread' style={{ minHeight: "40vh" }}>
                   <Card.Text>
                     <p className='px-3 desc'>{product.description}</p>
                   </Card.Text>

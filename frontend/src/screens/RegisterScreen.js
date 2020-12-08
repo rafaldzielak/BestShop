@@ -13,6 +13,7 @@ const RegisterScreen = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const loginUser = useSelector((state) => state.loginUser);
   const { loggedUser } = loginUser;
@@ -21,11 +22,12 @@ const RegisterScreen = ({ history }) => {
 
   useEffect(() => {
     if (loggedUser) history.push("/");
-  }, [loggedUser]);
+  }, [loggedUser, history]);
 
   const formSubmit = (e) => {
     e.preventDefault();
-    dispatch(registerAction(name, email, password));
+    if (password !== confirmPassword) setPasswordError("Passwords do not match");
+    else dispatch(registerAction(name, email, password));
   };
 
   return (
@@ -33,6 +35,7 @@ const RegisterScreen = ({ history }) => {
       <Form style={{ width: "400px", paddingTop: "2rem" }} onSubmit={formSubmit}>
         {loading && <Loader />}
         {error && <Message>{error}</Message>}
+        {passwordError && <Message>{passwordError}</Message>}
         <Form.Group controlId='name'>
           <Form.Label>Name</Form.Label>
           <Form.Control
@@ -65,7 +68,7 @@ const RegisterScreen = ({ history }) => {
           <Form.Control
             type='password'
             placeholder='Confirm Password'
-            value={password}
+            value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </Form.Group>
