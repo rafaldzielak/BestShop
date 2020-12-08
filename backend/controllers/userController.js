@@ -35,16 +35,15 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const updateProfile = asyncHandler(async (req, res) => {
-  const { name, newPassword } = req.body;
+  const { name, password } = req.body;
 
   const user = await userModel.findById(req.user._id);
-  let userToUpdate = {};
   if (user) {
-    userToUpdate.name = name || user.name;
-    userToUpdate.password = newPassword || user.password;
-    console.log(userToUpdate);
+    user.name = name || user.name;
+    user.password = password || user.password;
   }
-  const updatedUser = await userModel.findByIdAndUpdate(user._id, userToUpdate);
+
+  const updatedUser = await user.save();
 
   if (updatedUser) {
     const token = generateToken(user._id);

@@ -6,6 +6,9 @@ import {
   REGISTER_USER_FAIL,
   REGISTER_USER_REQUEST,
   REGISTER_USER_SUCCESS,
+  UPDATE_PROFILE_FAIL,
+  UPDATE_PROFILE_REQUEST,
+  UPDATE_PROFILE_SUCCESS,
 } from "../constants/userConstants";
 import axios from "axios";
 
@@ -35,6 +38,27 @@ export const registerAction = (name, email, password) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: REGISTER_USER_FAIL,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const updateProfileAction = (name = "", password = "") => async (dispatch, getState) => {
+  const {
+    loginUser: { loggedUser },
+  } = getState();
+  try {
+    dispatch({ type: UPDATE_PROFILE_REQUEST });
+    const config = {
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
+    };
+    const { data } = await axios.put("/api/auth/profile", { name, password }, config);
+    dispatch({ type: UPDATE_PROFILE_SUCCESS });
+    dispatch({ type: LOGIN_USER_SUCCESS, payload: data });
+    localStorage.setItem("userLogin", JSON.stringify(data));
+  } catch (error) {
+    dispatch({
+      type: UPDATE_PROFILE_FAIL,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }

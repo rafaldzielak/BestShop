@@ -4,6 +4,8 @@ import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
+import Message from "../components/Message";
+import FormContainer from "../components/FormContainer";
 
 const LoginScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -24,13 +26,11 @@ const LoginScreen = ({ history }) => {
   };
 
   return (
-    <div className='d-flex justify-content-center '>
-      {loading ? (
-        <Loader />
-      ) : error ? (
-        { error }
-      ) : (
-        <Form style={{ width: "400px", paddingTop: "2rem" }} onSubmit={formSubmit}>
+    <FormContainer>
+      <Form onSubmit={formSubmit}>
+        {loading && <Loader />}
+        {error && <Message>{error}</Message>}
+        <Form.Check className='pt-5 px-0'>
           <Form.Group controlId='email'>
             <Form.Label>Email address</Form.Label>
             <Form.Control
@@ -52,16 +52,14 @@ const LoginScreen = ({ history }) => {
           <Form.Group controlId='rememberMe'>
             <Form.Check type='checkbox' label='Remember Me' />
           </Form.Group>
-          <Button block variant='primary' type='submit'>
+          <Button block variant='primary' size='lg' type='submit'>
             Log In
           </Button>
           <br />
           Not registered? <Link to='/register'>Register</Link>
-        </Form>
-      )}
-
-      {/* <LinkContainer to='/register'>Already have an acoount?</LinkContainer> */}
-    </div>
+        </Form.Check>
+      </Form>
+    </FormContainer>
   );
 };
 
