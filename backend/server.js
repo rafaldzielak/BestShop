@@ -5,6 +5,7 @@ import connectDB from "./config/connectDb.js";
 import { errorHandler, notFound } from "./auth/errorMiddleware.js";
 import productRoute from "./routes/productRoutes.js";
 import userRoute from "./routes/userRoutes.js";
+import orderRoute from "./routes/orderRoutes.js";
 const app = express();
 if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 connectDB();
@@ -17,6 +18,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/products", productRoute);
 app.use("/api/auth", userRoute);
+app.use("/api/orders", orderRoute);
 app.use(notFound);
 app.use(errorHandler);
 

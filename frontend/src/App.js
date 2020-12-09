@@ -5,6 +5,7 @@ import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import CartScreen from "./screens/CartScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+import PayAndShipScreen from "./screens/PayAndShipScreen";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import NavbarComponent from "./components/NavbarComponent";
 
@@ -19,6 +20,7 @@ const App = () => {
         <Route exact path='/register' component={RegisterScreen}></Route>
         <Route exact path='/cart' component={CartScreen}></Route>
         <Route exact path='/profile' component={ProfileScreen}></Route>
+        <Route exact path='/checkout' component={PayAndShipScreen}></Route>
       </Router>
     </div>
   );

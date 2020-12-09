@@ -3,20 +3,21 @@ import mongoose from "mongoose";
 const orderSchema = mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
+    name: { type: String, required: true },
     orderItems: [
       {
         name: { type: String, required: true },
-        qty: { type: Number, required: true },
+        count: { type: Number, required: true },
         price: { type: Number, required: true },
         image: { type: String, required: true },
-        product: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Product" },
+        _id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Product" },
       },
     ],
     shippingAddress: {
       address: { type: String, required: true },
       city: { type: String, required: true },
       postalCode: { type: String, required: true },
-      country: { type: String, required: true },
+      country: { type: String, required: true, default: "PL" },
     },
     paymentMethod: { type: String, required: true },
     paymentResult: {
@@ -26,6 +27,7 @@ const orderSchema = mongoose.Schema(
       email_address: { type: String },
     },
     shippingPrice: { type: Number, required: true, default: 0.0 },
+    itemsPirce: { type: Number, required: true, default: 0.0 },
     totalPrice: { type: Number, required: true, default: 0.0 },
     isPaid: { type: Boolean, required: true, default: false },
     paidAt: { type: Date },
@@ -34,3 +36,5 @@ const orderSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
+
+export default mongoose.model("Order", orderSchema);

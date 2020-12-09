@@ -6,7 +6,7 @@ import { addToCartAction, addOneCartAction, removeOneCartAction } from "../actio
 const AddToCartCounter = ({ product, numberOfProducts = 1, updateOnClick = false }) => {
   const dispatch = useDispatch();
   const [cartCounter, setCartCounter] = useState(product.count || numberOfProducts);
-  const buttonColSize = updateOnClick ? 12 : 5;
+  const buttonColSize = updateOnClick ? 10 : 5;
 
   const addToCartHandler = () => {
     dispatch(addToCartAction(product, cartCounter));

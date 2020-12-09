@@ -96,9 +96,11 @@ const CartScreen = () => {
                   <Card.Text>
                     <span>Total Price: {(totalPrice + shippingPrice).toFixed(2)} PLN</span>
                   </Card.Text>
-                  <Button block variant='primary' className='mt-5 py-3 proceed'>
-                    Proceed To Checkout
-                  </Button>
+                  <Link to='/checkout'>
+                    <Button block variant='primary' size='lg' className='mt-5 py-3 proceed'>
+                      Proceed To Checkout
+                    </Button>
+                  </Link>
                 </Card.Body>
               </Card>
             </Col>
