@@ -1,6 +1,7 @@
 import userModel from "../models/userModel.js";
 import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
+import OrderModel from "../models/orderModel.js";
 
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -60,4 +61,12 @@ const updateProfile = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, registerUser, updateProfile };
+const getUserOrders = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  const orders = await OrderModel.find({ user: userId });
+
+  res.status(201).json(orders);
+});
+
+export { authUser, registerUser, updateProfile, getUserOrders };

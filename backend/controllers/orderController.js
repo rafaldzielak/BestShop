@@ -12,7 +12,6 @@ const placeOrder = asyncHandler(async (req, res) => {
     totalPrice,
     name,
   } = req.body;
-  console.log(orderItems);
 
   if (orderItems && orderItems.length === 0) {
     res.status(400);
@@ -32,4 +31,21 @@ const placeOrder = asyncHandler(async (req, res) => {
   res.status(201).json(createdOrder);
 });
 
-export { placeOrder };
+const getOrder = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const orderId = req.params.id;
+
+  const order = await OrderModel.findById(orderId);
+
+  if (!order) {
+    res.status(400);
+    throw new Error("No such order!");
+  }
+  if (userId != String(order.user)) {
+    res.status(401);
+    throw new Error("Not authorized!");
+  }
+  res.status(201).json(order);
+});
+
+export { placeOrder, getOrder };
