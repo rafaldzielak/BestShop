@@ -42,7 +42,7 @@ const NavbarComponent = () => {
                 <NavDropdown.Divider className='my-0' />
                 <LinkContainer to='/profile'>
                   <NavDropdown.Item>
-                    <i className='fas fa-user-alt'></i> Profile
+                    <i className='fas fa-user-alt'></i> Profile & Orders
                   </NavDropdown.Item>
                 </LinkContainer>
                 <NavDropdown.Divider className='my-0' />

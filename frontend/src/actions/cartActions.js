@@ -9,7 +9,7 @@ export const addToCartAction = (product, quantity) => (dispatch) => {
   let productInCart = cartContent ? cartContent.find((p) => p._id === product._id) : 0;
   if (productInCart) {
     productInCart.count = productInCart.count + quantity;
-    if (product.count > product.countInStock) product.count = product.countInStock;
+    if (productInCart.count > productInCart.countInStock) productInCart.count = productInCart.countInStock;
   } else {
     productInCart = { ...product, count: quantity };
     if (cartContent.length === 0) cartContent = [productInCart];

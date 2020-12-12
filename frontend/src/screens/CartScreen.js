@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Row, Col, Image, ListGroup, Button, Card } from "react-bootstrap";
+import { Row, Col, Image, ListGroup, Button, Card, OverlayTrigger, Tooltip } from "react-bootstrap";
 import AddToCartCounter from "../components/AddToCartCounter";
 import { removeProductFromCartAction } from "../actions/cartActions";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,7 +43,7 @@ const CartScreen = () => {
                         </Link>
                       </Col>
                       <Col
-                        lg={{ span: 3, order: 2 }}
+                        lg={{ span: 4, order: 2 }}
                         xs={{ span: 8, order: 2 }}
                         className='pl-0 pr-0'
                         style={{ fontSize: "1.1rem" }}>
@@ -52,18 +52,27 @@ const CartScreen = () => {
                       <Col lg={{ span: 2, order: 3 }} xs={{ span: 6, order: 4 }} className='pl-0 pr-4'>
                         <AddToCartCounter product={product} updateOnClick={true} />
                       </Col>
-                      <Col lg={{ span: 3, order: 4 }} xs={{ span: 6, order: 5 }} className='px-1'>
+                      <Col lg={{ span: 2, order: 4 }} xs={{ span: 6, order: 5 }} className='px-1'>
                         <h5 style={{ fontSize: "1.1rem" }}>
-                          {product.price} * {product.count} ={" "}
                           {((product.price * product.count * 100) / 100).toFixed(2)} PLN
                         </h5>
                       </Col>
                       <Col
                         lg={{ span: 1, order: 5 }}
                         xs={{ span: 1, order: 3 }}
-                        className='px-0'
+                        className='px-0 '
                         onClick={(e) => removeFromCartHandler(product)}>
-                        <i className='fas fa-times'></i>
+                        <OverlayTrigger
+                          key='top'
+                          placement='top'
+                          overlay={
+                            <Tooltip id={`tooltip-top`} className='my-1 orange-border'>
+                              <p className='m-2 '>Remove Item From Cart</p>
+                            </Tooltip>
+                          }>
+                          {/* <Button variant='secondary'>Tooltip on top</Button> */}
+                          <i className='fas fa-times orange-border-hover'></i>
+                        </OverlayTrigger>
                       </Col>
                     </Row>
                   </ListGroup.Item>

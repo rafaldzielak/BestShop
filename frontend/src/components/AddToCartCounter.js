@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Row, Col, Button } from "react-bootstrap";
+import { Row, Col, Button, OverlayTrigger, Popover } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addToCartAction, addOneCartAction, removeOneCartAction } from "../actions/cartActions";
 
 const AddToCartCounter = ({ product, numberOfProducts = 1, updateOnClick = false }) => {
   const dispatch = useDispatch();
   const [cartCounter, setCartCounter] = useState(product.count || numberOfProducts);
+  const [showToolTip, setShowToolTip] = useState(false);
   const buttonColSize = updateOnClick ? 10 : 5;
 
   const addToCartHandler = () => {
+    showToolTipAction();
     dispatch(addToCartAction(product, cartCounter));
   };
 
@@ -25,11 +27,26 @@ const AddToCartCounter = ({ product, numberOfProducts = 1, updateOnClick = false
     }
   };
 
-  const height = updateOnClick ? "2.5rem" : "4rem";
+  const height = updateOnClick ? "2.5rem" : "3.5rem";
   const fontSize = updateOnClick ? "1.4rem" : "2rem";
 
+  const popover = (
+    <Popover id='popover-basic' className='my-2'>
+      <Popover.Content className='bg-success'>
+        <h5>Added to Cart!</h5>
+      </Popover.Content>
+    </Popover>
+  );
+
+  const showToolTipAction = () => {
+    setShowToolTip(true);
+    setTimeout(() => {
+      setShowToolTip(false);
+    }, 1500);
+  };
+
   return (
-    <Row className='align-items-end '>
+    <Row className={`align-items-end ${!updateOnClick && "mx-5"}`}>
       {product.countInStock > 0 && (
         <Col sm={buttonColSize}>
           <Row className='ml-1'>
@@ -64,13 +81,11 @@ const AddToCartCounter = ({ product, numberOfProducts = 1, updateOnClick = false
 
       {!updateOnClick && product.countInStock > 0 && (
         <Col sm={7} className='px-4 orange'>
-          <Button
-            onClick={addToCartHandler}
-            variant='primary'
-            block
-            style={{ height: "4rem", fontSize: "1.8rem" }}>
-            Add To Cart
-          </Button>
+          <OverlayTrigger trigger='click' placement='top' overlay={popover} show={showToolTip}>
+            <Button onClick={addToCartHandler} variant='primary' block style={{ height, fontSize: "1.6rem" }}>
+              Add To Cart
+            </Button>
+          </OverlayTrigger>
         </Col>
       )}
       {!updateOnClick && product.countInStock === 0 && (

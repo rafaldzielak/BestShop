@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { Row, Col, Form, Button, ListGroup, Image } from "react-bootstrap";
+import { Row, Col, Form, Button, ListGroup, Image, ProgressBar } from "react-bootstrap";
 import { updateProfileAction } from "../actions/userActions";
 import { getUserOrdersAction } from "../actions/orderActions";
 
@@ -80,6 +80,39 @@ const ProfileScreen = ({ history }) => {
     </>
   );
 
+  const showStatus = (order) => (
+    <>
+      <Row className='mr-0'>
+        <Col xl={6} lg={7} md={8} xs={6} className='mx-0'>
+          <i class='fas fa-spinner'></i>{" "}
+          {order.isDelivered ? (
+            <b className='text-success'>Delivered</b>
+          ) : order.isDispatched ? (
+            <b className='text-info'>Sent Out</b>
+          ) : order.isPaid ? (
+            <b>Paid</b>
+          ) : (
+            <b className='text-danger'> Not Paid</b>
+          )}
+        </Col>
+        <Col xl={6} lg={5} md={4} xs={6} className='mx-0 px-0 pt-1'>
+          <ProgressBar
+            style={{ maxHeight: "0.75rem" }}
+            now={order.isDelivered ? 100 : order.isDispatched ? 75 : order.isPaid ? 50 : 25}
+            variant={
+              order.isDelivered
+                ? "success"
+                : order.isDispatched
+                ? "info"
+                : order.isPaid
+                ? "primary"
+                : "danger"
+            }></ProgressBar>
+        </Col>
+      </Row>
+    </>
+  );
+
   return (
     <>
       {(loading || updateLoading) && <Loader />}
@@ -112,8 +145,7 @@ const ProfileScreen = ({ history }) => {
                           <i class='fas fa-money-bill-wave'></i> Value: <b>{order.totalPrice} PLN</b>
                         </Col>
                         <Col md='6' className='text-left my-0'>
-                          <i class='fas fa-spinner'></i> Status:{" "}
-                          {order.isPaid ? <b>Paid</b> : <b> Not Paid</b>}
+                          {showStatus(order)}
                         </Col>
                         <Row style={{ height: "8rem" }} className=' mx-4 py-0  d-flex align-items-center'>
                           {order.orderItems.map(
