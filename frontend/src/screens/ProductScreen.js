@@ -23,17 +23,17 @@ const ProductScreen = ({ match }) => {
         <>
           <Row className='px-3 py-2 justify-content-center'></Row>
           <Row className='d-flex align-content-center'>
-            <Col xs={6} className='d-flex align-content-center'>
+            <Col xl={6} lg={5} sm={12} className='d-flex align-content-center'>
               <Image src={product.image} fluid rounded style={{ objectFit: "scale-down" }} />
             </Col>
-            <Col sm={6}>
+            <Col xl={6} lg={7} sm={12}>
               <Card style={{ height: "100%" }}>
                 <Card.Body className='flex-spread' style={{ minHeight: "40vh" }}>
                   <Card.Text>
                     <h3 className='text-center'>{product.name}</h3> <hr />
                     <h3 className='text-center'>{product.price} PLN</h3>
                     <hr />
-                    <p className='mx-4 px-5 py-2 desc text-justify'>{product.description}</p>
+                    <p className='mx-2 px-3 py-2 desc text-justify'>{product.description}</p>
                   </Card.Text>
                   <AddToCartCounter product={product} />
                 </Card.Body>

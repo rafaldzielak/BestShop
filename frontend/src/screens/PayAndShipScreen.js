@@ -60,10 +60,10 @@ const PayAndShipScreen = ({ history }) => {
   return (
     <>
       {loading ? (
-        <Loader />
+        <Loader marginTop={5} />
       ) : (
         <Row className='py-5 px-4'>
-          <Col md={7} sm={12} className='border-right text-center'>
+          <Col lg={7} xl={8} sm={12} className='border-right text-center'>
             <h2 className='mb-5'>Enter Your Address</h2>
 
             <Form
@@ -142,28 +142,32 @@ const PayAndShipScreen = ({ history }) => {
             </Form>
           </Col>
           <hr />
-          <Col md={5} sm={12} className='text-center'>
-            <h2 className='mb-5'>Choose Payment Method</h2>
+          <Col xl={4} lg={5} sm={12} className='text-center'>
+            <h2 className='mb-5'>Payment Method</h2>
             <Row
               className={`payment-method m-4 ${paymentMethod === "PayPal" && "active"}`}
               onClick={(e) => setPaymentMethod("PayPal")}>
               <Col className='my-auto'>
                 <Image
-                  style={{ maxHeight: "60px" }}
+                  style={{ maxHeight: "45px" }}
                   src='https://logodownload.org/wp-content/uploads/2014/10/paypal-logo-2-1.png'
                   fluid
                 />
               </Col>
             </Row>
             <Row
-              className={`payment-method m-4 ${paymentMethod === "PayU" && "active"}`}
-              onClick={(e) => setPaymentMethod("PayU")}>
+              className={`payment-method m-4 ${paymentMethod === "Stripe" && "active"}`}
+              onClick={(e) => setPaymentMethod("Stripe")}>
               <Col className='my-auto'>
-                <Image style={{ maxHeight: "90px" }} src={payuLogo} fluid />
+                <Image
+                  style={{ maxHeight: "60px" }}
+                  src='https://www.przelewy24.pl/themes/base/assets/images/przelewy24_logo.svg'
+                  fluid
+                />
               </Col>
             </Row>
-            <Button type='submit' form='ship-form' block size='lg' className='m-4 pt-0'>
-              <h3>Submit Order</h3>
+            <Button type='submit' form='ship-form' block size='lg' className='m-4 pt-3 px-5'>
+              <h4>Submit Order</h4>
             </Button>
           </Col>
         </Row>

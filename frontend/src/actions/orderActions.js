@@ -22,6 +22,7 @@ export const placeOrderAction = (orderDetails) => async (dispatch, getState) => 
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
     };
     const { data } = await axios.post("/api/orders", orderDetails, config);
+    console.log(data);
     dispatch({ type: PLACE_ORDER_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

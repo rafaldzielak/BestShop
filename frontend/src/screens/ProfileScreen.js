@@ -6,6 +6,7 @@ import Message from "../components/Message";
 import { Row, Col, Form, Button, ListGroup, Image, ProgressBar } from "react-bootstrap";
 import { updateProfileAction } from "../actions/userActions";
 import { getUserOrdersAction } from "../actions/orderActions";
+import OrdersStatusBar from "../components/OrdersStatusBar";
 
 const ProfileScreen = ({ history }) => {
   // const name = useState()
@@ -84,7 +85,7 @@ const ProfileScreen = ({ history }) => {
     <>
       <Row className='mr-0'>
         <Col xl={6} lg={7} md={8} xs={6} className='mx-0'>
-          <i class='fas fa-spinner'></i>{" "}
+          <i className='fas fa-spinner'></i>{" "}
           {order.isDelivered ? (
             <b className='text-success'>Delivered</b>
           ) : order.isDispatched ? (
@@ -135,17 +136,17 @@ const ProfileScreen = ({ history }) => {
                     <ListGroup.Item className='mb-0  pb-2 orange-border-hover'>
                       <Row style={{ height: "12rem" }}>
                         <Col md='6' className='text-left my-0'>
-                          <i class='fas fa-fingerprint'> </i> ID: <b>{order._id}</b>
+                          <i className='fas fa-fingerprint'> </i> ID: <b>{order._id}</b>
                         </Col>
                         <Col md='6' className='my-0'>
-                          <i class='far fa-clock'></i> Date:{" "}
+                          <i className='far fa-clock'></i> Date:{" "}
                           <b>{order.createdAt.substring(0, 19).replace("T", " ")}</b>
                         </Col>
                         <Col md='6' className='text-left my-0'>
-                          <i class='fas fa-money-bill-wave'></i> Value: <b>{order.totalPrice} PLN</b>
+                          <i className='fas fa-money-bill-wave'></i> Value: <b>{order.totalPrice} PLN</b>
                         </Col>
                         <Col md='6' className='text-left my-0'>
-                          {showStatus(order)}
+                          <OrdersStatusBar order={order} size="small"></OrdersStatusBar>
                         </Col>
                         <Row style={{ height: "8rem" }} className=' mx-4 py-0  d-flex align-items-center'>
                           {order.orderItems.map(
