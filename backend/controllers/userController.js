@@ -2,6 +2,7 @@ import userModel from "../models/userModel.js";
 import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
 import OrderModel from "../models/orderModel.js";
+import stripeImp from "stripe";
 
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -64,7 +65,22 @@ const updateProfile = asyncHandler(async (req, res) => {
 const getUserOrders = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 
-  const orders = await OrderModel.find({ user: userId });
+  let orders = await OrderModel.find({ user: userId }).sort({ createdAt: -1 });
+
+  for (let order of orders) {
+    // orders.forEach(async (order, index) => {
+    if (order.paymentMethod === "Stripe" && !order.isPaid) {
+      const stripe = stripeImp(process.env.STRIPE_SECRET);
+      const session = await stripe.checkout.sessions.retrieve(order.stripeOrderId);
+      const paymentStatus = session.payment_status;
+      if (paymentStatus === "paid") {
+        order.isPaid = true;
+        order.save();
+      }
+    }
+  }
+  // console.log(orders);
+  // orders = await OrderModel.find({ user: userId });
 
   res.status(201).json(orders);
 });

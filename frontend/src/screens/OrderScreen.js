@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrderAction } from "../actions/orderActions";
 import { Row, Col, ListGroup, Image, Button } from "react-bootstrap";
@@ -7,11 +7,51 @@ import Loader from "../components/Loader";
 import { loadStripe } from "@stripe/stripe-js";
 import OrdersStatusBar from "../components/OrdersStatusBar";
 import Message from "../components/Message";
+import axios from "axios";
+import { payOrderViaPaypalAction } from "../actions/orderActions";
+import { PayPalButton } from "react-paypal-button-v2";
 
 const OrderScreen = ({ match }) => {
   const dispatch = useDispatch();
   const orderGet = useSelector((state) => state.orderGet);
   const { orderDetails, loading } = orderGet;
+
+  const [sdkReady, setSdkReady] = useState(false);
+  const [paymentLoading, setPaymentLoading] = useState(false);
+
+  useEffect(() => {
+    console.log("useeffect");
+    const addPaypalScript = async () => {
+      const { data: clientId } = await axios.get("/api/config/paypal");
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=PLN`;
+      script.async = true;
+      script.onload = () => setSdkReady(true);
+      document.body.appendChild(script);
+    };
+
+    if (orderDetails) {
+      if (!orderDetails.isPaid) {
+        if (!window.paypal) addPaypalScript();
+        else setSdkReady(true);
+      }
+    }
+  }, [orderDetails, dispatch]);
+
+  const PayPalSuccessPay = (details, data) => {
+    console.log("success");
+    console.log(details);
+    console.log(data);
+    setPaymentLoading(true);
+    dispatch(payOrderViaPaypalAction(orderDetails._id, details.id, details.create_time));
+  };
+
+  useEffect(() => {
+    if (!loading) {
+      setPaymentLoading(false);
+    }
+  }, [loading]);
 
   useEffect(() => {
     dispatch(getOrderAction(match.params.id));
@@ -76,7 +116,7 @@ const OrderScreen = ({ match }) => {
               </div>
               <Row style={{ fontSize: "1rem" }}>
                 <Col md={12} className='text-left my-0'>
-                  <i className='fas fa-fingerprint'> </i> Order ID: <b>{orderDetails._id}</b>
+                  <i className='fas fa-fingerprint'> </i> ID: <b>{orderDetails._id}</b>
                 </Col>
                 <Col md={12} className='my-0 text-left'>
                   <i className='far fa-clock'></i> Date:{" "}
@@ -84,20 +124,22 @@ const OrderScreen = ({ match }) => {
                 </Col>
                 <Col md={12} className='text-left my-0'>
                   <i className='fas fa-money-bill-wave'></i> Products Value:{" "}
-                  <b>{orderDetails.totalPrice} PLN</b>
+                  <b>{orderDetails.itemsPrice} PLN</b>
                 </Col>
                 <Col md={12} className='text-left my-0'>
-                  <i class='fas fa-shipping-fast'></i> Shipping: <b>{orderDetails.shippingPrice} PLN</b>
+                  <i className='fas fa-shipping-fast'></i> Shipping:{" "}
+                  <b>{orderDetails.shippingPrice > 0 ? `${orderDetails.shippingPrice} PLN` : "Free!"}</b>
                 </Col>
               </Row>
               <hr />
               <h3 className='mt-3'>Payment</h3>
+              {!orderDetails.isPaid && <h4 className='mt-3'>Amount to Pay: {orderDetails.totalPrice} PLN</h4>}
               <hr />
               {orderDetails.isPaid ? (
                 <>
                   <Message variant='success'>Order Paid</Message>
                   <hr />
-                  <h3 className='mt-5'>Shipment</h3>
+                  <h3 className='mt-3'>Shipment</h3>
                   <hr />
                   {orderDetails.isDelivered ? (
                     <Message variant='success'>Order Delivered</Message>
@@ -107,13 +149,23 @@ const OrderScreen = ({ match }) => {
                     <Message variant='info'>In progress</Message>
                   )}
                 </>
-              ) : (
+              ) : orderDetails.paymentMethod === "Stripe" ? (
                 <>
                   <Message>Order Not Paid</Message>
+                  <hr />
                   <Button block size='lg' onClick={goToPayment}>
                     Pay For Order
                   </Button>
                 </>
+              ) : !(sdkReady && !paymentLoading) ? (
+                <Loader />
+              ) : (
+                <PayPalButton
+                  currency='PLN'
+                  amount={orderDetails.totalPrice}
+                  onApprove={() => setPaymentLoading(true)}
+                  onSuccess={PayPalSuccessPay}
+                />
               )}
             </>
           )}

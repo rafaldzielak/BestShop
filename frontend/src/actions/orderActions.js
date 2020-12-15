@@ -51,6 +51,31 @@ export const getOrderAction = (orderId) => async (dispatch, getState) => {
   }
 };
 
+export const payOrderViaPaypalAction = (orderId, paypalOrderId, create_time) => async (
+  dispatch,
+  getState
+) => {
+  const {
+    loginUser: { loggedUser },
+  } = getState();
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
+    };
+    const { data } = await axios.put(
+      `/api/orders/${orderId}/pay/paypal`,
+      { paypalOrderId, create_time },
+      config
+    );
+    dispatch({ type: GET_ORDER_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: GET_ORDER_FAIL,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
 export const getUserOrdersAction = () => async (dispatch, getState) => {
   const {
     loginUser: { loggedUser },

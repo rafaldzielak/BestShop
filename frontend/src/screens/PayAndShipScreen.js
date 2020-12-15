@@ -31,10 +31,10 @@ const PayAndShipScreen = ({ history }) => {
     }
   }, [id, history, dispatch]);
 
-  const totalPrice = useMemo(() => cartContent.reduce((prev, curr) => prev + curr.price * curr.count, 0), [
+  const itemsPrice = useMemo(() => cartContent.reduce((prev, curr) => prev + curr.price * curr.count, 0), [
     cartContent,
   ]);
-  const shippingPrice = useMemo(() => (totalPrice > freeShippingValue ? 0 : 9.99), [totalPrice]);
+  const shippingPrice = useMemo(() => (itemsPrice > freeShippingValue ? 0 : 9.99), [itemsPrice]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -50,7 +50,8 @@ const PayAndShipScreen = ({ history }) => {
         name,
         shippingAddress,
         paymentMethod,
-        totalPrice,
+        itemsPrice,
+        totalPrice: (itemsPrice + shippingPrice).toFixed(2),
         orderItems: cartContent,
         shippingPrice,
       })

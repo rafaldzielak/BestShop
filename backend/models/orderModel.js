@@ -27,13 +27,15 @@ const orderSchema = mongoose.Schema(
       email_address: { type: String },
     },
     shippingPrice: { type: Number, required: true, default: 0.0 },
-    itemsPirce: { type: Number, required: true, default: 0.0 },
+    itemsPrice: { type: Number, required: true, default: 0.0 },
     totalPrice: { type: Number, required: true, default: 0.0 },
     isPaid: { type: Boolean, required: true, default: false },
     paidAt: { type: Date },
     isDelivered: { type: Boolean, required: true, default: false },
     deliveredAt: { type: Date },
     isDispatched: { type: Boolean, required: true, default: false },
+    stripeOrderId: { type: String },
+    stripePaymentIntent: { type: String },
   },
   { timestamps: true }
 );
