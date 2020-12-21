@@ -116,7 +116,7 @@ const createStripeOrder = async (order, email = "") => {
     line_items: line_items,
     mode: "payment",
   });
-  console.log(stripeObj);
+  // console.log(stripeObj);
 
   return stripeObj;
 };
@@ -177,7 +177,6 @@ const payForOrderViaPaypal = asyncHandler(async (req, res) => {
     const { paypalOrderId } = req.body;
     const { create_time } = req.body;
     if (!order.isPaid) {
-      console.log("A");
       const payPalToken = await getPaypalToken();
       console.log(payPalToken);
       const config = { headers: { Authorization: `Bearer ${payPalToken}` } };

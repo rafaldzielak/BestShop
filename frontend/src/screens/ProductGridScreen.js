@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import Loader from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, DropdownButton, Row, Col, Dropdown } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
 import { getProducts } from "../actions/productActions";
 
 const ProductGridScreen = () => {
+  const { keyword } = useParams();
   const dispatch = useDispatch();
 
   const listProducts = useSelector((state) => state.listProducts);
@@ -16,8 +17,8 @@ const ProductGridScreen = () => {
   const [colSize, setColSize] = useState(3);
 
   useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
+    if (!keyword) dispatch(getProducts());
+  }, [dispatch, keyword]);
 
   useEffect(() => {
     setSortedProducts(products);

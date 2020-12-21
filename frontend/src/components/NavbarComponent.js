@@ -1,18 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useSelector } from "react-redux";
 import { logoutAction } from "../actions/userActions";
 import { useDispatch } from "react-redux";
+import { getProducts } from "../actions/productActions";
+import { useHistory } from "react-router-dom";
 
 const NavbarComponent = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const loginUser = useSelector((state) => state.loginUser);
   const { loggedUser } = loginUser;
   useEffect(() => {}, [loginUser]);
+  const [keyword, setKeyword] = useState("");
 
   const logoutHandler = () => {
     dispatch(logoutAction());
+  };
+
+  const searchHandler = (e) => {
+    e.preventDefault();
+    dispatch(getProducts(keyword));
+    history.push(`/search/${keyword}`);
+    console.log("search");
   };
 
   return (
@@ -22,9 +33,18 @@ const NavbarComponent = () => {
       </LinkContainer>
       <Navbar.Toggle aria-controls='basic-navbar-nav' />
       <Navbar.Collapse id='basic-navbar-nav '>
-        <Form inline className='ml-auto'>
-          <FormControl type='text' placeholder='Search For Products' className='mr-sm-2 center' />
-          <Button variant='primary'>Search</Button>
+        <Form inline onSubmit={searchHandler} className='ml-auto'>
+          <FormControl
+            type='text'
+            placeholder='Search For Products'
+            required
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            className='mr-sm-2 center'
+          />
+          <Button type='submit' variant='primary'>
+            Search
+          </Button>
         </Form>
         <Nav className='ml-auto'>
           <LinkContainer to='/cart'>

@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Form, Button, Image } from "react-bootstrap";
-import payuLogo from "../img/PAYU_LOGO_LIME.png";
 import { placeOrderAction, placeOrderReset } from "../actions/orderActions";
 import Loader from "../components/Loader";
 

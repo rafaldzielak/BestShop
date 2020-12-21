@@ -20,7 +20,6 @@ const OrderScreen = ({ match }) => {
   const [paymentLoading, setPaymentLoading] = useState(false);
 
   useEffect(() => {
-    console.log("useeffect");
     const addPaypalScript = async () => {
       const { data: clientId } = await axios.get("/api/config/paypal");
       const script = document.createElement("script");
@@ -55,12 +54,11 @@ const OrderScreen = ({ match }) => {
 
   useEffect(() => {
     dispatch(getOrderAction(match.params.id));
-  }, [dispatch]);
+  }, [dispatch, match]);
   const stripePromise = loadStripe(
     "pk_test_51HxskkJe6gNNlKVJ5jshf7Hj0fX3nmmmiQzLz1fu4u7e6K6SorkOEXbzSaeeUCBGdf8QEAGbuSfT6vdQwVkqtj4500j6tBFuTm"
   );
   const goToPayment = async () => {
-    console.log("payment");
     const stripe = await stripePromise;
     const { error } = await stripe.redirectToCheckout({
       sessionId: orderDetails.stripeOrderId,

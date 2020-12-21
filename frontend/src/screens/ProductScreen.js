@@ -29,12 +29,12 @@ const ProductScreen = ({ match }) => {
             <Col xl={6} lg={7} sm={12}>
               <Card style={{ height: "100%" }}>
                 <Card.Body className='flex-spread' style={{ minHeight: "40vh" }}>
-                  <Card.Text>
+                  <div>
                     <h3 className='text-center'>{product.name}</h3> <hr />
                     <h3 className='text-center'>{product.price} PLN</h3>
                     <hr />
                     <p className='mx-2 px-3 py-2 desc text-justify'>{product.description}</p>
-                  </Card.Text>
+                  </div>
                   <AddToCartCounter product={product} />
                 </Card.Body>
               </Card>

@@ -4,7 +4,6 @@ import AddToCartCounter from "../components/AddToCartCounter";
 import { removeProductFromCartAction } from "../actions/cartActions";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import StripeCheckout from "react-stripe-checkout";
 
 const CartScreen = () => {
   const freeShippingValue = 200;
