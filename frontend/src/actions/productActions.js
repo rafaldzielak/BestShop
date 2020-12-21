@@ -8,10 +8,10 @@ import {
 } from "../constants/productContants";
 import axios from "axios";
 
-export const getProducts = (keyword = "") => async (dispatch) => {
+export const getProducts = (keyword = "", sort = "") => async (dispatch) => {
   try {
     dispatch({ type: GET_PRODUCTS_REQUEST });
-    const { data } = await axios.get(`/api/products/?keyword=${keyword}`);
+    const { data } = await axios.get(`/api/products/?keyword=${keyword}&sort=${sort}`);
     dispatch({ type: GET_PRODUCTS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
