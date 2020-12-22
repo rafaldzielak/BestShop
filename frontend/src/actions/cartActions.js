@@ -1,7 +1,6 @@
 import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../constants/cartConstants";
 
 export const addToCartAction = (product, quantity) => (dispatch) => {
-  console.log("quantity: " + quantity);
   let cartContent = localStorage.getItem("cartContent")
     ? JSON.parse(localStorage.getItem("cartContent"))
     : [];
