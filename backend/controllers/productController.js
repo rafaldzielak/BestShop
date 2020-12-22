@@ -5,7 +5,13 @@ import asyncHandler from "express-async-handler";
 export const getProducts = asyncHandler(async (req, res) => {
   const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: "i" } } : {};
   const sortQuery = req.query.sort || "";
-  const sort = { sortQuery: 1 };
+  let sort;
+
+  if (sortQuery) {
+    let sortDirection = "desc";
+    if (sortQuery === "price") sortDirection = "asc";
+    sort = [[sortQuery, sortDirection]];
+  }
   const products = await productModel.find(keyword).sort(sort);
   res.json(products);
 });

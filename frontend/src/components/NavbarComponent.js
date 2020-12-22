@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useSelector } from "react-redux";
 import { logoutAction } from "../actions/userActions";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 const NavbarComponent = () => {
   const dispatch = useDispatch();

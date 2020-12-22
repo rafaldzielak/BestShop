@@ -101,7 +101,7 @@ const ProfileScreen = ({ history }) => {
             {ordersDetails.length > 0 && (
               <ListGroup variant='flush'>
                 {ordersDetails.map((order) => (
-                  <Link to={`/order/${order._id}`}>
+                  <Link key={order._id} to={`/order/${order._id}`}>
                     <ListGroup.Item className='mb-0  pb-2 orange-border-hover'>
                       <Row style={{ height: "12rem" }}>
                         <Col md='6' className='text-left my-0'>
@@ -121,7 +121,7 @@ const ProfileScreen = ({ history }) => {
                           {order.orderItems.map(
                             (orderItem, index) =>
                               index <= 5 && (
-                                <Col xs='2' className='py-0 m-0 px-1'>
+                                <Col key={orderItem._id} xs='2' className='py-0 m-0 px-1'>
                                   <Image className='mb-3' fluid src={orderItem.image}></Image>
                                 </Col>
                               )

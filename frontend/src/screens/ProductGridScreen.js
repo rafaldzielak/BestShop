@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Loader from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, DropdownButton, Row, Col, Dropdown, Form, FormControl, Button } from "react-bootstrap";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Rating from "../components/Rating";
 import { getProducts } from "../actions/productActions";
 
@@ -20,8 +20,8 @@ const ProductGridScreen = () => {
   const [colSize, setColSize] = useState(3);
 
   useEffect(() => {
-    if (!keyword) dispatch(getProducts());
-  }, [dispatch, keyword]);
+    if (!keyword) dispatch(getProducts(keyword, sort));
+  }, [dispatch, keyword, sort]);
 
   useEffect(() => {
     setSortedProducts(products);
@@ -32,9 +32,6 @@ const ProductGridScreen = () => {
     else setColSize(3);
   };
 
-  const sortByPrice = () => setSortedProducts((prev) => [...prev.sort((a, b) => a.price - b.price)]);
-  const sortByRating = () => setSortedProducts((prev) => [...prev.sort((a, b) => b.rating - a.rating)]);
-
   const searchHandler = (e) => {
     e.preventDefault();
     dispatch(getProducts(keyword));
@@ -44,7 +41,7 @@ const ProductGridScreen = () => {
 
   return (
     <>
-      <Row className='flex-sort mx-2'>
+      <Row className='flex-sort mx-0'>
         <Col lg={10} xs={9} sm={8}>
           <Form inline onSubmit={searchHandler} className='my-2 justify-content-center'>
             <Col xs={9} sm={10} xl={11} style={{ margin: "0", padding: "0" }}>
@@ -73,11 +70,11 @@ const ProductGridScreen = () => {
         </Col>
         <Col lg={1} sm={2} xs={3}>
           <DropdownButton id='dropdown-variants-primary' variant='' title={<i className='fas fa-filter'></i>}>
-            <Dropdown.Item className='border-bottom' onClick={sortByPrice}>
+            <Dropdown.Item className='border-bottom' onClick={() => setSort("price")}>
               <i className='fas fa-dollar-sign'></i> <i className='fas fa-dollar-sign'></i>{" "}
               <i className='fas fa-dollar-sign'></i>
             </Dropdown.Item>
-            <Dropdown.Item style={{ fontSize: "1.6rem" }} onClick={sortByRating}>
+            <Dropdown.Item style={{ fontSize: "1.6rem" }} onClick={() => setSort("rating")}>
               <i className='fas fa-star'></i> <i className='fas fa-star'></i> <i className='fas fa-star'></i>
             </Dropdown.Item>
           </DropdownButton>
@@ -91,7 +88,7 @@ const ProductGridScreen = () => {
             sortedProducts.map((product) => (
               <Col key={product._id} sm={colSize + 3} md={colSize + 1} lg={colSize}>
                 <Link to={`/product/${product._id}`}>
-                  <Card className='my-2 p-2 rounded bg-light border-hover'>
+                  <Card className='my-2 py-2 rounded bg-light border-hover'>
                     <Card.Img
                       src={product.image}
                       variant='top'
