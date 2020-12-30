@@ -10,7 +10,7 @@ const Rating = ({ rating, numReviews }) => {
       {rating >= 1.8 ? fullStar : rating >= 1.3 ? halfStar : emptyStar}
       {rating >= 2.8 ? fullStar : rating >= 2.3 ? halfStar : emptyStar}
       {rating >= 3.8 ? fullStar : rating >= 3.3 ? halfStar : emptyStar}
-      {rating >= 4.8 ? fullStar : rating >= 4.3 ? halfStar : emptyStar} {numReviews}
+      {rating >= 4.8 ? fullStar : rating >= 4.3 ? halfStar : emptyStar} {numReviews ? numReviews : ""}
     </>
   );
 };

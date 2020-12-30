@@ -10,6 +10,7 @@ import Message from "../components/Message";
 import axios from "axios";
 import { payOrderViaPaypalAction } from "../actions/orderActions";
 import { PayPalButton } from "react-paypal-button-v2";
+import ReviewModal from "../components/ReviewModal";
 
 const OrderScreen = ({ match }) => {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const OrderScreen = ({ match }) => {
 
   const [sdkReady, setSdkReady] = useState(false);
   const [paymentLoading, setPaymentLoading] = useState(false);
+  const [modalShow, setModalShow] = useState([]);
 
   useEffect(() => {
     const addPaypalScript = async () => {
@@ -47,8 +49,9 @@ const OrderScreen = ({ match }) => {
   };
 
   useEffect(() => {
-    if (!loading) {
-      setPaymentLoading(false);
+    if (!loading) setPaymentLoading(false);
+    if (orderDetails) {
+      setModalShow(Array.from({ length: 5 }, (v, i) => false));
     }
   }, [loading]);
 
@@ -65,6 +68,7 @@ const OrderScreen = ({ match }) => {
     });
     console.log(error);
   };
+  console.log(modalShow);
   return (
     <>
       <Row className='my-3'>
@@ -74,7 +78,7 @@ const OrderScreen = ({ match }) => {
           {loading && <Loader marginTop={5} />}
           <ListGroup variant='flush'>
             {orderDetails &&
-              orderDetails.orderItems.map((orderItem) => (
+              orderDetails.orderItems.map((orderItem, index) => (
                 <ListGroup.Item key={orderItem._id}>
                   <Row className='d-flex align-items-center'>
                     <Col lg={3} xs={12} className='py-0 pr-4 d-flex justify-content-center'>
@@ -92,10 +96,31 @@ const OrderScreen = ({ match }) => {
                       </Link>
                     </Col>
                     <Col lg={4} xs={5} className='pr-0 text-right'>
-                      <h5 style={{ fontSize: "1.1rem" }}>
-                        {orderItem.price} * {orderItem.count} ={" "}
-                        {((orderItem.price * orderItem.count * 100) / 100).toFixed(2)} PLN
-                      </h5>
+                      <Col sm={12}>
+                        <h5 style={{ fontSize: "1.1rem" }}>
+                          {orderItem.price} × {orderItem.count} ={" "}
+                          {((orderItem.price * orderItem.count * 100) / 100).toFixed(2)} PLN
+                        </h5>
+                      </Col>
+                      {orderDetails.isDelivered && (
+                        <Col sm={12}>
+                          <Button
+                            onClick={() =>
+                              setModalShow((prev) =>
+                                prev.map((value, i) => {
+                                  if (index === i) return true;
+                                })
+                              )
+                            }>
+                            Review the Product
+                          </Button>
+                          <ReviewModal
+                            product={orderItem}
+                            show={modalShow[index]}
+                            onHide={() => setModalShow((prev) => prev.map((value, i) => false))}
+                          />
+                        </Col>
+                      )}
                     </Col>
                   </Row>
                 </ListGroup.Item>
@@ -122,7 +147,7 @@ const OrderScreen = ({ match }) => {
                 </Col>
                 <Col md={12} className='text-left my-0'>
                   <i className='fas fa-money-bill-wave'></i> Products Value:{" "}
-                  <b>{orderDetails.itemsPrice} PLN</b>
+                  <b>{orderDetails.itemsPrice.toFixed(2)} PLN</b>
                 </Col>
                 <Col md={12} className='text-left my-0'>
                   <i className='fas fa-shipping-fast'></i> Shipping:{" "}
