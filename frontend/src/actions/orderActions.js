@@ -9,6 +9,9 @@ import {
   GET_USER_ORDERS_FAIL,
   GET_USER_ORDERS_REQUEST,
   GET_USER_ORDERS_SUCCESS,
+  CREATE_REVIEW_FAIL,
+  CREATE_REVIEW_REQUEST,
+  CREATE_REVIEW_SUCCESS,
 } from "../constants/orderConstants.js";
 import axios from "axios";
 
@@ -90,6 +93,27 @@ export const getUserOrdersAction = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: GET_USER_ORDERS_FAIL,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const reviewProductAction = (productId, orderId, review) => async (dispatch, getState) => {
+  const {
+    loginUser: { loggedUser },
+  } = getState();
+  try {
+    dispatch({ type: CREATE_REVIEW_REQUEST });
+    const config = {
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
+    };
+    const { data } = await axios.put(`/api/products/${productId}/order/${orderId}/review`, review, config);
+    dispatch({ type: CREATE_REVIEW_SUCCESS, payload: data });
+    dispatch(getOrderAction(orderId));
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: CREATE_REVIEW_FAIL,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }

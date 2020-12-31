@@ -51,9 +51,8 @@ const ProductScreen = ({ match }) => {
               <h2>Reviews</h2>
             </Col>
             <Col sm={12} className='text-center'>
-              {console.log(product.reviews)}
               {product.reviews.map((review) => (
-                <>
+                <div key={review._id}>
                   <hr style={{ marginTop: "0.5rem", marginBottom: "0.5rem", width: "90%" }} />
                   <Row className='container'>
                     <Col md={4} lg={4}>
@@ -61,7 +60,7 @@ const ProductScreen = ({ match }) => {
                         <h5 style={{ fontWeight: "bold" }}>{review.name}</h5>
                       </Col>
                       <Col sm={12}>
-                        <Rating rating={product.rating}></Rating>
+                        <Rating rating={review.rating}></Rating>
                       </Col>
                     </Col>
                     <Col md={8} lg={8} className='my-auto'>
@@ -69,7 +68,7 @@ const ProductScreen = ({ match }) => {
                     </Col>
                   </Row>
                   <br />
-                </>
+                </div>
               ))}
             </Col>
           </Row>

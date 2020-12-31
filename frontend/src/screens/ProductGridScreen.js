@@ -36,7 +36,6 @@ const ProductGridScreen = () => {
     e.preventDefault();
     dispatch(getProducts(keyword));
     history.push(`/search/${keyword}`);
-    console.log("search");
   };
 
   return (
@@ -99,7 +98,12 @@ const ProductGridScreen = () => {
                         <strong className='two-lines'>{product.name}</strong>
                       </Card.Title>
                       <Card.Text as='div' className='py-0'>
-                        <Rating rating={product.rating} numReviews={`${product.numReviews} reviews`} />
+                        <Rating
+                          rating={product.rating}
+                          numReviews={`${product.numReviews} ${
+                            product.numReviews === 1 ? "review" : "reviews"
+                          }`}
+                        />
                       </Card.Text>
                       <Card.Text as='h4' className='py-1'>
                         {product.price} PLN

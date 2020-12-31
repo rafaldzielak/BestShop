@@ -11,6 +11,7 @@ const orderSchema = mongoose.Schema(
         price: { type: Number, required: true },
         image: { type: String, required: true },
         _id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Product" },
+        isReviewed: { type: Boolean, required: true, default: false },
       },
     ],
     shippingAddress: {

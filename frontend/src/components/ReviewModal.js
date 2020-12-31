@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Modal, Button, Form, Image, Col, Row } from "react-bootstrap";
+import { reviewProductAction } from "../actions/orderActions";
+import { CREATE_REVIEW_RESET } from "../constants/orderConstants";
+import { useParams } from "react-router-dom";
+import Message from "./Message";
 
 const ReviewModal = (props) => {
   const product = props.product;
+  // const orderId = props.orderId;
+
+  const { id: orderId } = useParams();
   const [reviewTitle, setReviewTitle] = useState("");
   const [reviewDetails, setReviewDetails] = useState("");
   const [rating, setRating] = useState(0);
   const [tempRating, setTempRating] = useState(0);
-  const fullStar = <i style={{ fontSize: "2rem" }} className='fas fa-star'></i>;
-  const emptyStar = <i style={{ fontSize: "2rem" }} className='far fa-star'></i>;
+  const dispatch = useDispatch();
+  const reviewCreate = useSelector((state) => state.reviewCreate);
+  const { error: reviewError } = reviewCreate;
 
   const setUserRating = () => (
     <div className='text-center'>
@@ -47,8 +56,19 @@ const ReviewModal = (props) => {
 
   const submitReview = (e) => {
     e.preventDefault();
-    //REQUEST TO ACTION
+
+    dispatch(
+      reviewProductAction(product._id, orderId, { name: reviewTitle, comment: reviewDetails, rating })
+    );
   };
+  useEffect(() => {
+    return () => {
+      dispatch({ type: CREATE_REVIEW_RESET });
+    };
+  }, []);
+
+  const fullStar = <i style={{ fontSize: "2rem" }} className='fas fa-star p-1 py-3'></i>;
+  const emptyStar = <i style={{ fontSize: "2rem" }} className='far fa-star p-1 py-3'></i>;
 
   return (
     <Modal {...props} size='lg' aria-labelledby='contained-modal-title-vcenter' centered>
@@ -63,7 +83,8 @@ const ReviewModal = (props) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form style={{ maxWidth: "600px" }} className='container'>
+        <Form onSubmit={submitReview} style={{ maxWidth: "600px" }} className='container'>
+          {reviewError && <Message>You already reviewed this item in some of previous orders!</Message>}
           <h5 className='text-center'>Your Rating:</h5>
           {setUserRating()}
           <br />
@@ -87,7 +108,7 @@ const ReviewModal = (props) => {
               onChange={(e) => setReviewDetails(e.target.value)}
             />
           </Form.Group>
-          <Button variant='primary' block type='submit' onClick={submitReview}>
+          <Button variant='primary' block type='submit'>
             Submit
           </Button>
         </Form>

@@ -4,7 +4,12 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import { listProductReducer, listProductsReducer } from "./reducers/productsReducers";
 import { loginUserReducer, registerUserReducer, updateProfileReducer } from "./reducers/userReducers";
 import { cartReducer } from "./reducers/cartReducers";
-import { orderCreateReducer, orderGetReducer, userOrdersGetReducer } from "./reducers/orderReducers.js";
+import {
+  orderCreateReducer,
+  orderGetReducer,
+  userOrdersGetReducer,
+  reviewCreateReducer,
+} from "./reducers/orderReducers.js";
 
 const reducer = combineReducers({
   listProducts: listProductsReducer,
@@ -16,6 +21,7 @@ const reducer = combineReducers({
   orderCreate: orderCreateReducer,
   orderGet: orderGetReducer,
   userOrdersGet: userOrdersGetReducer,
+  reviewCreate: reviewCreateReducer,
 });
 
 const userLoginFromStorage = localStorage.getItem("userLogin")

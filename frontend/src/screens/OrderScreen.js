@@ -51,9 +51,9 @@ const OrderScreen = ({ match }) => {
   useEffect(() => {
     if (!loading) setPaymentLoading(false);
     if (orderDetails) {
-      setModalShow(Array.from({ length: 5 }, (v, i) => false));
+      setModalShow(Array.from({ length: orderDetails.orderItems.length }, (v, i) => false));
     }
-  }, [loading]);
+  }, [loading, orderDetails]);
 
   useEffect(() => {
     dispatch(getOrderAction(match.params.id));
@@ -68,7 +68,6 @@ const OrderScreen = ({ match }) => {
     });
     console.log(error);
   };
-  console.log(modalShow);
   return (
     <>
       <Row className='my-3'>
@@ -104,16 +103,16 @@ const OrderScreen = ({ match }) => {
                       </Col>
                       {orderDetails.isDelivered && (
                         <Col sm={12}>
-                          <Button
-                            onClick={() =>
-                              setModalShow((prev) =>
-                                prev.map((value, i) => {
-                                  if (index === i) return true;
-                                })
-                              )
-                            }>
-                            Review the Product
-                          </Button>
+                          {orderItem.isReviewed ? (
+                            <Button disabled> Product Already Reviewed</Button>
+                          ) : (
+                            <Button
+                              onClick={() =>
+                                setModalShow((prev) => prev.map((value, i) => (index === i ? true : false)))
+                              }>
+                              Review the Product
+                            </Button>
+                          )}
                           <ReviewModal
                             product={orderItem}
                             show={modalShow[index]}

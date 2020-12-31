@@ -5,6 +5,7 @@ import axios from "axios";
 
 import stripeImp from "stripe";
 import orderModel from "../models/orderModel.js";
+import productModel from "../models/productModel.js";
 
 const placeOrder = asyncHandler(async (req, res) => {
   const userId = req.user._id;
@@ -23,6 +24,13 @@ const placeOrder = asyncHandler(async (req, res) => {
   if (orderItems && orderItems.length === 0) {
     res.status(400);
     throw new Error("No items in the order!");
+  }
+
+  // orderItems.forEach(orderItem => {
+  for (let orderItem of orderItems) {
+    const product = await productModel.findById(orderItem._id);
+    if (product) product.countInStock -= orderItem.count;
+    product.save();
   }
 
   let orderToCreate = {

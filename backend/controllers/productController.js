@@ -69,6 +69,7 @@ export const createReview = asyncHandler(async (req, res) => {
     for (const orderItem of order.orderItems) {
       if (orderItem._id == productId) {
         isProductBoughtByUser = true;
+        orderItem.isReviewed = true;
         break;
       }
     }
@@ -84,10 +85,14 @@ export const createReview = asyncHandler(async (req, res) => {
       throw new Error("Product already reviewed!");
     }
     product.reviews.unshift(review);
+    product.numReviews = product.reviews.length;
+    // console.log(product.reviews);
+    product.rating = product.reviews.reduce((a, b) => a + b.rating, 0) / product.reviews.length;
   } else {
     res.status(201);
     throw new Error("Please buy the product to review it!");
   }
   const updatedProduct = await product.save();
+  order.save();
   res.json(updatedProduct);
 });

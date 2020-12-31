@@ -9,6 +9,10 @@ import {
   GET_USER_ORDERS_REQUEST,
   GET_USER_ORDERS_FAIL,
   GET_USER_ORDERS_SUCCESS,
+  CREATE_REVIEW_FAIL,
+  CREATE_REVIEW_REQUEST,
+  CREATE_REVIEW_SUCCESS,
+  CREATE_REVIEW_RESET,
 } from "../constants/orderConstants";
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -47,6 +51,21 @@ export const userOrdersGetReducer = (state = { ordersDetails: [] }, action) => {
       return { loading: false, ordersDetails: action.payload };
     case GET_USER_ORDERS_FAIL:
       return { loading: false, ordersDetails: [], error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const reviewCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CREATE_REVIEW_REQUEST:
+      return { loading: true };
+    case CREATE_REVIEW_SUCCESS:
+      return { loading: false, success: true };
+    case CREATE_REVIEW_FAIL:
+      return { loading: false, error: action.payload };
+    case CREATE_REVIEW_RESET:
+      return {};
     default:
       return state;
   }
