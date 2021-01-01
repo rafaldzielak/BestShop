@@ -44,14 +44,14 @@ const PayAndShipScreen = ({ history }) => {
     }
     setValidated(true);
     const name = `${firstName} ${lastName}`;
-    const shippingAddress = { address, city, postalCode: zipCode };
+    const shippingAddress = { address, city, postalCode: zipCode, name };
     dispatch(
       placeOrderAction({
         name,
         shippingAddress,
         paymentMethod,
         itemsPrice,
-        totalPrice: (itemsPrice + shippingPrice).toFixed(2),
+        totalPrice: (parseFloat(itemsPrice) + parseFloat(shippingPrice)).toFixed(2),
         orderItems: cartContent,
         shippingPrice,
       })

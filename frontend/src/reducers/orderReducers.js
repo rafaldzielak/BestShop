@@ -13,6 +13,12 @@ import {
   CREATE_REVIEW_REQUEST,
   CREATE_REVIEW_SUCCESS,
   CREATE_REVIEW_RESET,
+  GET_ALL_ORDERS_FAIL,
+  GET_ALL_ORDERS_REQUEST,
+  GET_ALL_ORDERS_SUCCESS,
+  UPDATE_ORDER_FAIL,
+  UPDATE_ORDER_REQUEST,
+  UPDATE_ORDER_SUCCESS,
 } from "../constants/orderConstants";
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -33,10 +39,26 @@ export const orderCreateReducer = (state = {}, action) => {
 export const orderGetReducer = (state = {}, action) => {
   switch (action.type) {
     case GET_ORDER_REQUEST:
+    case UPDATE_ORDER_REQUEST:
       return { loading: true };
     case GET_ORDER_SUCCESS:
+    case UPDATE_ORDER_SUCCESS:
       return { loading: false, orderDetails: action.payload };
     case GET_ORDER_FAIL:
+    case UPDATE_ORDER_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const orderGetAllReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_ALL_ORDERS_REQUEST:
+      return { loading: true };
+    case GET_ALL_ORDERS_SUCCESS:
+      return { loading: false, orders: action.payload };
+    case GET_ALL_ORDERS_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

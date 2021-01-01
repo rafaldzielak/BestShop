@@ -23,11 +23,37 @@ const NavbarComponent = () => {
       <Navbar.Toggle aria-controls='basic-navbar-nav' />
       <Navbar.Collapse id='basic-navbar-nav '>
         <Nav className='ml-auto'>
+          {loggedUser && loggedUser.isAdmin && (
+            <NavDropdown
+              className='hover-orange pl-4'
+              title='Admin Settings'
+              id='basic-nav-dropdown'
+              variant='primary'>
+              <NavDropdown.Divider className='my-0' />
+              <LinkContainer to='/admin/orders'>
+                <NavDropdown.Item>
+                  <i className='fas fa-book-open'></i> Orders
+                </NavDropdown.Item>
+              </LinkContainer>
+              <NavDropdown.Divider className='my-0' />
+              <LinkContainer to='/settings'>
+                <NavDropdown.Item>
+                  <i className='fas fa-users'></i> Users
+                </NavDropdown.Item>
+              </LinkContainer>
+              <NavDropdown.Divider className='my-0' />
+              <NavDropdown.Item onClick={logoutHandler}>
+                <i className='fas fa-sign-out-alt'></i> Logout
+              </NavDropdown.Item>
+            </NavDropdown>
+          )}
+
           <LinkContainer to='/cart'>
             <Nav.Link className='hover-orange'>
               <i className='fas fa-shopping-cart'></i> Cart
             </Nav.Link>
           </LinkContainer>
+
           {loggedUser ? (
             <>
               <NavDropdown

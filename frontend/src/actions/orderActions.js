@@ -6,12 +6,18 @@ import {
   GET_ORDER_FAIL,
   GET_ORDER_REQUEST,
   GET_ORDER_SUCCESS,
+  UPDATE_ORDER_FAIL,
+  UPDATE_ORDER_REQUEST,
+  UPDATE_ORDER_SUCCESS,
   GET_USER_ORDERS_FAIL,
   GET_USER_ORDERS_REQUEST,
   GET_USER_ORDERS_SUCCESS,
   CREATE_REVIEW_FAIL,
   CREATE_REVIEW_REQUEST,
   CREATE_REVIEW_SUCCESS,
+  GET_ALL_ORDERS_FAIL,
+  GET_ALL_ORDERS_REQUEST,
+  GET_ALL_ORDERS_SUCCESS,
 } from "../constants/orderConstants.js";
 import axios from "axios";
 
@@ -49,6 +55,45 @@ export const getOrderAction = (orderId) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: GET_ORDER_FAIL,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const updateOrderAction = (orderId, fieldsToUpdate) => async (dispatch, getState) => {
+  const {
+    loginUser: { loggedUser },
+  } = getState();
+  try {
+    dispatch({ type: UPDATE_ORDER_REQUEST });
+    const config = {
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
+    };
+    const { data } = await axios.put(`/api/orders/${orderId}`, fieldsToUpdate, config);
+    dispatch({ type: UPDATE_ORDER_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_ORDER_FAIL,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const getAllOrdersAction = () => async (dispatch, getState) => {
+  const {
+    loginUser: { loggedUser },
+  } = getState();
+  try {
+    dispatch({ type: GET_ALL_ORDERS_REQUEST });
+    const config = {
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
+    };
+    const { data } = await axios.get(`/api/orders/`, config);
+    console.log(data);
+    dispatch({ type: GET_ALL_ORDERS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: GET_ALL_ORDERS_FAIL,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }

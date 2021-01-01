@@ -274,6 +274,10 @@ strong {
   width: 2.5rem;
 }
 
+.fa-check-circle {
+  /* color: #00836d; */
+}
+
 @media (max-width: 1000px) {
   .border-right {
     border-right: none !important;

@@ -9,6 +9,7 @@ import {
   orderGetReducer,
   userOrdersGetReducer,
   reviewCreateReducer,
+  orderGetAllReducer,
 } from "./reducers/orderReducers.js";
 
 const reducer = combineReducers({
@@ -21,6 +22,7 @@ const reducer = combineReducers({
   orderCreate: orderCreateReducer,
   orderGet: orderGetReducer,
   userOrdersGet: userOrdersGetReducer,
+  orderGetAll: orderGetAllReducer,
   reviewCreate: reviewCreateReducer,
 });
 

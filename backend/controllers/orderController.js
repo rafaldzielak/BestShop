@@ -74,7 +74,6 @@ const stripeCheckIfOrderIsPaid = async (order) => {
 const getOrder = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const orderId = req.params.id;
-
   const order = await OrderModel.findById(orderId);
 
   if (!order) {
@@ -82,8 +81,12 @@ const getOrder = asyncHandler(async (req, res) => {
     throw new Error("No such order!");
   }
   if (userId != String(order.user)) {
-    res.status(401);
-    throw new Error("Not authorized!");
+    const user = await UserModel.findById(userId);
+    console.log(user);
+    if (!user || !user.isAdmin) {
+      res.status(401);
+      throw new Error("Not authorized!");
+    }
   }
   if (order.paymentMethod === "Stripe" && !order.isPaid) {
     stripeCheckIfOrderIsPaid(order);
@@ -92,7 +95,7 @@ const getOrder = asyncHandler(async (req, res) => {
 });
 
 const getAllOrders = asyncHandler(async (req, res) => {
-  const orders = await OrderModel.find();
+  const orders = await OrderModel.find().sort({ createdAt: "desc" });
 
   Promise.all(
     orders.map(async (order) => {
@@ -103,6 +106,27 @@ const getAllOrders = asyncHandler(async (req, res) => {
   );
 
   res.status(201).json(orders);
+});
+
+const updateOrder = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const orderId = req.params.id;
+  const order = await OrderModel.findById(orderId);
+  if (!order) {
+    res.status(400);
+    throw new Error("No such order!");
+  }
+
+  const isDispatched = req.body.isDispatched || order.isDispatched;
+  const isDelivered = req.body.isDelivered || order.isDelivered;
+
+  const updatedOrder = await orderModel.findByIdAndUpdate(
+    orderId,
+    { isDispatched, isDelivered },
+    { new: true }
+  );
+
+  res.status(201).json(updatedOrder);
 });
 
 const createStripeOrder = async (order, email = "") => {
@@ -232,4 +256,4 @@ const payForOrderViaPaypal = asyncHandler(async (req, res) => {
   }
 });
 
-export { placeOrder, getOrder, payForOrderViaPaypal, getAllOrders };
+export { placeOrder, getOrder, payForOrderViaPaypal, getAllOrders, updateOrder };

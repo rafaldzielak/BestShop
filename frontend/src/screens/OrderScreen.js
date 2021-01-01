@@ -8,13 +8,15 @@ import { loadStripe } from "@stripe/stripe-js";
 import OrdersStatusBar from "../components/OrdersStatusBar";
 import Message from "../components/Message";
 import axios from "axios";
-import { payOrderViaPaypalAction } from "../actions/orderActions";
+import { payOrderViaPaypalAction, updateOrderAction } from "../actions/orderActions";
 import { PayPalButton } from "react-paypal-button-v2";
 import ReviewModal from "../components/ReviewModal";
 
 const OrderScreen = ({ match }) => {
   const dispatch = useDispatch();
   const orderGet = useSelector((state) => state.orderGet);
+  const loginUser = useSelector((state) => state.loginUser);
+  const { loggedUser } = loginUser;
   const { orderDetails, loading } = orderGet;
 
   const [sdkReady, setSdkReady] = useState(false);
@@ -58,16 +60,49 @@ const OrderScreen = ({ match }) => {
   useEffect(() => {
     dispatch(getOrderAction(match.params.id));
   }, [dispatch, match]);
+
   const stripePromise = loadStripe(
     "pk_test_51HxskkJe6gNNlKVJ5jshf7Hj0fX3nmmmiQzLz1fu4u7e6K6SorkOEXbzSaeeUCBGdf8QEAGbuSfT6vdQwVkqtj4500j6tBFuTm"
   );
+
   const goToPayment = async () => {
     const stripe = await stripePromise;
     const { error } = await stripe.redirectToCheckout({
       sessionId: orderDetails.stripeOrderId,
     });
-    console.log(error);
+    if (error) console.log(error);
   };
+
+  const updateOrder = async (details) => {
+    dispatch(updateOrderAction(match.params.id, details));
+  };
+
+  const showAddress = () => (
+    <>
+      <h3 className='mt-3'>Shipping Address</h3>
+      <hr />
+      <Row className='mt-3 text-left' style={{ fontSize: "1rem" }}>
+        <Col md={12}>
+          <i className='fas fa-user text-center'></i> Name: <b>{orderDetails.shippingAddress.name}</b>
+        </Col>
+        <Col md={12}>
+          <i className='fas fa-map-marker-alt text-center'></i> Address:{" "}
+          <b>{orderDetails.shippingAddress.address}</b>
+        </Col>
+        <Col md={12}>
+          <i className='fas fa-city text-center'></i> Postal Code & City:{" "}
+          <b>
+            {orderDetails.shippingAddress.postalCode}, {orderDetails.shippingAddress.city}
+          </b>
+        </Col>
+        <Col md={12}>
+          <i className='fas fa-globe-europe text-center'></i> Country:{" "}
+          <b>{orderDetails.shippingAddress.country}</b>
+        </Col>
+      </Row>
+    </>
+  );
+
   return (
     <>
       <Row className='my-3'>
@@ -138,21 +173,24 @@ const OrderScreen = ({ match }) => {
               </div>
               <Row style={{ fontSize: "1rem" }}>
                 <Col md={12} className='text-left my-0'>
-                  <i className='fas fa-fingerprint'> </i> ID: <b>{orderDetails._id}</b>
+                  <i className='fas fa-fingerprint text-center'> </i> ID: <b>{orderDetails._id}</b>
                 </Col>
                 <Col md={12} className='my-0 text-left'>
-                  <i className='far fa-clock'></i> Date:{" "}
+                  <i className='far fa-clock text-center'></i> Date:{" "}
                   <b>{orderDetails.createdAt.substring(0, 19).replace("T", " ")}</b>
                 </Col>
                 <Col md={12} className='text-left my-0'>
-                  <i className='fas fa-money-bill-wave'></i> Products Value:{" "}
+                  <i className='fas fa-money-bill-wave text-center'></i> Products Value:{" "}
                   <b>{orderDetails.itemsPrice.toFixed(2)} PLN</b>
                 </Col>
                 <Col md={12} className='text-left my-0'>
-                  <i className='fas fa-shipping-fast'></i> Shipping:{" "}
+                  <i className='fas fa-shipping-fast text-center'></i> Shipping:{" "}
                   <b>{orderDetails.shippingPrice > 0 ? `${orderDetails.shippingPrice} PLN` : "Free!"}</b>
                 </Col>
               </Row>
+              <hr />
+              {showAddress()}
+
               <hr />
               <h3 className='mt-3'>Payment</h3>
               {!orderDetails.isPaid && <h4 className='mt-3'>Amount to Pay: {orderDetails.totalPrice} PLN</h4>}
@@ -171,24 +209,41 @@ const OrderScreen = ({ match }) => {
                     <Message variant='info'>In progress</Message>
                   )}
                 </>
-              ) : orderDetails.paymentMethod === "Stripe" ? (
-                <>
-                  <Message>Order Not Paid</Message>
-                  <hr />
-                  <Button block size='lg' onClick={goToPayment}>
-                    Pay For Order
-                  </Button>
-                </>
-              ) : !(sdkReady && !paymentLoading) ? (
-                <Loader />
               ) : (
-                <PayPalButton
-                  currency='PLN'
-                  amount={orderDetails.totalPrice}
-                  onApprove={() => setPaymentLoading(true)}
-                  onSuccess={PayPalSuccessPay}
-                />
+                orderDetails.user == loggedUser._id &&
+                (orderDetails.paymentMethod === "Stripe" ? (
+                  <>
+                    <Message>Order Not Paid</Message>
+                    <hr />
+                    <Button block size='lg' onClick={goToPayment}>
+                      Pay For Order
+                    </Button>
+                  </>
+                ) : !(sdkReady && !paymentLoading) ? (
+                  <Loader />
+                ) : (
+                  <PayPalButton
+                    currency='PLN'
+                    amount={orderDetails.totalPrice}
+                    onApprove={() => setPaymentLoading(true)}
+                    onSuccess={PayPalSuccessPay}
+                  />
+                ))
               )}
+              {loggedUser &&
+                loggedUser.isAdmin &&
+                orderDetails.isPaid &&
+                (!orderDetails.isDispatched ? (
+                  <Button block size='lg' onClick={() => updateOrder({ isDispatched: true })}>
+                    Mark as Dispatched
+                  </Button>
+                ) : (
+                  !orderDetails.isDelivered && (
+                    <Button block size='lg' onClick={() => updateOrder({ isDelivered: true })}>
+                      Mark as Delivered
+                    </Button>
+                  )
+                ))}
             </>
           )}
         </Col>
