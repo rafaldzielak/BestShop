@@ -30,9 +30,10 @@ const PayAndShipScreen = ({ history }) => {
     }
   }, [id, history, dispatch]);
 
-  const itemsPrice = useMemo(() => cartContent.reduce((prev, curr) => prev + curr.price * curr.count, 0), [
-    cartContent,
-  ]);
+  const itemsPrice = useMemo(
+    () => cartContent.reduce((prev, curr) => prev + curr.price * curr.count, 0).toFixed(2),
+    [cartContent]
+  );
   const shippingPrice = useMemo(() => (itemsPrice > freeShippingValue ? 0 : 9.99), [itemsPrice]);
 
   const handleSubmit = (event) => {

@@ -61,6 +61,16 @@ const placeOrder = asyncHandler(async (req, res) => {
   res.status(201).json({ ...orderToReturn._doc });
 });
 
+const stripeCheckIfOrderIsPaid = async (order) => {
+  const stripe = stripeImp(process.env.STRIPE_SECRET);
+  const session = await stripe.checkout.sessions.retrieve(order.stripeOrderId);
+  const paymentStatus = session.payment_status;
+  if (paymentStatus === "paid") {
+    order.isPaid = true;
+    order.save();
+  }
+};
+
 const getOrder = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const orderId = req.params.id;
@@ -76,16 +86,23 @@ const getOrder = asyncHandler(async (req, res) => {
     throw new Error("Not authorized!");
   }
   if (order.paymentMethod === "Stripe" && !order.isPaid) {
-    const stripe = stripeImp(process.env.STRIPE_SECRET);
-    const session = await stripe.checkout.sessions.retrieve(order.stripeOrderId);
-    const paymentStatus = session.payment_status;
-    if (paymentStatus === "paid") {
-      order.isPaid = true;
-      order.save();
-    }
+    stripeCheckIfOrderIsPaid(order);
   }
-
   res.status(201).json(order);
+});
+
+const getAllOrders = asyncHandler(async (req, res) => {
+  const orders = await OrderModel.find();
+
+  Promise.all(
+    orders.map(async (order) => {
+      if (order.paymentMethod === "Stripe" && !order.isPaid) {
+        stripeCheckIfOrderIsPaid(order);
+      }
+    })
+  );
+
+  res.status(201).json(orders);
 });
 
 const createStripeOrder = async (order, email = "") => {
@@ -192,19 +209,19 @@ const payForOrderViaPaypal = asyncHandler(async (req, res) => {
         `https://api.sandbox.paypal.com/v2/checkout/orders/${paypalOrderId}`,
         config
       );
-      console.log(order.totalPrice == data.purchase_units[0].amount.value);
-      console.log(data.status);
-      console.log(data.create_time);
-      console.log(create_time);
-      console.log(data.purchase_units[0].amount.currency_code);
-      console.log(data.purchase_units[0].amount.value);
+      // console.log(order.totalPrice == data.purchase_units[0].amount.value);
+      // console.log(data.status);
+      // console.log(data.create_time);
+      // console.log(create_time);
+      // console.log(data.purchase_units[0].amount.currency_code);
+      // console.log(data.purchase_units[0].amount.value);
       if (
         data.status === "COMPLETED" &&
         data.purchase_units[0].amount.currency_code == "PLN" &&
         order.totalPrice == data.purchase_units[0].amount.value &&
         create_time == data.create_time
       ) {
-        console.log("SUCCESS");
+        // console.log("SUCCESS");
         order.isPaid = true;
         const updatedOrder = await order.save();
         res.json(updatedOrder);
@@ -215,4 +232,4 @@ const payForOrderViaPaypal = asyncHandler(async (req, res) => {
   }
 });
 
-export { placeOrder, getOrder, payForOrderViaPaypal };
+export { placeOrder, getOrder, payForOrderViaPaypal, getAllOrders };
