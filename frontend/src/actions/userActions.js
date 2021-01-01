@@ -9,6 +9,9 @@ import {
   UPDATE_PROFILE_FAIL,
   UPDATE_PROFILE_REQUEST,
   UPDATE_PROFILE_SUCCESS,
+  GET_ALL_USERS_FAIL,
+  GET_ALL_USERS_REQUEST,
+  GET_ALL_USERS_SUCCESS,
 } from "../constants/userConstants";
 import axios from "axios";
 
@@ -59,6 +62,25 @@ export const updateProfileAction = (name = "", password = "") => async (dispatch
   } catch (error) {
     dispatch({
       type: UPDATE_PROFILE_FAIL,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const getAllUsersAction = () => async (dispatch, getState) => {
+  const {
+    loginUser: { loggedUser },
+  } = getState();
+  try {
+    dispatch({ type: GET_ALL_USERS_REQUEST });
+    const config = {
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
+    };
+    const { data } = await axios.get("/api/auth/users", config);
+    dispatch({ type: GET_ALL_USERS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: GET_ALL_USERS_FAIL,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }

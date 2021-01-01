@@ -65,7 +65,7 @@ const ReviewModal = (props) => {
     return () => {
       dispatch({ type: CREATE_REVIEW_RESET });
     };
-  }, []);
+  }, [dispatch]);
 
   const fullStar = <i style={{ fontSize: "2rem" }} className='fas fa-star p-1 py-3'></i>;
   const emptyStar = <i style={{ fontSize: "2rem" }} className='far fa-star p-1 py-3'></i>;

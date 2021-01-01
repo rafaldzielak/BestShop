@@ -53,7 +53,7 @@ const OrderScreen = ({ match }) => {
   useEffect(() => {
     if (!loading) setPaymentLoading(false);
     if (orderDetails) {
-      setModalShow(Array.from({ length: orderDetails.orderItems.length }, (v, i) => false));
+      setModalShow(Array.from({ length: orderDetails.orderItems.length }, () => false));
     }
   }, [loading, orderDetails]);
 
@@ -117,7 +117,7 @@ const OrderScreen = ({ match }) => {
                 <ReviewModal
                   product={orderItem}
                   show={modalShow[index]}
-                  onHide={() => setModalShow((prev) => prev.map((value, i) => false))}
+                  onHide={() => setModalShow((prev) => prev.map(() => false))}
                 />
               </Col>
             )}
@@ -195,14 +195,16 @@ const OrderScreen = ({ match }) => {
           )}
         </>
       ) : (
-        orderDetails.user == loggedUser._id &&
+        orderDetails.user === loggedUser._id &&
         (orderDetails.paymentMethod === "Stripe" ? (
           <>
             <Message>Order Not Paid</Message>
             <hr />
-            <Button block size='lg' onClick={goToPayment}>
-              Pay For Order
-            </Button>
+            {loggedUser && !loggedUser.isAdmin && (
+              <Button block size='lg' onClick={goToPayment}>
+                Pay For Order
+              </Button>
+            )}
           </>
         ) : !(sdkReady && !paymentLoading) ? (
           <Loader />
@@ -220,7 +222,7 @@ const OrderScreen = ({ match }) => {
   const showAdminDetails = () => (
     <>
       <hr />
-      <h3 className='mt-3'>Admin</h3>
+      <h3 className='mt-3'>Admin Actions</h3>
       <hr />
       {!orderDetails.isDispatched ? (
         <Button block size='lg' onClick={() => updateOrder({ isDispatched: true })}>

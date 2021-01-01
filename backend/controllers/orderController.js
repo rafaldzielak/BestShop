@@ -95,8 +95,14 @@ const getOrder = asyncHandler(async (req, res) => {
 });
 
 const getAllOrders = asyncHandler(async (req, res) => {
-  const orders = await OrderModel.find().sort({ createdAt: "desc" });
+  const query = req.query;
+  const searchQuery = { deleted: false || null };
+  if (query.notpaid === "true") searchQuery.isPaid = false;
+  if (query.notsent === "true") searchQuery.isDispatched = false;
+  if (query.notdelivered === "true") searchQuery.isDelivered = false;
+  if (query.user) searchQuery.user = query.user;
 
+  const orders = await OrderModel.find(searchQuery).populate("user", "email").sort({ createdAt: "desc" });
   Promise.all(
     orders.map(async (order) => {
       if (order.paymentMethod === "Stripe" && !order.isPaid) {
@@ -119,10 +125,12 @@ const updateOrder = asyncHandler(async (req, res) => {
 
   const isDispatched = req.body.isDispatched || order.isDispatched;
   const isDelivered = req.body.isDelivered || order.isDelivered;
+  const deleted = req.body.isDeleted || order.deleted;
+  console.log(deleted);
 
   const updatedOrder = await orderModel.findByIdAndUpdate(
     orderId,
-    { isDispatched, isDelivered },
+    { isDispatched, isDelivered, deleted },
     { new: true }
   );
 

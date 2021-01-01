@@ -274,8 +274,12 @@ strong {
   width: 2.5rem;
 }
 
-.fa-check-circle {
-  /* color: #00836d; */
+.fas.fa-trash {
+  transition: all 0.15s ease-in;
+}
+
+.fas.fa-trash:hover {
+  color: #e74c3c;
 }
 
 @media (max-width: 1000px) {

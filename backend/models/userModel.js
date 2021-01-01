@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema(
   {
     name: { type: String, required: true, maxLength: 25 },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true, minLength: 6 },
+    password: { type: String, required: true, minLength: 6, select: false },
     isAdmin: { type: Boolean, required: true, default: false },
   },
   { timestamps: true }
@@ -20,6 +20,7 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
+  console.log(this.password);
   return await bcrypt.compare(enteredPassword, this.password);
 };
 

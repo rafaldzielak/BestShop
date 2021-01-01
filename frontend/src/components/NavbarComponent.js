@@ -25,7 +25,7 @@ const NavbarComponent = () => {
         <Nav className='ml-auto'>
           {loggedUser && loggedUser.isAdmin && (
             <NavDropdown
-              className='hover-orange pl-4'
+              className='hover-orange pr-4'
               title='Admin Settings'
               id='basic-nav-dropdown'
               variant='primary'>
@@ -36,7 +36,7 @@ const NavbarComponent = () => {
                 </NavDropdown.Item>
               </LinkContainer>
               <NavDropdown.Divider className='my-0' />
-              <LinkContainer to='/settings'>
+              <LinkContainer to='/admin/users'>
                 <NavDropdown.Item>
                   <i className='fas fa-users'></i> Users
                 </NavDropdown.Item>
@@ -67,12 +67,12 @@ const NavbarComponent = () => {
                     <i className='fas fa-user-alt'></i> Profile & Orders
                   </NavDropdown.Item>
                 </LinkContainer>
-                <NavDropdown.Divider className='my-0' />
+                {/* <NavDropdown.Divider className='my-0' />
                 <LinkContainer to='/settings'>
                   <NavDropdown.Item>
                     <i className='fas fa-cog'></i> Settings
                   </NavDropdown.Item>
-                </LinkContainer>
+                </LinkContainer> */}
                 <NavDropdown.Divider className='my-0' />
                 <NavDropdown.Item onClick={logoutHandler}>
                   <i className='fas fa-sign-out-alt'></i> Logout

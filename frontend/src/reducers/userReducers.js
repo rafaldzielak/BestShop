@@ -9,6 +9,9 @@ import {
   UPDATE_PROFILE_FAIL,
   UPDATE_PROFILE_REQUEST,
   UPDATE_PROFILE_SUCCESS,
+  GET_ALL_USERS_FAIL,
+  GET_ALL_USERS_REQUEST,
+  GET_ALL_USERS_SUCCESS,
 } from "../constants/userConstants";
 
 export const loginUserReducer = (state = { loggedUser: null }, action) => {
@@ -47,6 +50,19 @@ export const updateProfileReducer = (state = {}, action) => {
       return { loading: false, success: true };
     case UPDATE_PROFILE_FAIL:
       return { loading: false, success: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const getAllUsersReducer = (state = { users: [] }, action) => {
+  switch (action.type) {
+    case GET_ALL_USERS_REQUEST:
+      return { loading: true };
+    case GET_ALL_USERS_SUCCESS:
+      return { loading: false, users: action.payload };
+    case GET_ALL_USERS_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

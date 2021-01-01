@@ -38,6 +38,7 @@ const orderSchema = mongoose.Schema(
     isDispatched: { type: Boolean, required: true, default: false },
     stripeOrderId: { type: String },
     stripePaymentIntent: { type: String },
+    deleted: { type: Boolean, required: true, default: false, select: false },
   },
   { timestamps: true }
 );

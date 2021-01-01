@@ -79,7 +79,12 @@ export const updateOrderAction = (orderId, fieldsToUpdate) => async (dispatch, g
   }
 };
 
-export const getAllOrdersAction = () => async (dispatch, getState) => {
+export const getAllOrdersAction = (
+  userId = "",
+  notPaidOnly = false,
+  notSentOnly = false,
+  notDeliveredOnly = false
+) => async (dispatch, getState) => {
   const {
     loginUser: { loggedUser },
   } = getState();
@@ -88,8 +93,10 @@ export const getAllOrdersAction = () => async (dispatch, getState) => {
     const config = {
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
     };
-    const { data } = await axios.get(`/api/orders/`, config);
-    console.log(data);
+    const { data } = await axios.get(
+      `/api/orders?user=${userId}&notpaid=${notPaidOnly}&notsent=${notSentOnly}&notdelivered=${notDeliveredOnly}`,
+      config
+    );
     dispatch({ type: GET_ALL_ORDERS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

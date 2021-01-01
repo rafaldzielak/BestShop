@@ -6,7 +6,7 @@ import stripeImp from "stripe";
 
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  const user = await userModel.findOne({ email });
+  const user = await userModel.findOne({ email }).select("+password");
 
   if (user && (await user.matchPassword(password))) {
     const token = generateToken(user._id);
@@ -85,4 +85,9 @@ const getUserOrders = asyncHandler(async (req, res) => {
   res.status(201).json(orders);
 });
 
-export { authUser, registerUser, updateProfile, getUserOrders };
+const getAllUsers = asyncHandler(async (req, res) => {
+  let users = await userModel.find().sort({ createdAt: -1 });
+  res.status(201).json(users);
+});
+
+export { authUser, registerUser, updateProfile, getUserOrders, getAllUsers };

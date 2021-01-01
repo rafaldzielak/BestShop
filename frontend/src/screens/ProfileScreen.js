@@ -9,7 +9,6 @@ import { getUserOrdersAction } from "../actions/orderActions";
 import OrdersStatusBar from "../components/OrdersStatusBar";
 
 const ProfileScreen = ({ history }) => {
-  // const name = useState()
   const dispatch = useDispatch();
   const loginUser = useSelector((state) => state.loginUser);
   const { loggedUser, loading, error } = loginUser;
@@ -25,10 +24,9 @@ const ProfileScreen = ({ history }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [passwordError, setPasswordError] = useState("");
-  // const { name, email } = loggedUser;
 
   useEffect(() => {
-    if (!loggedUser) history.push("/login?redirect=dupa");
+    if (!loggedUser) history.push("/login");
     else setName(loggedUser.name);
   }, [loggedUser, history]);
 

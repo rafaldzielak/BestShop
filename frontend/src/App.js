@@ -8,6 +8,7 @@ import ProfileScreen from "./screens/ProfileScreen";
 import PayAndShipScreen from "./screens/PayAndShipScreen";
 import OrderScreen from "./screens/OrderScreen";
 import AllOrdersScreen from "./screensAdmin/AllOrdersScreen";
+import AllUsersScreen from "./screensAdmin/AllUsersScreen";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import NavbarComponent from "./components/NavbarComponent";
 
@@ -26,6 +27,7 @@ const App = () => {
         <Route exact path='/checkout' component={PayAndShipScreen}></Route>
         <Route exact path='/order/:id' component={OrderScreen}></Route>
         <Route exact path='/admin/orders' component={AllOrdersScreen}></Route>
+        <Route exact path='/admin/users' component={AllUsersScreen}></Route>
       </Router>
     </div>
   );
