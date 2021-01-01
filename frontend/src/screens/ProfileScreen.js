@@ -42,7 +42,7 @@ const ProfileScreen = ({ history }) => {
     else dispatch(updateProfileAction(name, password));
   };
 
-  const showProfile = (
+  const showProfile = () => (
     <>
       <h1 className='text-center'>Edit Profile</h1>
       <hr />
@@ -81,6 +81,49 @@ const ProfileScreen = ({ history }) => {
     </>
   );
 
+  const showOrders = () => (
+    <Col className='mx-4'>
+      <h1 className='text-center'>Your Orders</h1>
+      <hr />
+      {loadingOrders && <Loader marginTop='5' />}
+      {ordersDetails.length > 0 && (
+        <ListGroup variant='flush'>
+          {ordersDetails.map((order) => (
+            <Link key={order._id} to={`/order/${order._id}`}>
+              <ListGroup.Item className='mb-0  pb-2 orange-border-hover'>
+                <Row style={{ height: "12rem" }}>
+                  <Col md='6' className='text-left my-0'>
+                    <i className='fas fa-fingerprint'> </i> ID: <b>{order._id}</b>
+                  </Col>
+                  <Col md='6' className='my-0'>
+                    <i className='far fa-clock'></i> Date:{" "}
+                    <b>{order.createdAt.substring(0, 19).replace("T", " ")}</b>
+                  </Col>
+                  <Col md='6' className='text-left my-0'>
+                    <i className='fas fa-money-bill-wave'></i> Value: <b>{order.totalPrice} PLN</b>
+                  </Col>
+                  <Col md='6' className='text-left my-0'>
+                    <OrdersStatusBar order={order} size='small'></OrdersStatusBar>
+                  </Col>
+                  <Row style={{ height: "8rem" }} className=' mx-4 py-0  d-flex align-items-center'>
+                    {order.orderItems.map(
+                      (orderItem, index) =>
+                        index <= 5 && (
+                          <Col key={orderItem._id} xs='2' className='py-0 m-0 px-1'>
+                            <Image className='mb-3' fluid src={orderItem.image}></Image>
+                          </Col>
+                        )
+                    )}
+                  </Row>
+                </Row>
+              </ListGroup.Item>
+            </Link>
+          ))}
+        </ListGroup>
+      )}
+    </Col>
+  );
+
   return (
     <>
       {(loading || updateLoading) && <Loader />}
@@ -92,48 +135,9 @@ const ProfileScreen = ({ history }) => {
       {loggedUser && (
         <Row className='py-5 px-4'>
           <Col lg='5' md='12' className='border-right pr-5 mx-4'>
-            {showProfile}
+            {showProfile()}
           </Col>
-          <Col className='mx-4'>
-            <h1 className='text-center'>Your Orders</h1>
-            <hr />
-            {loadingOrders && <Loader marginTop='5' />}
-            {ordersDetails.length > 0 && (
-              <ListGroup variant='flush'>
-                {ordersDetails.map((order) => (
-                  <Link key={order._id} to={`/order/${order._id}`}>
-                    <ListGroup.Item className='mb-0  pb-2 orange-border-hover'>
-                      <Row style={{ height: "12rem" }}>
-                        <Col md='6' className='text-left my-0'>
-                          <i className='fas fa-fingerprint'> </i> ID: <b>{order._id}</b>
-                        </Col>
-                        <Col md='6' className='my-0'>
-                          <i className='far fa-clock'></i> Date:{" "}
-                          <b>{order.createdAt.substring(0, 19).replace("T", " ")}</b>
-                        </Col>
-                        <Col md='6' className='text-left my-0'>
-                          <i className='fas fa-money-bill-wave'></i> Value: <b>{order.totalPrice} PLN</b>
-                        </Col>
-                        <Col md='6' className='text-left my-0'>
-                          <OrdersStatusBar order={order} size='small'></OrdersStatusBar>
-                        </Col>
-                        <Row style={{ height: "8rem" }} className=' mx-4 py-0  d-flex align-items-center'>
-                          {order.orderItems.map(
-                            (orderItem, index) =>
-                              index <= 5 && (
-                                <Col key={orderItem._id} xs='2' className='py-0 m-0 px-1'>
-                                  <Image className='mb-3' fluid src={orderItem.image}></Image>
-                                </Col>
-                              )
-                          )}
-                        </Row>
-                      </Row>
-                    </ListGroup.Item>
-                  </Link>
-                ))}
-              </ListGroup>
-            )}
-          </Col>
+          {showOrders()}
         </Row>
       )}
     </>

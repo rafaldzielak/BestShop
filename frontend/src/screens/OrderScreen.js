@@ -77,6 +77,77 @@ const OrderScreen = ({ match }) => {
     dispatch(updateOrderAction(match.params.id, details));
   };
 
+  const showOrderItems = () =>
+    orderDetails.orderItems.map((orderItem, index) => (
+      <ListGroup.Item key={orderItem._id}>
+        <Row className='d-flex align-items-center'>
+          <Col lg={3} xs={12} className='py-0 pr-4 d-flex justify-content-center'>
+            <Link to={`/product/${orderItem._id}`}>
+              <Image
+                fluid
+                rounded
+                src={orderItem.image}
+                style={{ height: "10rem", objectFit: "scale-down" }}></Image>
+            </Link>
+          </Col>
+          <Col lg={5} xs={7} className='pl-0 pr-0 text-left' style={{ fontSize: "1.1rem" }}>
+            <Link className='py-4' to={`/product/${orderItem._id}`}>
+              {orderItem.name}
+            </Link>
+          </Col>
+          <Col lg={4} xs={5} className='pr-0 text-right'>
+            <Col sm={12}>
+              <h5 style={{ fontSize: "1.1rem" }}>
+                {orderItem.price} × {orderItem.count} ={" "}
+                {((orderItem.price * orderItem.count * 100) / 100).toFixed(2)} PLN
+              </h5>
+            </Col>
+            {orderDetails.isDelivered && (
+              <Col sm={12}>
+                {orderItem.isReviewed ? (
+                  <Button disabled> Product Already Reviewed</Button>
+                ) : (
+                  <Button
+                    onClick={() =>
+                      setModalShow((prev) => prev.map((value, i) => (index === i ? true : false)))
+                    }>
+                    Review the Product
+                  </Button>
+                )}
+                <ReviewModal
+                  product={orderItem}
+                  show={modalShow[index]}
+                  onHide={() => setModalShow((prev) => prev.map((value, i) => false))}
+                />
+              </Col>
+            )}
+          </Col>
+        </Row>
+      </ListGroup.Item>
+    ));
+  const showOrderDetails = () => (
+    <>
+      <hr />
+      <Row style={{ fontSize: "1rem" }}>
+        <Col md={12} className='text-left my-0'>
+          <i className='fas fa-fingerprint text-center'> </i> ID: <b>{orderDetails._id}</b>
+        </Col>
+        <Col md={12} className='my-0 text-left'>
+          <i className='far fa-clock text-center'></i> Date:{" "}
+          <b>{orderDetails.createdAt.substring(0, 19).replace("T", " ")}</b>
+        </Col>
+        <Col md={12} className='text-left my-0'>
+          <i className='fas fa-money-bill-wave text-center'></i> Products Value:{" "}
+          <b>{orderDetails.itemsPrice.toFixed(2)} PLN</b>
+        </Col>
+        <Col md={12} className='text-left my-0'>
+          <i className='fas fa-shipping-fast text-center'></i> Shipping:{" "}
+          <b>{orderDetails.shippingPrice > 0 ? `${orderDetails.shippingPrice} PLN` : "Free!"}</b>
+        </Col>
+      </Row>
+    </>
+  );
+
   const showAddress = () => (
     <>
       <h3 className='mt-3'>Shipping Address</h3>
@@ -103,6 +174,68 @@ const OrderScreen = ({ match }) => {
     </>
   );
 
+  const showPaymentDetails = () => (
+    <>
+      <hr />
+      <h3 className='mt-3'>Payment</h3>
+      {!orderDetails.isPaid && <h4 className='mt-3'>Amount to Pay: {orderDetails.totalPrice} PLN</h4>}
+      <hr />
+      {orderDetails.isPaid ? (
+        <>
+          <Message variant='success'>Order Paid</Message>
+          <hr />
+          <h3 className='mt-3'>Shipment</h3>
+          <hr />
+          {orderDetails.isDelivered ? (
+            <Message variant='success'>Order Delivered</Message>
+          ) : orderDetails.isDispatched ? (
+            <Message variant='info'>Order Dispatched</Message>
+          ) : (
+            <Message variant='info'>In progress</Message>
+          )}
+        </>
+      ) : (
+        orderDetails.user == loggedUser._id &&
+        (orderDetails.paymentMethod === "Stripe" ? (
+          <>
+            <Message>Order Not Paid</Message>
+            <hr />
+            <Button block size='lg' onClick={goToPayment}>
+              Pay For Order
+            </Button>
+          </>
+        ) : !(sdkReady && !paymentLoading) ? (
+          <Loader />
+        ) : (
+          <PayPalButton
+            currency='PLN'
+            amount={orderDetails.totalPrice}
+            onApprove={() => setPaymentLoading(true)}
+            onSuccess={PayPalSuccessPay}
+          />
+        ))
+      )}
+    </>
+  );
+  const showAdminDetails = () => (
+    <>
+      <hr />
+      <h3 className='mt-3'>Admin</h3>
+      <hr />
+      {!orderDetails.isDispatched ? (
+        <Button block size='lg' onClick={() => updateOrder({ isDispatched: true })}>
+          Mark as Dispatched
+        </Button>
+      ) : (
+        !orderDetails.isDelivered && (
+          <Button block size='lg' onClick={() => updateOrder({ isDelivered: true })}>
+            Mark as Delivered
+          </Button>
+        )
+      )}
+    </>
+  );
+
   return (
     <>
       <Row className='my-3'>
@@ -111,139 +244,22 @@ const OrderScreen = ({ match }) => {
           <hr />
           {loading && <Loader marginTop={5} />}
           <ListGroup variant='flush'>
-            {orderDetails &&
-              orderDetails.orderItems.map((orderItem, index) => (
-                <ListGroup.Item key={orderItem._id}>
-                  <Row className='d-flex align-items-center'>
-                    <Col lg={3} xs={12} className='py-0 pr-4 d-flex justify-content-center'>
-                      <Link to={`/product/${orderItem._id}`}>
-                        <Image
-                          fluid
-                          rounded
-                          src={orderItem.image}
-                          style={{ height: "10rem", objectFit: "scale-down" }}></Image>
-                      </Link>
-                    </Col>
-                    <Col lg={5} xs={7} className='pl-0 pr-0 text-left' style={{ fontSize: "1.1rem" }}>
-                      <Link className='py-4' to={`/product/${orderItem._id}`}>
-                        {orderItem.name}
-                      </Link>
-                    </Col>
-                    <Col lg={4} xs={5} className='pr-0 text-right'>
-                      <Col sm={12}>
-                        <h5 style={{ fontSize: "1.1rem" }}>
-                          {orderItem.price} × {orderItem.count} ={" "}
-                          {((orderItem.price * orderItem.count * 100) / 100).toFixed(2)} PLN
-                        </h5>
-                      </Col>
-                      {orderDetails.isDelivered && (
-                        <Col sm={12}>
-                          {orderItem.isReviewed ? (
-                            <Button disabled> Product Already Reviewed</Button>
-                          ) : (
-                            <Button
-                              onClick={() =>
-                                setModalShow((prev) => prev.map((value, i) => (index === i ? true : false)))
-                              }>
-                              Review the Product
-                            </Button>
-                          )}
-                          <ReviewModal
-                            product={orderItem}
-                            show={modalShow[index]}
-                            onHide={() => setModalShow((prev) => prev.map((value, i) => false))}
-                          />
-                        </Col>
-                      )}
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-              ))}
+            {orderDetails && showOrderItems()}
             <hr />
           </ListGroup>
         </Col>
         <Col md={4} className='text-center'>
           <h2>Progress</h2>
           <hr />
-
           {orderDetails && (
             <>
               <div className='my-4'>
                 <OrdersStatusBar order={orderDetails} size='big'></OrdersStatusBar>
               </div>
-              <Row style={{ fontSize: "1rem" }}>
-                <Col md={12} className='text-left my-0'>
-                  <i className='fas fa-fingerprint text-center'> </i> ID: <b>{orderDetails._id}</b>
-                </Col>
-                <Col md={12} className='my-0 text-left'>
-                  <i className='far fa-clock text-center'></i> Date:{" "}
-                  <b>{orderDetails.createdAt.substring(0, 19).replace("T", " ")}</b>
-                </Col>
-                <Col md={12} className='text-left my-0'>
-                  <i className='fas fa-money-bill-wave text-center'></i> Products Value:{" "}
-                  <b>{orderDetails.itemsPrice.toFixed(2)} PLN</b>
-                </Col>
-                <Col md={12} className='text-left my-0'>
-                  <i className='fas fa-shipping-fast text-center'></i> Shipping:{" "}
-                  <b>{orderDetails.shippingPrice > 0 ? `${orderDetails.shippingPrice} PLN` : "Free!"}</b>
-                </Col>
-              </Row>
-              <hr />
+              {showOrderDetails()}
               {showAddress()}
-
-              <hr />
-              <h3 className='mt-3'>Payment</h3>
-              {!orderDetails.isPaid && <h4 className='mt-3'>Amount to Pay: {orderDetails.totalPrice} PLN</h4>}
-              <hr />
-              {orderDetails.isPaid ? (
-                <>
-                  <Message variant='success'>Order Paid</Message>
-                  <hr />
-                  <h3 className='mt-3'>Shipment</h3>
-                  <hr />
-                  {orderDetails.isDelivered ? (
-                    <Message variant='success'>Order Delivered</Message>
-                  ) : orderDetails.isDispatched ? (
-                    <Message variant='info'>Order Dispatched</Message>
-                  ) : (
-                    <Message variant='info'>In progress</Message>
-                  )}
-                </>
-              ) : (
-                orderDetails.user == loggedUser._id &&
-                (orderDetails.paymentMethod === "Stripe" ? (
-                  <>
-                    <Message>Order Not Paid</Message>
-                    <hr />
-                    <Button block size='lg' onClick={goToPayment}>
-                      Pay For Order
-                    </Button>
-                  </>
-                ) : !(sdkReady && !paymentLoading) ? (
-                  <Loader />
-                ) : (
-                  <PayPalButton
-                    currency='PLN'
-                    amount={orderDetails.totalPrice}
-                    onApprove={() => setPaymentLoading(true)}
-                    onSuccess={PayPalSuccessPay}
-                  />
-                ))
-              )}
-              {loggedUser &&
-                loggedUser.isAdmin &&
-                orderDetails.isPaid &&
-                (!orderDetails.isDispatched ? (
-                  <Button block size='lg' onClick={() => updateOrder({ isDispatched: true })}>
-                    Mark as Dispatched
-                  </Button>
-                ) : (
-                  !orderDetails.isDelivered && (
-                    <Button block size='lg' onClick={() => updateOrder({ isDelivered: true })}>
-                      Mark as Delivered
-                    </Button>
-                  )
-                ))}
+              {showPaymentDetails()}
+              {loggedUser && loggedUser.isAdmin && orderDetails.isPaid && showAdminDetails()}
             </>
           )}
         </Col>
