@@ -67,16 +67,17 @@ export const updateProfileAction = (name = "", password = "") => async (dispatch
   }
 };
 
-export const getAllUsersAction = () => async (dispatch, getState) => {
+export const getAllUsersAction = (keyword = "") => async (dispatch, getState) => {
   const {
     loginUser: { loggedUser },
   } = getState();
+  const options = { keyword };
   try {
     dispatch({ type: GET_ALL_USERS_REQUEST });
     const config = {
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
     };
-    const { data } = await axios.get("/api/auth/users", config);
+    const { data } = await axios.get(`/api/auth/users?keyword=${keyword}`, config);
     dispatch({ type: GET_ALL_USERS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

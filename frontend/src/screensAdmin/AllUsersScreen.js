@@ -5,11 +5,14 @@ import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import SearchComponent from "../components/SearchComponent";
 
 const AllUsersScreen = () => {
   // let user = new URLSearchParams(window.location.search).get("user") || "";
 
   const [user, setUser] = useState(new URLSearchParams(window.location.search).get("user") || "");
+  const [keyword, setKeyword] = useState("");
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllUsersAction());
@@ -19,8 +22,20 @@ const AllUsersScreen = () => {
 
   const successTick = <i style={{ fontSize: "1.2rem" }} className='text-success fas fa-check-circle'></i>;
   const failureCross = <i style={{ fontSize: "1.2rem" }} className='text-danger fas fa-times-circle'></i>;
+
+  const searchHandler = (e) => {
+    e.preventDefault();
+    dispatch(getAllUsersAction(keyword));
+  };
+
   return (
     <>
+      <SearchComponent
+        keyword={keyword}
+        setKeyword={setKeyword}
+        placeholder={"Search for Users by Email"}
+        searchHandler={searchHandler}
+      />
       <h3 className='text-center'>All Users</h3>
       {loading && <Loader marginTop={8} />}
       {error && <Message>{error}</Message>}

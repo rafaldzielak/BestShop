@@ -5,6 +5,7 @@ import { Card, DropdownButton, Row, Col, Dropdown, Form, FormControl, Button } f
 import { Link, useHistory, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
 import { getProducts } from "../actions/productActions";
+import SearchComponent from "../components/SearchComponent";
 
 const ProductGridScreen = () => {
   const { keyword: key } = useParams();
@@ -46,24 +47,11 @@ const ProductGridScreen = () => {
   const showSearchAndFilter = () => (
     <Row className='flex-sort mx-0'>
       <Col lg={10} xs={9} sm={8}>
-        <Form inline onSubmit={searchHandler} className='my-2 justify-content-center'>
-          <Col xs={9} sm={10} xl={11} style={{ margin: "0", padding: "0" }}>
-            <FormControl
-              size='lg'
-              style={{ width: "100%" }}
-              type='text'
-              placeholder='Search For Products'
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
-              className='mr-3'
-            />
-          </Col>
-          <Col xs={3} sm={2} xl={1}>
-            <Button type='submit' variant='primary' size='lg'>
-              Search
-            </Button>
-          </Col>
-        </Form>
+        <SearchComponent
+          keyword={keyword}
+          setKeyword={setKeyword}
+          placeholder='Search for Products'
+          searchHandler={searchHandler}></SearchComponent>
       </Col>
       <Col lg={1} sm={2} xs={0} className='d-none d-sm-block'>
         <i

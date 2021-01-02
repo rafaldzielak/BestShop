@@ -86,7 +86,8 @@ const getUserOrders = asyncHandler(async (req, res) => {
 });
 
 const getAllUsers = asyncHandler(async (req, res) => {
-  let users = await userModel.find().sort({ createdAt: -1 });
+  const { keyword } = req.query;
+  let users = await userModel.find({ email: { $regex: keyword, $options: "i" } }).sort({ createdAt: -1 });
   res.status(201).json(users);
 });
 
