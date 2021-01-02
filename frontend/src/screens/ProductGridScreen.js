@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import Loader from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, DropdownButton, Row, Col, Dropdown, Form, FormControl, Button } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
 import { getProducts } from "../actions/productActions";
 
 const ProductGridScreen = () => {
+  const { keyword: key } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState(key || "");
 
   const [sort, setSort] = useState("");
 
@@ -19,9 +20,13 @@ const ProductGridScreen = () => {
   const [sortedProducts, setSortedProducts] = useState(products);
   const [colSize, setColSize] = useState(3);
 
+  const getProds = () => {
+    dispatch(getProducts(keyword, sort));
+  };
+
   useEffect(() => {
-    if (!keyword) dispatch(getProducts(keyword, sort));
-  }, [dispatch, keyword, sort]);
+    getProds();
+  }, [dispatch, sort]);
 
   useEffect(() => {
     setSortedProducts(products);
@@ -34,8 +39,8 @@ const ProductGridScreen = () => {
 
   const searchHandler = (e) => {
     e.preventDefault();
-    dispatch(getProducts(keyword));
-    history.push(`/search/${keyword}`);
+    getProds();
+    keyword ? history.push(`/search/${keyword}`) : history.push("/");
   };
 
   const showSearchAndFilter = () => (
@@ -48,7 +53,6 @@ const ProductGridScreen = () => {
               style={{ width: "100%" }}
               type='text'
               placeholder='Search For Products'
-              required
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
               className='mr-3'

@@ -31,7 +31,7 @@ const AllOrdersScreen = () => {
 
   const successTick = <i style={{ fontSize: "1.2rem" }} className='text-success fas fa-check-circle'></i>;
   const failureCross = <i style={{ fontSize: "1.2rem" }} className='text-danger fas fa-times-circle'></i>;
-  const trashIcon = <i style={{ fontSize: "1.2rem" }} className='fas fa-trash'></i>;
+  const trashIcon = <i style={{ fontSize: "1.2rem", cursor: "pointer" }} className='fas fa-trash'></i>;
 
   const toggleNotPaid = () => {
     setNotPaidOnly((prev) => !prev);
