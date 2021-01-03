@@ -8,9 +8,6 @@ import Message from "../components/Message";
 import SearchComponent from "../components/SearchComponent";
 
 const AllUsersScreen = () => {
-  // let user = new URLSearchParams(window.location.search).get("user") || "";
-
-  const [user, setUser] = useState(new URLSearchParams(window.location.search).get("user") || "");
   const [keyword, setKeyword] = useState("");
 
   const dispatch = useDispatch();

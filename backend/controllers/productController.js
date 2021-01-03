@@ -1,4 +1,5 @@
 import userModel from "../models/userModel.js";
+import categoryModel from "../models/categoryModel.js";
 import productModel from "../models/productModel.js";
 import asyncHandler from "express-async-handler";
 import orderModel from "../models/orderModel.js";
@@ -26,6 +27,14 @@ export const getProduct = asyncHandler(async (req, res) => {
 export const createProduct = asyncHandler(async (req, res) => {
   const { price, countInStock, name, image, description, brand, category } = req.body;
   const { user } = req;
+  // console.log(category);
+
+  let cat = await categoryModel.findOne({ name: category });
+  if (!cat) {
+    cat = await categoryModel.create({ name: category });
+  }
+
+  console.log(cat);
 
   const product = await productModel.create({
     price,
@@ -34,7 +43,7 @@ export const createProduct = asyncHandler(async (req, res) => {
     image,
     description,
     brand,
-    category,
+    category: cat,
     user,
   });
   await product.save();
@@ -95,4 +104,10 @@ export const createReview = asyncHandler(async (req, res) => {
   const updatedProduct = await product.save();
   order.save();
   res.json(updatedProduct);
+});
+
+
+export const getCategories = asyncHandler(async (req, res) => {
+  const categories = await categoryModel.find();
+  res.json(categories);
 });

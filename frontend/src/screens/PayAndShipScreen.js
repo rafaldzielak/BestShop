@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Form, Button, Image } from "react-bootstrap";
 import { placeOrderAction, placeOrderReset } from "../actions/orderActions";
 import Loader from "../components/Loader";
+import Message from "../components/Message";
 
 const PayAndShipScreen = ({ history }) => {
   const [validated, setValidated] = useState(false);
@@ -21,7 +22,7 @@ const PayAndShipScreen = ({ history }) => {
   const { cartContent } = cartContentState;
 
   const orderCreateState = useSelector((state) => state.orderCreate);
-  const { id, loading } = orderCreateState;
+  const { id, loading, error } = orderCreateState;
 
   useEffect(() => {
     if (id) {
@@ -60,6 +61,7 @@ const PayAndShipScreen = ({ history }) => {
 
   return (
     <>
+      {error && <Message>{error}</Message>}
       {loading ? (
         <Loader marginTop={5} />
       ) : (

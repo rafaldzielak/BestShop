@@ -29,7 +29,13 @@ const placeOrder = asyncHandler(async (req, res) => {
   // orderItems.forEach(orderItem => {
   for (let orderItem of orderItems) {
     const product = await productModel.findById(orderItem._id);
-    if (product) product.countInStock -= orderItem.count;
+    if (product) {
+      if (product.countInStock >= orderItem.count) product.countInStock -= orderItem.count;
+      else {
+        res.status(400);
+        throw new Error(`Currently we have only ${product.countInStock} of ${product.name}`);
+      }
+    }
     product.save();
   }
 

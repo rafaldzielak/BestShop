@@ -71,7 +71,6 @@ export const getAllUsersAction = (keyword = "") => async (dispatch, getState) =>
   const {
     loginUser: { loggedUser },
   } = getState();
-  const options = { keyword };
   try {
     dispatch({ type: GET_ALL_USERS_REQUEST });
     const config = {

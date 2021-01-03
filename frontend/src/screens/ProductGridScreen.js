@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Loader from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, DropdownButton, Row, Col, Dropdown, Form, FormControl, Button } from "react-bootstrap";
+import { Card, DropdownButton, Row, Col, Dropdown } from "react-bootstrap";
 import { Link, useHistory, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
 import { getProducts } from "../actions/productActions";

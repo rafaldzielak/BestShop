@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import { Row, Col, Image, ListGroup, Button, Card, OverlayTrigger, Tooltip } from "react-bootstrap";
 import AddToCartCounter from "../components/AddToCartCounter";
-import { removeProductFromCartAction } from "../actions/cartActions";
+import { removeProductFromCartAction, updateCartItemsAction } from "../actions/cartActions";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -10,13 +10,17 @@ const CartScreen = () => {
   const cartContentState = useSelector((state) => state.cartContent);
   const { cartContent } = cartContentState;
 
+  const dispatch = useDispatch();
+
   const totalItems = useMemo(() => cartContent.reduce((prev, curr) => prev + curr.count, 0), [cartContent]);
   const totalPrice = useMemo(() => cartContent.reduce((prev, curr) => prev + curr.price * curr.count, 0), [
     cartContent,
   ]);
   const shippingPrice = useMemo(() => (totalPrice > freeShippingValue ? 0 : 9.99), [totalPrice]);
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(updateCartItemsAction());
+  }, []);
 
   const removeFromCartHandler = (product) => dispatch(removeProductFromCartAction(product));
 
@@ -78,7 +82,11 @@ const CartScreen = () => {
                   <Link to={`/product/${product._id}`}>{product.name}</Link>
                 </Col>
                 <Col lg={{ span: 2, order: 3 }} xs={{ span: 6, order: 4 }} className='pl-0 pr-4'>
-                  <AddToCartCounter product={product} updateOnClick={true} />
+                  {product.countInStock > 0 ? (
+                    <AddToCartCounter product={product} updateOnClick={true} />
+                  ) : (
+                    <h5 className='text-center'>Out of Stock</h5>
+                  )}
                 </Col>
                 <Col lg={{ span: 2, order: 4 }} xs={{ span: 6, order: 5 }} className='px-1'>
                   <h5 style={{ fontSize: "1.1rem" }}>
@@ -95,7 +103,9 @@ const CartScreen = () => {
                     placement='top'
                     overlay={
                       <Tooltip id={`tooltip-top`} className='my-1 orange-border'>
-                        <p className='m-2 '>Remove Item From Cart</p>
+                        <p className='m-2' style={{ fontSize: "1rem" }}>
+                          Remove Item From Cart
+                        </p>
                       </Tooltip>
                     }>
                     {/* <Button variant='secondary'>Tooltip on top</Button> */}
