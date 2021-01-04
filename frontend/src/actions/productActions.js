@@ -5,6 +5,9 @@ import {
   GET_PRODUCT_FAIL,
   GET_PRODUCT_REQUEST,
   GET_PRODUCT_SUCCESS,
+  CREATE_PRODUCT_FAIL,
+  CREATE_PRODUCT_REQUEST,
+  CREATE_PRODUCT_SUCCESS,
 } from "../constants/productContants";
 import axios from "axios";
 
@@ -16,6 +19,19 @@ export const getProducts = (keyword = "", sort = "") => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_PRODUCTS_FAIL,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const createProductAction = (product) => async (dispatch) => {
+  try {
+    dispatch({ type: CREATE_PRODUCT_REQUEST });
+    const { data } = await axios.post(`/api/products/`);
+    dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: CREATE_PRODUCT_FAIL,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }

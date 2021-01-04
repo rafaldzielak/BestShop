@@ -9,6 +9,7 @@ import PayAndShipScreen from "./screens/PayAndShipScreen";
 import OrderScreen from "./screens/OrderScreen";
 import AllOrdersScreen from "./screensAdmin/AllOrdersScreen";
 import AllUsersScreen from "./screensAdmin/AllUsersScreen";
+import AllProductsScreen from "./screensAdmin/AllProductsScreen";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import NavbarComponent from "./components/NavbarComponent";
 
@@ -28,6 +29,7 @@ const App = () => {
         <Route exact path='/order/:id' component={OrderScreen}></Route>
         <Route exact path='/admin/orders' component={AllOrdersScreen}></Route>
         <Route exact path='/admin/users' component={AllUsersScreen}></Route>
+        <Route exact path='/admin/products' component={AllProductsScreen}></Route>
       </Router>
     </div>
   );

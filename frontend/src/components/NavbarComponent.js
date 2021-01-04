@@ -30,6 +30,11 @@ const NavbarComponent = () => {
               id='basic-nav-dropdown'
               variant='primary'>
               <NavDropdown.Divider className='my-0' />
+              <LinkContainer to='/admin/products'>
+                <NavDropdown.Item>
+                  <i className='fas fa-list'></i> Products
+                </NavDropdown.Item>
+              </LinkContainer>
               <LinkContainer to='/admin/orders'>
                 <NavDropdown.Item>
                   <i className='fas fa-book-open'></i> Orders

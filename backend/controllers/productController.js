@@ -27,16 +27,15 @@ export const getProduct = asyncHandler(async (req, res) => {
 export const createProduct = asyncHandler(async (req, res) => {
   const { price, countInStock, name, image, description, brand, category } = req.body;
   const { user } = req;
-  // console.log(category);
+
+  let product;
 
   let cat = await categoryModel.findOne({ name: category });
   if (!cat) {
     cat = await categoryModel.create({ name: category });
   }
 
-  console.log(cat);
-
-  const product = await productModel.create({
+  product = await productModel.create({
     price,
     countInStock,
     name,
@@ -49,6 +48,41 @@ export const createProduct = asyncHandler(async (req, res) => {
   await product.save();
 
   if (product) res.json(product);
+  else throw new Error("Product not found");
+});
+
+export const updateProduct = asyncHandler(async (req, res) => {
+  const { price, countInStock, name, image, description, brand, category } = req.body;
+  const id = req.params.id;
+  const { user } = req;
+
+  const product = await productModel.findById(id);
+  if (!product) {
+    res.status(404);
+    throw new Error("Product not found");
+  }
+  let cat;
+  if (category) {
+    cat = await categoryModel.findOne({ name: category });
+    if (!cat) {
+      cat = await categoryModel.create({ name: category });
+    }
+  }
+
+  const updateFields = {
+    price: price || product.price,
+    countInStock: countInStock === 0 ? 0 : countInStock || product.countInStock,
+    name: name || product.name,
+    image: image || product.image,
+    description: description || product.description,
+    brand: brand || product.brand,
+    category: cat || product.category,
+    user: user || product.user,
+  };
+
+  const updateProduct = await productModel.findByIdAndUpdate(id, updateFields);
+
+  if (updateProduct) res.json(updateProduct);
   else throw new Error("Product not found");
 });
 
@@ -105,7 +139,6 @@ export const createReview = asyncHandler(async (req, res) => {
   order.save();
   res.json(updatedProduct);
 });
-
 
 export const getCategories = asyncHandler(async (req, res) => {
   const categories = await categoryModel.find();
