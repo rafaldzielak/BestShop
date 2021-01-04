@@ -80,21 +80,24 @@ const ProductGridScreen = () => {
             <Link to={`/product/${product._id}`}>
               <Card className='my-2 py-2 rounded bg-light border-hover'>
                 <Card.Img
+                  className='px-1'
                   src={product.image}
                   variant='top'
                   style={{ height: "250px", objectFit: "scale-down" }}
                 />
                 <Card.Body>
-                  <Card.Title as='div' className='py-0'>
-                    <strong className='two-lines'>{product.name}</strong>
+                  <Card.Title as='div' className='py-0  text-center'>
+                    <strong className='two-lines' style={{ fontSize: "1rem" }}>
+                      {product.name}
+                    </strong>
                   </Card.Title>
-                  <Card.Text as='div' className='py-0'>
+                  <Card.Text as='div' className='py-0  text-center'>
                     <Rating
                       rating={product.rating}
                       numReviews={`${product.numReviews} ${product.numReviews === 1 ? "review" : "reviews"}`}
                     />
                   </Card.Text>
-                  <Card.Text as='h4' className='py-1'>
+                  <Card.Text as='h4' className='py-1  text-center'>
                     {product.price} PLN
                   </Card.Text>
                 </Card.Body>

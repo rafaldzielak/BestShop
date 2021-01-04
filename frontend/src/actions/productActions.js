@@ -24,10 +24,16 @@ export const getProducts = (keyword = "", sort = "") => async (dispatch) => {
   }
 };
 
-export const createProductAction = (product) => async (dispatch) => {
+export const createProductAction = (product) => async (dispatch, getState) => {
+  const {
+    loginUser: { loggedUser },
+  } = getState();
+  const config = {
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
+  };
   try {
     dispatch({ type: CREATE_PRODUCT_REQUEST });
-    const { data } = await axios.post(`/api/products/`);
+    const { data } = await axios.post(`/api/products/`, product, config);
     dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

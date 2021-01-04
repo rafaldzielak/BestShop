@@ -40,7 +40,7 @@ const AllProductsScreen = () => {
       />
 
       {error && <Message>{error}</Message>}
-      <h3 className='text-center'>All Users</h3>
+      <h3 className='text-center'>All Products</h3>
 
       {loading && <Loader marginTop={8} />}
       {products && products.length > 0 && (
