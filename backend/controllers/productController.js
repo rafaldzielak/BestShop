@@ -19,7 +19,7 @@ export const getProducts = asyncHandler(async (req, res) => {
 });
 
 export const getProduct = asyncHandler(async (req, res) => {
-  const product = await productModel.findById(req.params.id);
+  const product = await productModel.findById(req.params.id).populate("category", "name");
   if (product) res.json(product);
   else throw new Error("Product not found");
 });

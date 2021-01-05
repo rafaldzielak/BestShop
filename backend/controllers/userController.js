@@ -69,13 +69,17 @@ const getUserOrders = asyncHandler(async (req, res) => {
 
   for (let order of orders) {
     // orders.forEach(async (order, index) => {
-    if (order.paymentMethod === "Stripe" && !order.isPaid) {
-      const stripe = stripeImp(process.env.STRIPE_SECRET);
-      const session = await stripe.checkout.sessions.retrieve(order.stripeOrderId);
-      const paymentStatus = session.payment_status;
-      if (paymentStatus === "paid") {
-        order.isPaid = true;
-        order.save();
+    if (order.paymentMethod === "Stripe" && !order.isPaid && !order.deleted) {
+      try {
+        const stripe = stripeImp(process.env.STRIPE_SECRET);
+        const session = await stripe.checkout.sessions.retrieve(order.stripeOrderId);
+        const paymentStatus = session.payment_status;
+        if (paymentStatus === "paid") {
+          order.isPaid = true;
+          order.save();
+        }
+      } catch (error) {
+        order.isPaid = false;
       }
     }
   }

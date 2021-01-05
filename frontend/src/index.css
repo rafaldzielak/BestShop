@@ -298,3 +298,10 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+.far.fa-edit:hover {
+  color: var(--orange-color) !important;
+}
+.fas.fa-trash {
+  padding-top: 1px !important;
+}

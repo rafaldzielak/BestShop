@@ -9,8 +9,8 @@ const Loader = ({ marginTop = 0, small }) => {
       role='status'
       variant='warning'
       style={{
-        width: small ? "75px" : "150px",
-        height: small ? "75px" : "150px",
+        width: small ? "40px" : "150px",
+        height: small ? "40px" : "150px",
         margin: "auto",
         display: "block",
         marginTop: `${marginTop}rem`,

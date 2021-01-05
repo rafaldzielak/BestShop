@@ -24,6 +24,10 @@ const AllProductsScreen = () => {
 
   const successTick = <i style={{ fontSize: "1.2rem" }} className='text-success fas fa-check-circle'></i>;
   const failureCross = <i style={{ fontSize: "1.2rem" }} className='text-danger fas fa-times-circle'></i>;
+  const trashIcon = <i style={{ fontSize: "1.2rem", cursor: "pointer" }} className='fas fa-trash'></i>;
+  const editIcon = (
+    <i className='far fa-edit text-warning' style={{ fontSize: "1.2rem", cursor: "pointer" }}></i>
+  );
 
   const searchHandler = (e) => {
     e.preventDefault();
@@ -54,7 +58,12 @@ const AllProductsScreen = () => {
               <th>Reviews</th>
               <th>ID</th>
               <th>Added</th>
-              <th className='border-left'>Edit</th>
+              <th style={{ width: "60px" }} className='border-left'>
+                Edit
+              </th>
+              <th style={{ width: "60px" }} className='border-left'>
+                Delete
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -73,8 +82,9 @@ const AllProductsScreen = () => {
                 <td>{product._id}</td>
                 <td>{product.createdAt.slice(0, 19).replace("T", " ")}</td>
                 <td className='border-left'>
-                  <i className='far fa-edit text-warning ' style={{ fontSize: "1.2rem" }}></i>
+                  <span onClick={() => history.push(`/admin/products/edit/${product._id}`)}> {editIcon}</span>
                 </td>
+                <td className='border-left'>{trashIcon}</td>
               </tr>
             ))}
           </tbody>

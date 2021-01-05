@@ -1,12 +1,13 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Form, Button, Image } from "react-bootstrap";
-import { createProductAction } from "../actions/productActions";
+import { createProductAction, updateProductAction, getProduct } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const AddProductScreen = ({ history }) => {
+  const { id } = useParams();
   const [validated, setValidated] = useState(false);
 
   const [name, setName] = useState("");
@@ -22,6 +23,25 @@ const AddProductScreen = ({ history }) => {
   const createProductState = useSelector((state) => state.createProduct);
   const { product, loading, error } = createProductState;
 
+  const listProduct = useSelector((state) => state.listProduct);
+  const { product: productToEdit, loading: loadingProduct, error: errorProduct } = listProduct;
+
+  useEffect(() => {
+    if (id) dispatch(getProduct(id));
+  }, []);
+
+  useEffect(() => {
+    if (productToEdit) {
+      setName(productToEdit.name);
+      setDescription(productToEdit.description);
+      setCountInStock(productToEdit.countInStock);
+      setImage(productToEdit.image);
+      setBrand(productToEdit.brand);
+      setCategory(productToEdit.category.name);
+      setPrice(productToEdit.price);
+    }
+  }, [productToEdit]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -30,25 +50,18 @@ const AddProductScreen = ({ history }) => {
     }
     setValidated(true);
     const product = { name, description, countInStock, image, brand, category, price };
-    dispatch(createProductAction(product));
+    if (productToEdit) product._id = productToEdit._id;
+    if (id) dispatch(updateProductAction(id, product));
+    else dispatch(createProductAction(product));
   };
 
   const imagePlaceholder = "https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png";
-
-  return (
+  const showFields = () => (
     <>
-      {error && <Message>error</Message>}
-      {loading && <Loader small />}
-      {product && (
-        <Link to={`/product/${product._id}`}>
-          <Message variant='success'>Product created! ID: {product._id}</Message>
-        </Link>
-      )}
-      <h2 className='text-center my-4'>Add Product</h2>
+      <h2 className='text-center my-4'>{id ? "Edit Product" : "Add Product"}</h2>
       <Row className='py-5 px-4'>
         <Col sm='5' className='py-5 border-right'>
           <Image rounded style={{ maxHeight: "600px" }} fluid src={image || imagePlaceholder}></Image>
-          {/* style={{ width: "100%", height: "300px" }} */}
           <Form.Group sm='12' className='py-4 px-0 mx-0 align-self-end'>
             <Form.Control
               type='text'
@@ -143,6 +156,21 @@ const AddProductScreen = ({ history }) => {
         </Col>
         <hr />
       </Row>
+    </>
+  );
+
+  return (
+    <>
+      {error && <Message>{error}</Message>}
+      {loading && <Loader small />}
+      {product && (
+        <Link to={`/product/${product._id}`}>
+          <Message variant='success'>
+            Product {id ? "updated" : "created"}! ID: {product._id}
+          </Message>
+        </Link>
+      )}
+      {loadingProduct ? <Loader marginTop={8} /> : showFields()}
     </>
   );
 };

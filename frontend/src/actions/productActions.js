@@ -8,6 +8,9 @@ import {
   CREATE_PRODUCT_FAIL,
   CREATE_PRODUCT_REQUEST,
   CREATE_PRODUCT_SUCCESS,
+  UPDATE_PRODUCT_FAIL,
+  UPDATE_PRODUCT_REQUEST,
+  UPDATE_PRODUCT_SUCCESS,
 } from "../constants/productContants";
 import axios from "axios";
 
@@ -19,6 +22,25 @@ export const getProducts = (keyword = "", sort = "") => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_PRODUCTS_FAIL,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const updateProductAction = (id, product) => async (dispatch, getState) => {
+  const {
+    loginUser: { loggedUser },
+  } = getState();
+  const config = {
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
+  };
+  try {
+    dispatch({ type: UPDATE_PRODUCT_REQUEST });
+    const { data } = await axios.put(`/api/products/${id}`, product, config);
+    dispatch({ type: UPDATE_PRODUCT_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_PRODUCT_FAIL,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }

@@ -94,7 +94,7 @@ const getOrder = asyncHandler(async (req, res) => {
       throw new Error("Not authorized!");
     }
   }
-  if (order.paymentMethod === "Stripe" && !order.isPaid) {
+  if (order.paymentMethod === "Stripe" && !order.isPaid && !order.deleted) {
     stripeCheckIfOrderIsPaid(order);
   }
   res.status(201).json(order);

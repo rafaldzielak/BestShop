@@ -32,6 +32,7 @@ const App = () => {
         <Route exact path='/admin/users' component={AllUsersScreen}></Route>
         <Route exact path='/admin/products' component={AllProductsScreen}></Route>
         <Route exact path='/admin/products/add' component={AddProductScreen}></Route>
+        <Route exact path='/admin/products/edit/:id' component={AddProductScreen}></Route>
       </Router>
     </div>
   );
