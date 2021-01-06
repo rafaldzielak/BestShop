@@ -27,8 +27,10 @@ const placeOrder = asyncHandler(async (req, res) => {
   }
 
   // orderItems.forEach(orderItem => {
+  const productArr = [];
   for (let orderItem of orderItems) {
     const product = await productModel.findById(orderItem._id);
+    productArr.push(product);
     if (product) {
       if (product.countInStock >= orderItem.count) product.countInStock -= orderItem.count;
       else {
@@ -36,7 +38,6 @@ const placeOrder = asyncHandler(async (req, res) => {
         throw new Error(`Currently we have only ${product.countInStock} of ${product.name}`);
       }
     }
-    product.save();
   }
 
   let orderToCreate = {
@@ -63,17 +64,22 @@ const placeOrder = asyncHandler(async (req, res) => {
 
   // let order = await OrderModel.create(orderToReturn);
   const orderToReturn = await createdOrder.save();
+  productArr.forEach((product) => product.save());
 
   res.status(201).json({ ...orderToReturn._doc });
 });
 
 const stripeCheckIfOrderIsPaid = async (order) => {
-  const stripe = stripeImp(process.env.STRIPE_SECRET);
-  const session = await stripe.checkout.sessions.retrieve(order.stripeOrderId);
-  const paymentStatus = session.payment_status;
-  if (paymentStatus === "paid") {
-    order.isPaid = true;
-    order.save();
+  try {
+    const stripe = stripeImp(process.env.STRIPE_SECRET);
+    const session = await stripe.checkout.sessions.retrieve(order.stripeOrderId);
+    const paymentStatus = session.payment_status;
+    if (paymentStatus === "paid") {
+      order.isPaid = true;
+      order.save();
+    }
+  } catch (error) {
+    order.isPaid = false;
   }
 };
 
@@ -102,13 +108,14 @@ const getOrder = asyncHandler(async (req, res) => {
 
 const getAllOrders = asyncHandler(async (req, res) => {
   const query = req.query;
-  const searchQuery = { deleted: false || null };
+  const searchQuery = { deleted: false };
   if (query.notpaid === "true") searchQuery.isPaid = false;
   if (query.notsent === "true") searchQuery.isDispatched = false;
   if (query.notdelivered === "true") searchQuery.isDelivered = false;
   if (query.user) searchQuery.user = query.user;
 
   const orders = await OrderModel.find(searchQuery).populate("user", "email").sort({ createdAt: "desc" });
+  // console.log(orders);
   Promise.all(
     orders.map(async (order) => {
       if (order.paymentMethod === "Stripe" && !order.isPaid) {

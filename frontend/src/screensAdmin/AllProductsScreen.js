@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts, removeProductAction, updateProductAction } from "../actions/productActions";
-import { Table, Image } from "react-bootstrap";
-import ToggleButton from "react-toggle-button";
+import { getProducts } from "../actions/productActions";
+import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
@@ -19,13 +18,8 @@ const AllProductsScreen = () => {
   const listProducts = useSelector((state) => state.listProducts);
   const { loading, error, products } = listProducts;
 
-  const createProduct = useSelector((state) => state.createProduct);
-  const { product: updatedProduct } = createProduct;
-
   const successTick = <i style={{ fontSize: "1.2rem" }} className='text-success fas fa-check-circle'></i>;
   const failureCross = <i style={{ fontSize: "1.2rem" }} className='text-danger fas fa-times-circle'></i>;
-  const failureCrossEmpty = <i style={{ fontSize: "1.2rem" }} className='fas fa-times'></i>;
-  const trashIcon = <i style={{ fontSize: "1.2rem", cursor: "pointer" }} className='fas fa-trash'></i>;
   const editIcon = (
     <i className='far fa-edit text-warning' style={{ fontSize: "1.2rem", cursor: "pointer" }}></i>
   );
@@ -33,20 +27,11 @@ const AllProductsScreen = () => {
   useEffect(() => {
     if (!loggedUser || !loggedUser.isAdmin) history.push("/login");
     else dispatch(getProducts("", "", true));
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (updatedProduct) dispatch(getProducts(keyword, "", true));
-  }, [updatedProduct]);
+  }, [dispatch, history, loggedUser]);
 
   const searchHandler = (e) => {
     e.preventDefault();
     dispatch(getProducts(keyword, "", true));
-  };
-
-  const deleteHandler = (product) => {
-    console.log("dispatch(updateProductAction(product._id, { hidden: !product.hidden }));");
-    dispatch(updateProductAction(product._id, { hidden: !product.hidden }));
   };
 
   return (

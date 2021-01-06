@@ -21,13 +21,9 @@ const ProductGridScreen = () => {
   const [sortedProducts, setSortedProducts] = useState(products);
   const [colSize, setColSize] = useState(3);
 
-  const getProds = () => {
-    dispatch(getProducts(keyword, sort));
-  };
-
   useEffect(() => {
-    getProds();
-  }, [dispatch, sort]);
+    dispatch(getProducts(key || "", sort));
+  }, [dispatch, sort, key]);
 
   useEffect(() => {
     setSortedProducts(products);
@@ -40,7 +36,7 @@ const ProductGridScreen = () => {
 
   const searchHandler = (e) => {
     e.preventDefault();
-    getProds();
+    dispatch(getProducts(keyword, sort));
     keyword ? history.push(`/search/${keyword}`) : history.push("/");
   };
 

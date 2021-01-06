@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Form, Button, Image } from "react-bootstrap";
 import {
@@ -35,7 +35,7 @@ const AddProductScreen = ({ history }) => {
   useEffect(() => {
     if (id) dispatch(getProduct(id));
     return () => dispatch(updateProductResetAction());
-  }, []);
+  }, [dispatch, id]);
 
   useEffect(() => {
     if (productToEdit) {
@@ -62,7 +62,6 @@ const AddProductScreen = ({ history }) => {
     if (id) dispatch(updateProductAction(id, product));
     else dispatch(createProductAction(product));
   };
-  const deleteHandler = () => {};
 
   const imagePlaceholder = "https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png";
   const showFields = () => (
@@ -147,20 +146,14 @@ const AddProductScreen = ({ history }) => {
                 />
               </Form.Group>
 
-              <Form.Group className='text-center' as={Col} lg='2' md='2' className='py-4'>
-                <Row>
-                  <Col sm={12}>
-                    <Form.Label>Visible</Form.Label>
-                  </Col>
-                  <Col sm={12}>
-                    <Form.Switch
-                      onClick={() => setHidden((prev) => !prev)}
-                      checked={!hidden}
-                      type='switch'
-                      id='custom-switch'
-                    />
-                  </Col>
-                </Row>
+              <Form.Group className='py-4' as={Col} lg='2' md='2'>
+                <Form.Label>Visible</Form.Label>
+                <Form.Switch
+                  onChange={() => setHidden((prev) => !prev)}
+                  checked={!hidden}
+                  type='switch'
+                  id='custom-switch'
+                />
               </Form.Group>
 
               <Form.Group as={Col} md='12' className='py-4'>
@@ -188,7 +181,7 @@ const AddProductScreen = ({ history }) => {
 
   return (
     <>
-      {error && <Message>{error}</Message>}
+      {(error || errorProduct) && <Message>{error || errorProduct}</Message>}
       {loading && <Loader small />}
       {product && (
         <Link to={`/product/${product._id}`}>

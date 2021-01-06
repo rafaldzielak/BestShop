@@ -20,7 +20,7 @@ const CartScreen = () => {
 
   useEffect(() => {
     dispatch(updateCartItemsAction());
-  }, []);
+  }, [dispatch]);
 
   const removeFromCartHandler = (product) => dispatch(removeProductFromCartAction(product));
 

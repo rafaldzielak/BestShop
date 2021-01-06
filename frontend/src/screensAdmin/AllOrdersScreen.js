@@ -31,7 +31,7 @@ const AllOrdersScreen = () => {
 
   const successTick = <i style={{ fontSize: "1.2rem" }} className='text-success fas fa-check-circle'></i>;
   const failureCross = <i style={{ fontSize: "1.2rem" }} className='text-danger fas fa-times-circle'></i>;
-  const trashIcon = <i style={{ fontSize: "1.2rem", cursor: "pointer" }} className='fas fa-trash'></i>;
+  const trashIcon = <i style={{ fontSize: "1.2rem", cursor: "pointer" }} className=' fas fa-trash'></i>;
 
   const toggleNotPaid = () => {
     setNotPaidOnly((prev) => !prev);
@@ -60,7 +60,7 @@ const AllOrdersScreen = () => {
         {user && (
           <Col sm={1} className='py-3'>
             <Button block onClick={() => history.push("/admin/orders")}>
-              <i class='fas fa-arrow-left'></i>
+              <i className='fas fa-arrow-left'></i>
             </Button>
           </Col>
         )}
@@ -122,7 +122,7 @@ const AllOrdersScreen = () => {
                 <td>{order.isPaid ? successTick : failureCross}</td>
                 <td>{order.isDispatched ? successTick : failureCross}</td>
                 <td>{order.isDelivered ? successTick : failureCross}</td>
-                <td>
+                <td className='border-left'>
                   <span onClick={(e) => deleteOrder(order._id)}>{trashIcon}</span>
                 </td>
               </tr>
