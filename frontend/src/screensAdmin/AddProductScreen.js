@@ -1,7 +1,12 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Form, Button, Image } from "react-bootstrap";
-import { createProductAction, updateProductAction, getProduct } from "../actions/productActions";
+import {
+  createProductAction,
+  updateProductAction,
+  getProduct,
+  updateProductResetAction,
+} from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { Link, useParams } from "react-router-dom";
@@ -17,6 +22,7 @@ const AddProductScreen = ({ history }) => {
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState(0);
+  const [hidden, setHidden] = useState("");
 
   const dispatch = useDispatch();
 
@@ -28,6 +34,7 @@ const AddProductScreen = ({ history }) => {
 
   useEffect(() => {
     if (id) dispatch(getProduct(id));
+    return () => dispatch(updateProductResetAction());
   }, []);
 
   useEffect(() => {
@@ -39,6 +46,7 @@ const AddProductScreen = ({ history }) => {
       setBrand(productToEdit.brand);
       setCategory(productToEdit.category.name);
       setPrice(productToEdit.price);
+      setHidden(productToEdit.hidden);
     }
   }, [productToEdit]);
 
@@ -49,11 +57,12 @@ const AddProductScreen = ({ history }) => {
       event.stopPropagation();
     }
     setValidated(true);
-    const product = { name, description, countInStock, image, brand, category, price };
+    const product = { name, description, countInStock, image, brand, category, price, hidden };
     if (productToEdit) product._id = productToEdit._id;
     if (id) dispatch(updateProductAction(id, product));
     else dispatch(createProductAction(product));
   };
+  const deleteHandler = () => {};
 
   const imagePlaceholder = "https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png";
   const showFields = () => (
@@ -81,7 +90,7 @@ const AddProductScreen = ({ history }) => {
             id='ship-form'
             style={{ fontSize: "1rem" }}>
             <Form.Row className='py-3'>
-              <Form.Group as={Col} md='8' className='py-4'>
+              <Form.Group as={Col} md='7' className='py-4'>
                 <Form.Label>Name</Form.Label>
                 <Form.Control
                   required
@@ -90,6 +99,18 @@ const AddProductScreen = ({ history }) => {
                   size='lg'
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                />
+              </Form.Group>
+
+              <Form.Group as={Col} md='3' className='py-4'>
+                <Form.Label>Price (PLN)</Form.Label>
+                <Form.Control
+                  required
+                  type='number'
+                  placeholder='Price (PLN)'
+                  size='lg'
+                  onChange={(e) => setPrice(e.target.value)}
+                  value={price}
                 />
               </Form.Group>
               <Form.Group as={Col} lg='2' sm='2' className='py-4'>
@@ -103,18 +124,7 @@ const AddProductScreen = ({ history }) => {
                   value={countInStock}
                 />
               </Form.Group>
-              <Form.Group as={Col} md='2' className='py-4'>
-                <Form.Label>Price (PLN)</Form.Label>
-                <Form.Control
-                  required
-                  type='number'
-                  placeholder='Price (PLN)'
-                  size='lg'
-                  onChange={(e) => setPrice(e.target.value)}
-                  value={price}
-                />
-              </Form.Group>
-              <Form.Group as={Col} md='8' className='py-4'>
+              <Form.Group as={Col} md='7' className='py-4'>
                 <Form.Label>Category</Form.Label>
                 <Form.Control
                   required
@@ -125,7 +135,7 @@ const AddProductScreen = ({ history }) => {
                 />
               </Form.Group>
 
-              <Form.Group as={Col} lg='4' md='3' className='py-4'>
+              <Form.Group as={Col} lg='3' md='3' className='py-4'>
                 <Form.Label>Brand</Form.Label>
                 <Form.Control
                   type='text'
@@ -136,6 +146,23 @@ const AddProductScreen = ({ history }) => {
                   value={brand}
                 />
               </Form.Group>
+
+              <Form.Group className='text-center' as={Col} lg='2' md='2' className='py-4'>
+                <Row>
+                  <Col sm={12}>
+                    <Form.Label>Visible</Form.Label>
+                  </Col>
+                  <Col sm={12}>
+                    <Form.Switch
+                      onClick={() => setHidden((prev) => !prev)}
+                      checked={!hidden}
+                      type='switch'
+                      id='custom-switch'
+                    />
+                  </Col>
+                </Row>
+              </Form.Group>
+
               <Form.Group as={Col} md='12' className='py-4'>
                 <Form.Label>Description</Form.Label>
                 <Form.Control

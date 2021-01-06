@@ -5,8 +5,12 @@ import asyncHandler from "express-async-handler";
 import orderModel from "../models/orderModel.js";
 
 export const getProducts = asyncHandler(async (req, res) => {
+  //, hidden: false
   const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: "i" } } : {};
   const sortQuery = req.query.sort || "";
+  let hiddenObj = {};
+  if (req.query.hidden === "false") hiddenObj.hidden = false;
+
   let sort;
 
   if (sortQuery) {
@@ -14,7 +18,7 @@ export const getProducts = asyncHandler(async (req, res) => {
     if (sortQuery === "price") sortDirection = "asc";
     sort = [[sortQuery, sortDirection]];
   }
-  const products = await productModel.find(keyword).sort(sort);
+  const products = await productModel.find({ ...keyword, ...hiddenObj }).sort(sort);
   res.json(products);
 });
 
@@ -52,7 +56,7 @@ export const createProduct = asyncHandler(async (req, res) => {
 });
 
 export const updateProduct = asyncHandler(async (req, res) => {
-  const { price, countInStock, name, image, description, brand, category } = req.body;
+  const { price, countInStock, name, image, description, brand, category, hidden } = req.body;
   const id = req.params.id;
   const { user } = req;
 
@@ -78,6 +82,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
     brand: brand || product.brand,
     category: cat || product.category,
     user: user || product.user,
+    hidden: hidden === false ? false : hidden || product.hidden,
   };
 
   const updateProduct = await productModel.findByIdAndUpdate(id, updateFields);
@@ -92,8 +97,9 @@ export const removeProduct = asyncHandler(async (req, res) => {
   const product = await productModel.findById(id);
 
   if (product) {
-    await product.remove();
-    res.status(200).json({ message: "product deleted" });
+    product.hidden = true;
+    await product.save();
+    res.status(200).json({ message: "Product removed" });
   } else {
     res.status(404);
     throw new Error("Product not found");

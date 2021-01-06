@@ -305,3 +305,10 @@ input[type="number"] {
 .fas.fa-trash {
   padding-top: 1px !important;
 }
+
+.custom-control,
+.customswitch {
+  transform: scale(1.5) !important;
+  padding-top: 0.5rem;
+  padding-left: 2.8rem;
+}
