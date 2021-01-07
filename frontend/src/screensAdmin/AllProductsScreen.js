@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../actions/productActions";
-import { Table } from "react-bootstrap";
+import { Button, Table, Fade } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
@@ -10,6 +10,7 @@ import { useHistory } from "react-router-dom";
 
 const AllProductsScreen = () => {
   const [keyword, setKeyword] = useState("");
+  const [open, setOpen] = useState(false);
   const loginUser = useSelector((state) => state.loginUser);
   const { loggedUser } = loginUser;
   const history = useHistory();
@@ -36,16 +37,35 @@ const AllProductsScreen = () => {
 
   return (
     <>
+      {/* <>
+        <Button onClick={() => setOpen(!open)} aria-controls='example-fade-text' aria-expanded={open}>
+          Toggle text
+        </Button>
+        <Fade in={open}>
+          <Button onClick={() => setOpen(!open)} aria-controls='example-fade-text' aria-expanded={open}>
+            Toggle text
+          </Button>
+        </Fade>
+      </> */}
+
       <SearchComponent
         keyword={keyword}
         setKeyword={setKeyword}
         placeholder={"Search for Products"}
         searchHandler={searchHandler}
       />
-
       {error && <Message>{error}</Message>}
-      <h3 className='text-center'>All Products</h3>
 
+      <div className='add-new'>
+        <h3 className='ml-auto'>All Products</h3>
+        <Link to='/admin/products/add' className='ml-auto'>
+          <Button className='ml-auto pt-3'>
+            <h5>
+              <i class='fas fa-plus'></i> Add New Product
+            </h5>
+          </Button>
+        </Link>
+      </div>
       {loading && <Loader marginTop={8} />}
       {products && products.length > 0 && (
         <Table responsive striped hover size='sm' className='text-center'>

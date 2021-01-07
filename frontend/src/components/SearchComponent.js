@@ -4,7 +4,7 @@ import { Col, Form, FormControl, Button } from "react-bootstrap";
 const SearchComponent = ({ keyword, setKeyword, searchHandler, placeholder }) => {
   return (
     <Form inline onSubmit={searchHandler} className='my-2 justify-content-center'>
-      <Col xs={9} sm={10} xl={11} style={{ margin: "0", padding: "0" }}>
+      <Col sm={10} xl={11} style={{ margin: "0", padding: "0" }}>
         <FormControl
           size='lg'
           style={{ width: "100%" }}
@@ -15,9 +15,9 @@ const SearchComponent = ({ keyword, setKeyword, searchHandler, placeholder }) =>
           className='mr-3'
         />
       </Col>
-      <Col xs={3} sm={2} xl={1}>
-        <Button type='submit' variant='primary' size='lg'>
-          Search
+      <Col xs={5} sm={2} xl={1}>
+        <Button block type='submit' variant='primary' size='lg' style={{ minWidth: "7rem" }}>
+          <i class='fas fa-search pt-1' style={{ fontSize: "1.5rem" }}></i>
         </Button>
       </Col>
     </Form>

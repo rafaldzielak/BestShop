@@ -15,6 +15,9 @@ import {
   REMOVE_PRODUCT_REQUEST,
   REMOVE_PRODUCT_SUCCESS,
   UPDATE_PRODUCT_RESET,
+  GET_CATEGORIES_FAIL,
+  GET_CATEGORIES_REQUEST,
+  GET_CATEGORIES_SUCCESS,
 } from "../constants/productContants";
 import axios from "axios";
 

@@ -34,10 +34,12 @@ export const createProduct = asyncHandler(async (req, res) => {
 
   let product;
 
-  let cat = await categoryModel.findOne({ name: category });
-  if (!cat) {
-    cat = await categoryModel.create({ name: category });
-  }
+  // let cat = await categoryModel.findOne({ name: category });
+  // if (!cat) {
+  //   cat = await categoryModel.create({ name: category });
+  // }
+
+  let cat = await categoryModel.assignOrCreateCategory(category, null);
 
   product = await productModel.create({
     price,
@@ -67,10 +69,13 @@ export const updateProduct = asyncHandler(async (req, res) => {
   }
   let cat;
   if (category) {
-    cat = await categoryModel.findOne({ name: category });
-    if (!cat) {
-      cat = await categoryModel.create({ name: category });
-    }
+    // cat = await categoryModel.findOne({ name: category });
+    // if (!cat) {
+    //   cat = await categoryModel.create({ name: category });
+    // }
+    cat = await categoryModel.assignOrCreateCategory(category, null);
+    console.log("CAT:");
+    console.log(cat);
   }
 
   const updateFields = {
@@ -147,6 +152,9 @@ export const createReview = asyncHandler(async (req, res) => {
 });
 
 export const getCategories = asyncHandler(async (req, res) => {
-  const categories = await categoryModel.find();
+  const level = req.query.level;
+  const query = {};
+  if (level) query.level = level;
+  const categories = await categoryModel.find(query).populate("subcategories", "name");
   res.json(categories);
 });

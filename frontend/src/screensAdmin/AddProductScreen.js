@@ -38,13 +38,13 @@ const AddProductScreen = ({ history }) => {
   }, [dispatch, id]);
 
   useEffect(() => {
-    if (productToEdit) {
+    if (id && productToEdit) {
       setName(productToEdit.name);
       setDescription(productToEdit.description);
       setCountInStock(productToEdit.countInStock);
       setImage(productToEdit.image);
       setBrand(productToEdit.brand);
-      setCategory(productToEdit.category.name);
+      if (productToEdit.category) setCategory(productToEdit.category.name);
       setPrice(productToEdit.price);
       setHidden(productToEdit.hidden);
     }
@@ -181,15 +181,26 @@ const AddProductScreen = ({ history }) => {
 
   return (
     <>
-      {(error || errorProduct) && <Message>{error || errorProduct}</Message>}
-      {loading && <Loader small />}
-      {product && (
-        <Link to={`/product/${product._id}`}>
-          <Message variant='success'>
-            Product {id ? "updated" : "created"}! ID: {product._id}
-          </Message>
-        </Link>
-      )}
+      <Row>
+        {id && (
+          <Col sm={1} className='pr-0'>
+            <Button block size='lg' onClick={() => history.push("/admin/products")}>
+              <i className='fas fa-arrow-left'></i>
+            </Button>
+          </Col>
+        )}
+        <Col sm={id ? 11 : 12}>
+          {loading && <Loader small />}
+          {(error || errorProduct) && <Message>{error || errorProduct}</Message>}
+          {product && (
+            <Link to={`/product/${product._id}`}>
+              <Message variant='success'>
+                Product {id ? "updated" : "created"}! ID: {product._id}
+              </Message>
+            </Link>
+          )}
+        </Col>
+      </Row>
       {loadingProduct ? <Loader marginTop={8} /> : showFields()}
     </>
   );

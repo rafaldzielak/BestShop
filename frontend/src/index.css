@@ -60,11 +60,11 @@ code {
   border: 1px solid var(--orange-lighter);
   /* outline: 0px solid var(--orange-color); */
 }
+.card.border-hover {
+  transition: all 0.1s ease-in;
+}
 .card.border-hover:hover {
-  /* outline: 1px solid var(--orange-color); */
   box-shadow: 0 0 3px var(--orange-color);
-
-  /* border: 2px solid var(--orange-color); */
 }
 .fa-star,
 .fa-star-half-alt {
@@ -312,3 +312,13 @@ input[type="number"] {
   padding-top: 0.5rem;
   padding-left: 2.8rem;
 }
+
+.add-new {
+  display: flex;
+  /* justify-content: center; */
+  /* justify-content: end; */
+}
+
+/* .add-new .btn.btn-primary {
+  margin-left: auto;
+} */

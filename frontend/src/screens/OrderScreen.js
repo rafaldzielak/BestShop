@@ -44,8 +44,8 @@ const OrderScreen = ({ match }) => {
 
   const PayPalSuccessPay = (details, data) => {
     console.log("success");
-    console.log(details);
-    console.log(data);
+    // console.log(details);
+    // console.log(data);
     setPaymentLoading(true);
     dispatch(payOrderViaPaypalAction(orderDetails._id, details.id, details.create_time));
   };
