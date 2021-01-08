@@ -15,6 +15,13 @@ import {
   REMOVE_PRODUCT_REQUEST,
   REMOVE_PRODUCT_SUCCESS,
   UPDATE_PRODUCT_RESET,
+  GET_CATEGORIES_FAIL,
+  GET_CATEGORIES_REQUEST,
+  GET_CATEGORIES_SUCCESS,
+  GET_CATEGORY_FAIL,
+  GET_CATEGORY_REQUEST,
+  GET_CATEGORY_SUCCESS,
+  RESET_CATEGORY,
 } from "../constants/productContants";
 
 export const createProductReducer = (state = {}, action) => {
@@ -69,6 +76,34 @@ export const removeProductReducer = (state = {}, action) => {
       return { loading: false, success: true };
     case REMOVE_PRODUCT_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const getCategoriesReducer = (state = { categories: [] }, action) => {
+  switch (action.type) {
+    case GET_CATEGORIES_REQUEST:
+      return { loading: true, categories: [] };
+    case GET_CATEGORIES_SUCCESS:
+      return { loading: false, categories: action.payload };
+    case GET_CATEGORIES_FAIL:
+      return { loading: false, error: action.payload, categories: [] };
+    default:
+      return state;
+  }
+};
+
+export const getCategoryReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_CATEGORY_REQUEST:
+      return { loading: true };
+    case GET_CATEGORY_SUCCESS:
+      return { loading: false, category: action.payload };
+    case GET_CATEGORY_FAIL:
+      return { loading: false, error: action.payload };
+    case RESET_CATEGORY:
+      return { loading: false };
     default:
       return state;
   }

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const categorySchema = mongoose.Schema({
   name: { type: String, required: true, default: "" },
   subcategories: [{ type: mongoose.Schema.Types.ObjectId, required: true, default: null, unique: true }],
-  parent: { type: mongoose.Schema.Types.ObjectId, unique: true },
+  parents: [{ type: mongoose.Schema.Types.ObjectId, unique: true }],
   level: { type: Number, required: true, default: 0 },
 });
 
@@ -34,7 +34,7 @@ categorySchema.statics.assignOrCreateCategory = async function (
   if (categoryArr.length === 1) {
     category = await categoryModel.create({
       name: lastCategory,
-      parent: null,
+      parents: [],
       subcategories: [subcategory],
       level: 0,
     });
@@ -49,7 +49,8 @@ categorySchema.statics.assignOrCreateCategory = async function (
     });
     console.log(categoryArr.join(","));
     const parent = await this.assignOrCreateCategory(categoryArr.join(","), category);
-    category.parent = parent;
+    const parents = [parent, ...parent.parents];
+    category.parents = parents;
     const updatedCategory = await category.save();
     return updatedCategory;
   }

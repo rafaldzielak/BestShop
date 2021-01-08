@@ -322,3 +322,18 @@ input[type="number"] {
 /* .add-new .btn.btn-primary {
   margin-left: auto;
 } */
+.category-elem {
+  transition: all 0.2s;
+  cursor: default;
+}
+.category-elem:hover {
+  background-color: #eee;
+}
+
+.orange-font {
+  color: var(--orange-color);
+}
+
+.pointer {
+  cursor: pointer !important;
+}

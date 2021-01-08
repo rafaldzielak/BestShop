@@ -153,8 +153,20 @@ export const createReview = asyncHandler(async (req, res) => {
 
 export const getCategories = asyncHandler(async (req, res) => {
   const level = req.query.level;
-  const query = {};
-  if (level) query.level = level;
-  const categories = await categoryModel.find(query).populate("subcategories", "name");
+  const parent = req.query.parent;
+  console.log(parent);
+  const searchQuery = {};
+  if (level) searchQuery.level = level;
+  if (parent) searchQuery.parent = parent;
+
+  const categories = await categoryModel.find(searchQuery).populate("parent").select("-subcategories");
   res.json(categories);
+});
+
+export const getCategory = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  const category = await categoryModel.findById(id).populate("subcategories", "name").populate("parent");
+  console.log("AAA");
+  res.json(category);
 });

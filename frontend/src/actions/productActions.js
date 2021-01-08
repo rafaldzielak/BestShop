@@ -18,6 +18,10 @@ import {
   GET_CATEGORIES_FAIL,
   GET_CATEGORIES_REQUEST,
   GET_CATEGORIES_SUCCESS,
+  GET_CATEGORY_FAIL,
+  GET_CATEGORY_REQUEST,
+  GET_CATEGORY_SUCCESS,
+  RESET_CATEGORY,
 } from "../constants/productContants";
 import axios from "axios";
 
@@ -106,4 +110,34 @@ export const getProduct = (id) => async (dispatch) => {
 
 export const updateProductResetAction = () => async (dispatch) => {
   dispatch({ type: UPDATE_PRODUCT_RESET });
+};
+
+export const getCategoriesAction = (id = "") => async (dispatch) => {
+  try {
+    dispatch({ type: GET_CATEGORIES_REQUEST });
+    const { data } = await axios.get("/api/products/categories?level=0");
+    dispatch({ type: GET_CATEGORIES_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: GET_CATEGORIES_FAIL,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const getCategoryAction = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_CATEGORY_REQUEST });
+    const { data } = await axios.get(`/api/products/categories/${id}`);
+    dispatch({ type: GET_CATEGORY_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: GET_CATEGORY_FAIL,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const resetCategoryAction = () => (dispatch) => {
+  dispatch({ type: RESET_CATEGORY });
 };

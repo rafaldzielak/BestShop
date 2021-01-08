@@ -35,6 +35,12 @@ const NavbarComponent = () => {
                   <i className='fas fa-list'></i> Products
                 </NavDropdown.Item>
               </LinkContainer>
+              <NavDropdown.Divider className='my-0' />
+              <LinkContainer to='/admin/categories'>
+                <NavDropdown.Item>
+                  <i className='fas fa-layer-group'></i> Categories
+                </NavDropdown.Item>
+              </LinkContainer>
               <LinkContainer to='/admin/orders'>
                 <NavDropdown.Item>
                   <i className='fas fa-book-open'></i> Orders

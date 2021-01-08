@@ -10,7 +10,7 @@ import { useHistory } from "react-router-dom";
 
 const AllProductsScreen = () => {
   const [keyword, setKeyword] = useState("");
-  const [open, setOpen] = useState(false);
+
   const loginUser = useSelector((state) => state.loginUser);
   const { loggedUser } = loginUser;
   const history = useHistory();
@@ -37,17 +37,6 @@ const AllProductsScreen = () => {
 
   return (
     <>
-      {/* <>
-        <Button onClick={() => setOpen(!open)} aria-controls='example-fade-text' aria-expanded={open}>
-          Toggle text
-        </Button>
-        <Fade in={open}>
-          <Button onClick={() => setOpen(!open)} aria-controls='example-fade-text' aria-expanded={open}>
-            Toggle text
-          </Button>
-        </Fade>
-      </> */}
-
       <SearchComponent
         keyword={keyword}
         setKeyword={setKeyword}

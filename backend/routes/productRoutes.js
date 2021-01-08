@@ -7,13 +7,15 @@ import {
   removeProduct,
   getCategories,
   updateProduct,
+  getCategory,
 } from "../controllers/productController.js";
 import protect from "../middleware/authMiddleware.js";
 import adminProtect from "../middleware/adminMiddleware.js";
 
 const router = express.Router();
 
-router.route("/categories").get(getCategories);
+router.route("/categories/:id").get(getCategory);
+router.route("/categories/").get(getCategories);
 router.route("/:id/order/:orderId/review").put(protect, createReview);
 router
   .route("/:id")
