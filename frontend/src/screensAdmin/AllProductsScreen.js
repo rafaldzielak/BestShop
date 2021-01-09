@@ -50,7 +50,7 @@ const AllProductsScreen = () => {
         <Link to='/admin/products/add' className='ml-auto'>
           <Button className='ml-auto pt-3'>
             <h5>
-              <i class='fas fa-plus'></i> Add New Product
+              <i className='fas fa-plus'></i> Add New Product
             </h5>
           </Button>
         </Link>

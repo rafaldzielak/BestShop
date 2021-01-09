@@ -7,18 +7,24 @@ import orderModel from "../models/orderModel.js";
 export const getProducts = asyncHandler(async (req, res) => {
   //, hidden: false
   const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: "i" } } : {};
+  const categoryId = req.query.category || "";
+  // const category = categoryId ? await categoryModel.find({ parents: categoryId }) : "";
+  const category = categoryId
+    ? await categoryModel.find({ $or: [{ parents: categoryId }, { _id: categoryId }] })
+    : "";
+  const categoryObj = category ? { category } : {};
   const sortQuery = req.query.sort || "";
   let hiddenObj = {};
   if (req.query.hidden === "false") hiddenObj.hidden = false;
+  const searchQuery = { ...keyword, ...hiddenObj, ...categoryObj };
 
   let sort;
-
   if (sortQuery) {
     let sortDirection = "desc";
     if (sortQuery === "price") sortDirection = "asc";
     sort = [[sortQuery, sortDirection]];
   }
-  const products = await productModel.find({ ...keyword, ...hiddenObj }).sort(sort);
+  const products = await productModel.find(searchQuery).sort(sort);
   res.json(products);
 });
 
@@ -33,11 +39,6 @@ export const createProduct = asyncHandler(async (req, res) => {
   const { user } = req;
 
   let product;
-
-  // let cat = await categoryModel.findOne({ name: category });
-  // if (!cat) {
-  //   cat = await categoryModel.create({ name: category });
-  // }
 
   let cat = await categoryModel.assignOrCreateCategory(category, null);
 
@@ -69,13 +70,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
   }
   let cat;
   if (category) {
-    // cat = await categoryModel.findOne({ name: category });
-    // if (!cat) {
-    //   cat = await categoryModel.create({ name: category });
-    // }
     cat = await categoryModel.assignOrCreateCategory(category, null);
-    console.log("CAT:");
-    console.log(cat);
   }
 
   const updateFields = {
@@ -154,19 +149,24 @@ export const createReview = asyncHandler(async (req, res) => {
 export const getCategories = asyncHandler(async (req, res) => {
   const level = req.query.level;
   const parent = req.query.parent;
-  console.log(parent);
   const searchQuery = {};
   if (level) searchQuery.level = level;
   if (parent) searchQuery.parent = parent;
 
-  const categories = await categoryModel.find(searchQuery).populate("parent").select("-subcategories");
+  const categories = await categoryModel
+    .find(searchQuery)
+    .populate("parents")
+    .select("-subcategories")
+    .sort("name");
   res.json(categories);
 });
 
 export const getCategory = asyncHandler(async (req, res) => {
   const id = req.params.id;
-  console.log(id);
-  const category = await categoryModel.findById(id).populate("subcategories", "name").populate("parent");
-  console.log("AAA");
+  const category = await categoryModel
+    .findById(id)
+    .populate({ path: "subcategories", select: "name", options: { sort: "name" } })
+    .populate("parents", "name")
+    .sort("subcategories");
   res.json(category);
 });

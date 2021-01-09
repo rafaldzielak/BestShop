@@ -21,7 +21,9 @@ const App = () => {
       <Router>
         <NavbarComponent />
         <Route exact path='/' component={HomeScreen}></Route>
+        <Route exact path='/search/:keyword/category/:category' component={HomeScreen}></Route>
         <Route exact path='/search/:keyword' component={HomeScreen}></Route>
+        <Route exact path='/category/:category' component={HomeScreen}></Route>
         <Route exact path='/product/:id' component={ProductScreen}></Route>
         <Route exact path='/login' component={LoginScreen}></Route>
         <Route exact path='/register' component={RegisterScreen}></Route>

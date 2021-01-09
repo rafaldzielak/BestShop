@@ -25,10 +25,16 @@ import {
 } from "../constants/productContants";
 import axios from "axios";
 
-export const getProducts = (keyword = "", sort = "", hidden = false) => async (dispatch) => {
+export const getProducts = (productDetails) => async (dispatch) => {
+  const keyword = productDetails.keyword || "";
+  const sort = productDetails.sort || "";
+  const hidden = productDetails.hidden || false;
+  const category = productDetails.category || "";
   try {
     dispatch({ type: GET_PRODUCTS_REQUEST });
-    const { data } = await axios.get(`/api/products/?keyword=${keyword}&sort=${sort}&hidden=${hidden}`);
+    const { data } = await axios.get(
+      `/api/products/?keyword=${keyword}&sort=${sort}&hidden=${hidden}&category=${category}`
+    );
     dispatch({ type: GET_PRODUCTS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

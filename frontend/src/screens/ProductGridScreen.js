@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import Loader from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, DropdownButton, Row, Col, Dropdown } from "react-bootstrap";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams, useLocation } from "react-router-dom";
 import Rating from "../components/Rating";
 import { getProducts } from "../actions/productActions";
 import SearchComponent from "../components/SearchComponent";
+import CategoryComponent from "../components/CategoryComponent";
+import CurrentPathComponent from "../components/CurrentPathComponent";
 
 const ProductGridScreen = () => {
   const { keyword: key } = useParams();
+  const { category } = useParams();
+
   const history = useHistory();
   const dispatch = useDispatch();
   const [keyword, setKeyword] = useState(key || "");
@@ -22,8 +26,14 @@ const ProductGridScreen = () => {
   const [colSize, setColSize] = useState(3);
 
   useEffect(() => {
-    dispatch(getProducts(key || "", sort));
-  }, [dispatch, sort, key]);
+    dispatch(
+      getProducts({
+        keyword: key || "",
+        sort,
+        category,
+      })
+    );
+  }, [dispatch, sort, key, category]);
 
   useEffect(() => {
     setSortedProducts(products);
@@ -36,7 +46,7 @@ const ProductGridScreen = () => {
 
   const searchHandler = (e) => {
     e.preventDefault();
-    dispatch(getProducts(keyword, sort));
+    dispatch(getProducts({ keyword, sort }));
     keyword ? history.push(`/search/${keyword}`) : history.push("/");
   };
 
@@ -69,14 +79,20 @@ const ProductGridScreen = () => {
   );
 
   const showProducts = () => (
-    <Row>
+    <Row className='mx-0 px-0'>
       {products &&
         sortedProducts.map((product) => (
-          <Col key={product._id} sm={colSize + 3} md={colSize + 1} lg={colSize}>
+          <Col
+            className='mx-0 px-2'
+            key={product._id}
+            sm={colSize + 3}
+            md={colSize + 3}
+            lg={colSize + 1}
+            xl={colSize}>
             <Link to={`/product/${product._id}`}>
               <Card className='my-2 py-2 rounded bg-light border-hover'>
                 <Card.Img
-                  className='px-1'
+                  className='px-1 py-1'
                   src={product.image}
                   variant='top'
                   style={{ height: "250px", objectFit: "scale-down" }}
@@ -107,7 +123,19 @@ const ProductGridScreen = () => {
   return (
     <>
       {showSearchAndFilter()}
-      {loading ? <Loader marginTop={10} animation='border' variant='warning' /> : showProducts()}
+      <Row>
+        <Col>
+          <CurrentPathComponent />
+        </Col>
+      </Row>
+      <Row>
+        <Col lg={2} md={3} className='pr-0'>
+          <CategoryComponent startCategory={category} keyword={keyword} />
+        </Col>
+        <Col lg={10} md={9}>
+          {loading ? <Loader marginTop={10} animation='border' variant='warning' /> : showProducts()}
+        </Col>
+      </Row>
     </>
   );
 };

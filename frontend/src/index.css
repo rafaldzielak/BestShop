@@ -64,7 +64,8 @@ code {
   transition: all 0.1s ease-in;
 }
 .card.border-hover:hover {
-  box-shadow: 0 0 3px var(--orange-color);
+  box-shadow: 0 0 3px 1px var(--orange-color);
+  /* outline: 1px solid var(--orange-color) !important; */
 }
 .fa-star,
 .fa-star-half-alt {
@@ -336,4 +337,16 @@ input[type="number"] {
 
 .pointer {
   cursor: pointer !important;
+}
+
+.card {
+  border: none !important;
+}
+
+.card-img-top.px-1 {
+  transition: all 0.15s ease-in-out;
+}
+
+.card-img-top.px-1:hover {
+  padding: 0 !important;
 }
