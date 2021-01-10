@@ -22,6 +22,9 @@ import {
   GET_CATEGORY_REQUEST,
   GET_CATEGORY_SUCCESS,
   RESET_CATEGORY,
+  CREATE_CATEGORY_FAIL,
+  CREATE_CATEGORY_REQUEST,
+  CREATE_CATEGORY_SUCCESS,
 } from "../constants/productContants";
 import axios from "axios";
 
@@ -139,6 +142,19 @@ export const getCategoryAction = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_CATEGORY_FAIL,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const createCategoryAction = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: CREATE_CATEGORY_REQUEST });
+    const { data } = await axios.post(`/api/products/categories/${id}`);
+    dispatch({ type: CREATE_CATEGORY_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: CREATE_CATEGORY_FAIL,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }

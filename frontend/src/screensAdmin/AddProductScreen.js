@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Form, Button, Image } from "react-bootstrap";
+import { Row, Col, Form, Button, Image, Modal } from "react-bootstrap";
 import {
   createProductAction,
   updateProductAction,
@@ -10,8 +10,12 @@ import {
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { Link, useParams } from "react-router-dom";
+import CategoryComponent from "../components/CategoryComponent";
 
 const AddProductScreen = ({ history }) => {
+  const [modalShow, setModalShow] = useState(false);
+  const onHide = () => setModalShow(false);
+
   const { id } = useParams();
   const [validated, setValidated] = useState(false);
 
@@ -20,7 +24,7 @@ const AddProductScreen = ({ history }) => {
   const [countInStock, setCountInStock] = useState(0);
   const [image, setImage] = useState("");
   const [brand, setBrand] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState({});
   const [price, setPrice] = useState(0);
   const [hidden, setHidden] = useState("");
 
@@ -44,7 +48,7 @@ const AddProductScreen = ({ history }) => {
       setCountInStock(productToEdit.countInStock);
       setImage(productToEdit.image);
       setBrand(productToEdit.brand);
-      if (productToEdit.category) setCategory(productToEdit.category.name);
+      if (productToEdit.category) setCategory(productToEdit.category);
       setPrice(productToEdit.price);
       setHidden(productToEdit.hidden);
     }
@@ -123,14 +127,16 @@ const AddProductScreen = ({ history }) => {
                   value={countInStock}
                 />
               </Form.Group>
-              <Form.Group as={Col} md='7' className='py-4'>
+              <Form.Group as={Col} md='7' className='py-4 '>
                 <Form.Label>Category</Form.Label>
                 <Form.Control
+                  className='pointer'
                   required
                   placeholder='Category'
                   size='lg'
                   onChange={(e) => setCategory(e.target.value)}
-                  value={category}
+                  onClick={() => setModalShow(true)}
+                  value={category.name || ""}
                 />
               </Form.Group>
 
@@ -179,6 +185,25 @@ const AddProductScreen = ({ history }) => {
     </>
   );
 
+  const chooseCategoryModal = () => (
+    <Modal
+      onHide={onHide}
+      show={modalShow}
+      size='lg'
+      aria-labelledby='contained-modal-title-vcenter'
+      centered>
+      <Modal.Header closeButton>
+        <Modal.Title id='contained-modal-title-vcenter'>Choose Category</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <CategoryComponent startCategory={category._id} setCategory={setCategory}></CategoryComponent>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={onHide}>Submit</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+
   return (
     <>
       <Row>
@@ -202,6 +227,7 @@ const AddProductScreen = ({ history }) => {
         </Col>
       </Row>
       {loadingProduct ? <Loader marginTop={8} /> : showFields()}
+      {chooseCategoryModal()}
     </>
   );
 };

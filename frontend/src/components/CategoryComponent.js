@@ -9,7 +9,7 @@ import {
 import { useHistory } from "react-router-dom";
 import FadeIn from "react-fade-in";
 
-const CategoryComponent = ({ startCategory, keyword }) => {
+const CategoryComponent = ({ startCategory, keyword, setCategory }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -23,19 +23,28 @@ const CategoryComponent = ({ startCategory, keyword }) => {
   const getCategory = useSelector((state) => state.getCategory);
   const { loading: loadingCategory, error: errorCategory, category } = getCategory;
 
-  const getSelectedCategory = (id) => {
+  const getSelectedCategory = (category) => {
+    const id = category._id;
     if (id) {
       dispatch(getCategoryAction(id));
-      const searchObj = { category: id };
-      if (keyword) searchObj.keyword = keyword;
-      dispatch(getProducts(searchObj));
-      const redirectPage = keyword ? `/search/${keyword}/category/${id}` : `/category/${id}`;
-      history.push(redirectPage);
+      if (setCategory) {
+        setCategory(category);
+      } else {
+        const searchObj = { category: id };
+        if (keyword) searchObj.keyword = keyword;
+        dispatch(getProducts(searchObj));
+        const redirectPage = keyword ? `/search/${keyword}/category/${id}` : `/category/${id}`;
+        history.push(redirectPage);
+      }
     } else {
       dispatch(resetCategoryAction());
       dispatch(getCategoriesAction());
-      dispatch(getProducts({}));
-      history.push(`/`);
+      if (setCategory) {
+        setCategory(category);
+      } else {
+        dispatch(getProducts({}));
+        history.push(`/`);
+      }
     }
   };
   return (
@@ -54,7 +63,7 @@ const CategoryComponent = ({ startCategory, keyword }) => {
                 <div
                   key={category._id}
                   className='category-elem pointer pl-1 py-1'
-                  onClick={() => getSelectedCategory(category._id)}>
+                  onClick={() => getSelectedCategory(category)}>
                   {category.name}
                 </div>
               ))}
@@ -68,7 +77,7 @@ const CategoryComponent = ({ startCategory, keyword }) => {
           <FadeIn delay={20}>
             <div
               className='pointer'
-              onClick={() => getSelectedCategory(category.parents[0] ? category.parents[0]._id : "")}>
+              onClick={() => getSelectedCategory(category.parents[0] ? category.parents[0] : "")}>
               <i className='fas fa-chevron-left orange-font'></i> Go Back
             </div>
             <hr className='py-0 my-1' />
@@ -79,7 +88,7 @@ const CategoryComponent = ({ startCategory, keyword }) => {
               <div
                 key={category._id}
                 className='category-elem pointer pl-3 py-1'
-                onClick={() => getSelectedCategory(category._id)}>
+                onClick={() => getSelectedCategory(category)}>
                 {category.name}
               </div>
             ))}

@@ -40,7 +40,8 @@ export const createProduct = asyncHandler(async (req, res) => {
 
   let product;
 
-  let cat = await categoryModel.assignOrCreateCategory(category, null);
+  // let cat = await categoryModel.assignOrCreateCategory(category, null);
+  let cat = await categoryModel.findById(category);
 
   product = await productModel.create({
     price,
@@ -70,7 +71,8 @@ export const updateProduct = asyncHandler(async (req, res) => {
   }
   let cat;
   if (category) {
-    cat = await categoryModel.assignOrCreateCategory(category, null);
+    // cat = await categoryModel.assignOrCreateCategory(category, null);
+    cat = await categoryModel.findById(category);
   }
 
   const updateFields = {

@@ -11,25 +11,19 @@ categorySchema.statics.assignOrCreateCategory = async function (
   categoryName = "Electronics,Laptops,Lap",
   subcategory
 ) {
-  const categoryArr = categoryName.split(","); //1: ["Electronics", "Laptops", "Lap"] 2: ["Electronics", "Laptops"]
+  const categoryArr = categoryName.split(",");
   let category;
   if (categoryArr.length === 0) {
     throw new Error("Category length is 0");
   }
-  // console.log(categoryArr);
-  let lastCategory = categoryArr[categoryArr.length - 1]; //1: "Lap" 2: "Laptops"
+  let lastCategory = categoryArr[categoryArr.length - 1];
 
-  // console.log("lastCategory: " + lastCategory);
-
-  category = await categoryModel.findOne({ name: lastCategory }); //1: null //2: null
-  // console.log("category");
-  // console.log(category);
+  category = await categoryModel.findOne({ name: lastCategory });
   if (category) {
     if (subcategory) category.subcategories.push(subcategory);
     category.save();
     return category;
   }
-  // console.log("categoryArr: " + categoryArr);
 
   if (categoryArr.length === 1) {
     category = await categoryModel.create({

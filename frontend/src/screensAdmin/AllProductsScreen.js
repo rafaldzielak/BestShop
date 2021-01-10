@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../actions/productActions";
-import { Button, Table, Fade } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
@@ -27,12 +27,12 @@ const AllProductsScreen = () => {
 
   useEffect(() => {
     if (!loggedUser || !loggedUser.isAdmin) history.push("/login");
-    else dispatch(getProducts("", "", true));
+    else dispatch(getProducts({ hidden: true }));
   }, [dispatch, history, loggedUser]);
 
   const searchHandler = (e) => {
     e.preventDefault();
-    dispatch(getProducts(keyword, "", true));
+    dispatch(getProducts({ keyword, hidden: true }));
   };
 
   return (

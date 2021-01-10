@@ -22,6 +22,9 @@ import {
   GET_CATEGORY_REQUEST,
   GET_CATEGORY_SUCCESS,
   RESET_CATEGORY,
+  CREATE_CATEGORY_FAIL,
+  CREATE_CATEGORY_REQUEST,
+  CREATE_CATEGORY_SUCCESS,
 } from "../constants/productContants";
 
 export const createProductReducer = (state = {}, action) => {
@@ -104,6 +107,19 @@ export const getCategoryReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case RESET_CATEGORY:
       return { loading: false };
+    default:
+      return state;
+  }
+};
+
+export const createCategoryReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CREATE_CATEGORY_REQUEST:
+      return { loading: true };
+    case CREATE_CATEGORY_SUCCESS:
+      return { loading: false, category: action.payload };
+    case CREATE_CATEGORY_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }
