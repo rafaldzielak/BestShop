@@ -8,6 +8,7 @@ import { getProducts } from "../actions/productActions";
 import SearchComponent from "../components/SearchComponent";
 import CategoryComponent from "../components/CategoryComponent";
 import CurrentPathComponent from "../components/CurrentPathComponent";
+import Pagination from "../components/Paginate";
 
 const ProductGridScreen = () => {
   const { keyword: key } = useParams();
@@ -16,11 +17,12 @@ const ProductGridScreen = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [keyword, setKeyword] = useState(key || "");
+  const [page, setPage] = useState(1);
 
   const [sort, setSort] = useState("");
 
   const listProducts = useSelector((state) => state.listProducts);
-  const { loading, products } = listProducts;
+  const { loading, products, pagination } = listProducts;
 
   const [sortedProducts, setSortedProducts] = useState(products);
   const [colSize, setColSize] = useState(3);
@@ -31,9 +33,10 @@ const ProductGridScreen = () => {
         keyword: key || "",
         sort,
         category,
+        page,
       })
     );
-  }, [dispatch, sort, key, category]);
+  }, [dispatch, sort, key, category, page]);
 
   useEffect(() => {
     setSortedProducts(products);
@@ -136,6 +139,7 @@ const ProductGridScreen = () => {
           {loading ? <Loader marginTop={10} animation='border' variant='warning' /> : showProducts()}
         </Col>
       </Row>
+      {!loading && <Pagination setPage={setPage} pagination={pagination} />}
     </>
   );
 };

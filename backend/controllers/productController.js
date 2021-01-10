@@ -3,6 +3,7 @@ import categoryModel from "../models/categoryModel.js";
 import productModel from "../models/productModel.js";
 import asyncHandler from "express-async-handler";
 import orderModel from "../models/orderModel.js";
+import paginateResults from "../utils/paginateResults.js";
 
 export const getProducts = asyncHandler(async (req, res) => {
   //, hidden: false
@@ -24,8 +25,12 @@ export const getProducts = asyncHandler(async (req, res) => {
     if (sortQuery === "price") sortDirection = "asc";
     sort = [[sortQuery, sortDirection]];
   }
+  // let query = productModel.find(searchQuery).sort(sort);
+
   const products = await productModel.find(searchQuery).sort(sort);
-  res.json(products);
+  // const products = await paginateResults(query)
+  res.json(res.queryResults);
+  // res.json(products);
 });
 
 export const getProduct = asyncHandler(async (req, res) => {

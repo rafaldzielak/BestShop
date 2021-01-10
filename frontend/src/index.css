@@ -1,6 +1,8 @@
 * {
+  --primary-color: #2c3e50;
   --orange-color: #ffa000;
   --orange-lighter: #ffba00;
+  --orange-lightest: #ffd562;
   --blue-color: #005fff;
   --blue-secondary: #80afff;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
@@ -349,4 +351,68 @@ input[type="number"] {
 
 .card-img-top.px-1:hover {
   padding: 0 !important;
+}
+.page {
+  padding: 1.5rem;
+  padding-bottom: 3rem;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  margin: 0.25rem;
+  margin-bottom: 2rem;
+  background-color: #eee;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  width: 70px;
+}
+.pagination-lg .page-link {
+  padding: 1.5rem;
+  border-radius: 0px;
+  font-size: 1.4rem;
+  border: 1px solid #eee;
+}
+.page-link {
+  /* padding: 2.5rem; */
+  background-color: #ddd;
+  color: black;
+  cursor: auto;
+  border-radius: 5px !important;
+  margin: 0 0.4rem;
+  cursor: pointer !important;
+}
+.page-item.active .page-link {
+  background-color: var(--orange-color) !important;
+  color: black;
+  cursor: default !important;
+}
+.page-item.disabled .page-link {
+  background-color: white;
+  border: 1px solid #ddd;
+  color: black;
+  cursor: auto;
+}
+.page-item .page-link:hover {
+  background-color: var(--orange-lighter);
+  border: 1px solid #ddd;
+  color: black;
+  cursor: auto;
+}
+.page.act:hover {
+  background-color: var(--primary-color) !important;
+}
+.page:hover {
+  background-color: #aaa;
+}
+.page.disabled {
+  color: #bbb;
+}
+.page.disabled:hover {
+  background-color: #eee;
+  cursor: auto;
+}
+.flex-center {
+  margin: auto;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
 }

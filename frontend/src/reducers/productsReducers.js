@@ -45,14 +45,14 @@ export const createProductReducer = (state = {}, action) => {
   }
 };
 
-export const listProductsReducer = (state = { products: [] }, action) => {
+export const listProductsReducer = (state = { products: [], pagination: {} }, action) => {
   switch (action.type) {
     case GET_PRODUCTS_REQUEST:
-      return { loading: true, products: [] };
+      return { loading: true, products: [], pagination: {} };
     case GET_PRODUCTS_SUCCESS:
-      return { loading: false, products: action.payload };
+      return { loading: false, products: action.payload.data, pagination: action.payload.pagination };
     case GET_PRODUCTS_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload, pagination: {} };
     default:
       return state;
   }

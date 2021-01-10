@@ -33,11 +33,15 @@ export const getProducts = (productDetails) => async (dispatch) => {
   const sort = productDetails.sort || "";
   const hidden = productDetails.hidden || false;
   const category = productDetails.category || "";
+  const page = productDetails.page || 1;
+  const limit = productDetails.limit || 2;
+  console.log(page);
   try {
     dispatch({ type: GET_PRODUCTS_REQUEST });
     const { data } = await axios.get(
-      `/api/products/?keyword=${keyword}&sort=${sort}&hidden=${hidden}&category=${category}`
+      `/api/products/?keyword=${keyword}&sort=${sort}&hidden=${hidden}&category=${category}&page=${page}&limit=${limit}`
     );
+    console.log(data);
     dispatch({ type: GET_PRODUCTS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
