@@ -2,12 +2,6 @@ import React from "react";
 import { Pagination } from "react-bootstrap";
 const Paginate = ({ pagination, setPage }) => {
   const { page, next, prev, total, limit } = pagination;
-  console.log(pagination);
-
-  const setPagePrevious = () => {
-    console.log("prev");
-    if (page > 1) setPage(page - 1);
-  };
 
   const showPages = () => (
     <>

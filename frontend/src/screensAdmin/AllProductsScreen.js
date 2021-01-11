@@ -7,8 +7,10 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import SearchComponent from "../components/SearchComponent";
 import { useHistory } from "react-router-dom";
+import Paginate from "../components/Paginate";
 
 const AllProductsScreen = () => {
+  const [page, setPage] = useState(1);
   const [keyword, setKeyword] = useState("");
 
   const loginUser = useSelector((state) => state.loginUser);
@@ -17,7 +19,7 @@ const AllProductsScreen = () => {
   const dispatch = useDispatch();
 
   const listProducts = useSelector((state) => state.listProducts);
-  const { loading, error, products } = listProducts;
+  const { loading, error, products, pagination } = listProducts;
 
   const successTick = <i style={{ fontSize: "1.2rem" }} className='text-success fas fa-check-circle'></i>;
   const failureCross = <i style={{ fontSize: "1.2rem" }} className='text-danger fas fa-times-circle'></i>;
@@ -27,8 +29,8 @@ const AllProductsScreen = () => {
 
   useEffect(() => {
     if (!loggedUser || !loggedUser.isAdmin) history.push("/login");
-    else dispatch(getProducts({ hidden: true }));
-  }, [dispatch, history, loggedUser]);
+    else dispatch(getProducts({ hidden: true, page, limit: 50 }));
+  }, [dispatch, history, loggedUser, page]);
 
   const searchHandler = (e) => {
     e.preventDefault();
@@ -46,9 +48,16 @@ const AllProductsScreen = () => {
       {error && <Message>{error}</Message>}
 
       <div className='add-new'>
-        <h3 className='ml-auto'>All Products</h3>
+        <Link to='/admin/categories/add' className='mr-auto'>
+          <Button className='pt-3'>
+            <h5>
+              <i className='fas fa-plus'></i> Add New Category
+            </h5>
+          </Button>
+        </Link>
+        <h3 className='m-auto'>All Products</h3>
         <Link to='/admin/products/add' className='ml-auto'>
-          <Button className='ml-auto pt-3'>
+          <Button className='pt-3'>
             <h5>
               <i className='fas fa-plus'></i> Add New Product
             </h5>
@@ -97,6 +106,7 @@ const AllProductsScreen = () => {
           </tbody>
         </Table>
       )}
+      <Paginate pagination={pagination} setPage={setPage}></Paginate>
     </>
   );
 };

@@ -34,7 +34,7 @@ export const getProducts = (productDetails) => async (dispatch) => {
   const hidden = productDetails.hidden || false;
   const category = productDetails.category || "";
   const page = productDetails.page || 1;
-  const limit = productDetails.limit || 2;
+  const limit = productDetails.limit || 12;
   console.log(page);
   try {
     dispatch({ type: GET_PRODUCTS_REQUEST });
@@ -151,11 +151,17 @@ export const getCategoryAction = (id) => async (dispatch) => {
   }
 };
 
-export const createCategoryAction = (id) => async (dispatch) => {
+export const createCategoryAction = (categoryDetails) => async (dispatch, getState) => {
+  const {
+    loginUser: { loggedUser },
+  } = getState();
+  const config = {
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
+  };
   try {
     dispatch({ type: CREATE_CATEGORY_REQUEST });
-    const { data } = await axios.post(`/api/products/categories/${id}`);
-    dispatch({ type: CREATE_CATEGORY_SUCCESS, payload: data });
+    const { data } = await axios.post(`/api/products/categories/`, categoryDetails, config);
+    dispatch({ type: CREATE_CATEGORY_SUCCESS });
   } catch (error) {
     dispatch({
       type: CREATE_CATEGORY_FAIL,

@@ -139,7 +139,11 @@ const ProductGridScreen = () => {
           {loading ? <Loader marginTop={10} animation='border' variant='warning' /> : showProducts()}
         </Col>
       </Row>
-      {!loading && <Pagination setPage={setPage} pagination={pagination} />}
+      {!loading && (
+        <Col sm={12} md={{ span: 9, offset: 3 }}>
+          <Pagination setPage={setPage} pagination={pagination} />{" "}
+        </Col>
+      )}
     </>
   );
 };

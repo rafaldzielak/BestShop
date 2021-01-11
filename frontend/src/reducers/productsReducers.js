@@ -117,7 +117,7 @@ export const createCategoryReducer = (state = {}, action) => {
     case CREATE_CATEGORY_REQUEST:
       return { loading: true };
     case CREATE_CATEGORY_SUCCESS:
-      return { loading: false, category: action.payload };
+      return { loading: false, success: true };
     case CREATE_CATEGORY_FAIL:
       return { loading: false, error: action.payload };
     default:

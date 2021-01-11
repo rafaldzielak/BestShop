@@ -28,7 +28,7 @@ const queryResultsMiddleware = (model, populate) =>
     const startIndex = page * limit - limit;
     console.log(startIndex);
     const endIndex = page * limit;
-    const total = await model.countDocuments();
+    const total = await model.countDocuments(query);
 
     query = query.skip(startIndex).limit(limit);
     if (populate) query.populate = populate;

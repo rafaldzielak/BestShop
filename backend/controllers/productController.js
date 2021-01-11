@@ -3,31 +3,30 @@ import categoryModel from "../models/categoryModel.js";
 import productModel from "../models/productModel.js";
 import asyncHandler from "express-async-handler";
 import orderModel from "../models/orderModel.js";
-import paginateResults from "../utils/paginateResults.js";
 
 export const getProducts = asyncHandler(async (req, res) => {
   //, hidden: false
-  const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: "i" } } : {};
-  const categoryId = req.query.category || "";
-  // const category = categoryId ? await categoryModel.find({ parents: categoryId }) : "";
-  const category = categoryId
-    ? await categoryModel.find({ $or: [{ parents: categoryId }, { _id: categoryId }] })
-    : "";
-  const categoryObj = category ? { category } : {};
-  const sortQuery = req.query.sort || "";
-  let hiddenObj = {};
-  if (req.query.hidden === "false") hiddenObj.hidden = false;
-  const searchQuery = { ...keyword, ...hiddenObj, ...categoryObj };
+  // const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: "i" } } : {};
+  // const categoryId = req.query.category || "";
+  // // const category = categoryId ? await categoryModel.find({ parents: categoryId }) : "";
+  // const category = categoryId
+  //   ? await categoryModel.find({ $or: [{ parents: categoryId }, { _id: categoryId }] })
+  //   : "";
+  // const categoryObj = category ? { category } : {};
+  // const sortQuery = req.query.sort || "";
+  // let hiddenObj = {};
+  // if (req.query.hidden === "false") hiddenObj.hidden = false;
+  // const searchQuery = { ...keyword, ...hiddenObj, ...categoryObj };
 
-  let sort;
-  if (sortQuery) {
-    let sortDirection = "desc";
-    if (sortQuery === "price") sortDirection = "asc";
-    sort = [[sortQuery, sortDirection]];
-  }
+  // let sort;
+  // if (sortQuery) {
+  //   let sortDirection = "desc";
+  //   if (sortQuery === "price") sortDirection = "asc";
+  //   sort = [[sortQuery, sortDirection]];
+  // }
   // let query = productModel.find(searchQuery).sort(sort);
 
-  const products = await productModel.find(searchQuery).sort(sort);
+  // const products = await productModel.find(searchQuery).sort(sort);
   // const products = await paginateResults(query)
   res.json(res.queryResults);
   // res.json(products);
@@ -176,4 +175,37 @@ export const getCategory = asyncHandler(async (req, res) => {
     .populate("parents", "name")
     .sort("subcategories");
   res.json(category);
+});
+
+export const createCategory = asyncHandler(async (req, res) => {
+  console.log(req.body);
+  const parentId = req.body.parentId;
+  const name = req.body.name;
+  const parentCategory = parentId
+    ? await categoryModel.findById(parentId).populate("subcategories", "name")
+    : null;
+  if (parentId) {
+    if (!parentCategory) {
+      res.status(404);
+      throw new Error("Parent Category does not exist!");
+    }
+    parentCategory.subcategories.forEach((subCategory) => {
+      if (subCategory.name === name) {
+        res.status(401);
+        throw new Error("Category already exists!");
+      }
+    });
+  }
+
+  let parents = parentCategory ? [parentCategory, ...parentCategory.parents] : [];
+  const createdCategory = await categoryModel.create({
+    name,
+    parents,
+    level: parents.length,
+    subcategories: [],
+  });
+  parentCategory.subcategories.push(createdCategory);
+  await parentCategory.save();
+
+  res.json(createdCategory);
 });

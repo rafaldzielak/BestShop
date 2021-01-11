@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const categorySchema = mongoose.Schema({
   name: { type: String, required: true, default: "" },
   subcategories: [{ type: mongoose.Schema.Types.ObjectId, required: true, default: null, unique: true }],
-  parents: [{ type: mongoose.Schema.Types.ObjectId, unique: true }],
+  parents: [{ type: mongoose.Schema.Types.ObjectId }],
   level: { type: Number, required: true, default: 0 },
 });
 

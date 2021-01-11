@@ -13,7 +13,7 @@ import AllProductsScreen from "./screensAdmin/AllProductsScreen";
 import AddProductScreen from "./screensAdmin/AddProductScreen";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import NavbarComponent from "./components/NavbarComponent";
-import AllCategoriesScreen from "./screensAdmin/AllCategoriesScreen";
+import AddCategoriesScreen from "./screensAdmin/AddCategoriesScreen";
 
 const App = () => {
   return (
@@ -36,7 +36,7 @@ const App = () => {
         <Route exact path='/admin/products' component={AllProductsScreen}></Route>
         <Route exact path='/admin/products/add' component={AddProductScreen}></Route>
         <Route exact path='/admin/products/edit/:id' component={AddProductScreen}></Route>
-        <Route exact path='/admin/categories' component={AllCategoriesScreen}></Route>
+        <Route exact path='/admin/categories/add' component={AddCategoriesScreen}></Route>
       </Router>
     </div>
   );
