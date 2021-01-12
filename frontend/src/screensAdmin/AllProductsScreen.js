@@ -71,6 +71,7 @@ const AllProductsScreen = () => {
             <tr style={{ fontSize: "1rem" }}>
               <th className='text-left'>Name</th>
               <th>Price</th>
+              <th>Category</th>
               <th>In Stock</th>
               <th>Rating</th>
               <th>Reviews</th>
@@ -91,6 +92,7 @@ const AllProductsScreen = () => {
                 <td>
                   <b>{product.price}</b> PLN
                 </td>
+                <td>{product.category ? product.category.name : failureCross}</td>
                 <td>{product.countInStock > 0 ? <b>{product.countInStock}</b> : failureCross}</td>
                 <td>{product.rating.toFixed(2)}</td>
                 <td>{product.numReviews}</td>

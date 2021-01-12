@@ -27,7 +27,7 @@ router
   .put(protect, adminProtect, updateProduct);
 router
   .route("/")
-  .get(queryResultsMiddleware(productModel), getProducts)
+  .get(queryResultsMiddleware(productModel, { category: "category", fields: "name" }), getProducts)
   .post(protect, adminProtect, createProduct);
 
 export default router;

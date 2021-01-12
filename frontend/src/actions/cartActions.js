@@ -27,7 +27,6 @@ export const updateCartItemsAction = () => async (dispatch) => {
   let cartContent = localStorage.getItem("cartContent")
     ? JSON.parse(localStorage.getItem("cartContent"))
     : [];
-  console.log(cartContent);
 
   Promise.all(cartContent.map(async (product) => axios.get(`/api/products/${product._id}`))).then(
     (values) => {

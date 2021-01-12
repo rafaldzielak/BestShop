@@ -135,13 +135,6 @@ const PayAndShipScreen = ({ history }) => {
                   <Form.Control.Feedback type='invalid'>Please provide a valid zip.</Form.Control.Feedback>
                 </Form.Group>
               </Form.Row>
-              <Form.Group>
-                <Form.Check
-                  required
-                  label='Agree to terms and conditions'
-                  feedback='You must agree before submitting.'
-                />
-              </Form.Group>
             </Form>
           </Col>
           <hr />

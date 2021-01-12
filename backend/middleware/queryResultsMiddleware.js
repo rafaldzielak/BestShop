@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import categoryModel from "../models/categoryModel.js";
 const queryResultsMiddleware = (model, populate) =>
   asyncHandler(async (req, res, next) => {
+    console.log(populate);
     //, hidden: false
     const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: "i" } } : {};
     const categoryId = req.query.category || "";
@@ -31,7 +32,7 @@ const queryResultsMiddleware = (model, populate) =>
     const total = await model.countDocuments(query);
 
     query = query.skip(startIndex).limit(limit);
-    if (populate) query.populate = populate;
+    if (populate) query.populate(populate.category, category.fields);
 
     const results = await query;
 
