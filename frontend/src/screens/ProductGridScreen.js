@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Loader from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, DropdownButton, Row, Col, Dropdown } from "react-bootstrap";
-import { Link, useHistory, useParams, useLocation } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
 import { getProducts } from "../actions/productActions";
 import SearchComponent from "../components/SearchComponent";
@@ -126,11 +126,9 @@ const ProductGridScreen = () => {
   return (
     <>
       {showSearchAndFilter()}
-      <Row>
-        <Col>
-          <CurrentPathComponent />
-        </Col>
-      </Row>
+
+      <CurrentPathComponent />
+
       <Row>
         <Col lg={2} md={3} className='pr-0'>
           <CategoryComponent startCategory={category} keyword={keyword} />

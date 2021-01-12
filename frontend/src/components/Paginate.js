@@ -6,7 +6,7 @@ const Paginate = ({ pagination, setPage }) => {
   const showPages = () => (
     <>
       <Pagination.Item onClick={() => setPage(page - 1)} disabled={!prev}>
-        <i class='fas fa-chevron-left'></i>
+        <i className='fas fa-chevron-left'></i>
       </Pagination.Item>
       {page > 1 && <Pagination.Item onClick={() => setPage(1)}>1</Pagination.Item>}
       {page === 3 ? (
@@ -37,7 +37,7 @@ const Paginate = ({ pagination, setPage }) => {
         )
       )}
       <Pagination.Item disabled={!next} onClick={() => setPage(page + 1)}>
-        <i class='fas fa-chevron-right'></i>
+        <i className='fas fa-chevron-right'></i>
       </Pagination.Item>
     </>
   );

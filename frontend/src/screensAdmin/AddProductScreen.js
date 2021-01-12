@@ -52,7 +52,7 @@ const AddProductScreen = ({ history }) => {
       setPrice(productToEdit.price);
       setHidden(productToEdit.hidden);
     }
-  }, [productToEdit]);
+  }, [productToEdit, id]);
 
   const handleSubmit = (event) => {
     event.preventDefault();

@@ -20,7 +20,7 @@ const CurrentPathComponent = () => {
     if (id) {
       dispatch(getCategoryAction(id));
       dispatch(getProducts({ category: id }));
-      history.push(`/?category=${id}`);
+      history.push(`/category/${id}`);
     } else {
       dispatch(resetCategoryAction());
       dispatch(getCategoriesAction());
@@ -28,21 +28,24 @@ const CurrentPathComponent = () => {
       history.push(`/`);
     }
   };
+
+  const arrowRight = <i className='fas fa-chevron-right'></i>;
+
   return (
     <FadeIn>
-      <nav className='mt-2' style={{ fontSize: "1rem" }}>
+      <nav className='mt-3' style={{ fontSize: "1rem" }}>
         {category && (
           <nav>
             <span onClick={() => getSelectedCategory()} className='pr-3 pointer'>
               BestShop
             </span>
-            <i className='fas fa-chevron-right'></i>{" "}
+            {arrowRight}{" "}
             {category.parents.reverse().map((parent) => (
-              <span>
+              <span key={parent._id}>
                 <span onClick={() => getSelectedCategory(parent._id)} className='pr-3 pointer'>
                   {parent.name}
                 </span>
-                <i className='fas fa-chevron-right'></i>{" "}
+                {arrowRight}{" "}
               </span>
             ))}
             <span onClick={() => getSelectedCategory(category._id)} className='pr-3 pointer'>

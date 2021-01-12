@@ -35,13 +35,11 @@ export const getProducts = (productDetails) => async (dispatch) => {
   const category = productDetails.category || "";
   const page = productDetails.page || 1;
   const limit = productDetails.limit || 12;
-  console.log(page);
   try {
     dispatch({ type: GET_PRODUCTS_REQUEST });
     const { data } = await axios.get(
       `/api/products/?keyword=${keyword}&sort=${sort}&hidden=${hidden}&category=${category}&page=${page}&limit=${limit}`
     );
-    console.log(data);
     dispatch({ type: GET_PRODUCTS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -160,7 +158,7 @@ export const createCategoryAction = (categoryDetails) => async (dispatch, getSta
   };
   try {
     dispatch({ type: CREATE_CATEGORY_REQUEST });
-    const { data } = await axios.post(`/api/products/categories/`, categoryDetails, config);
+    await axios.post(`/api/products/categories/`, categoryDetails, config);
     dispatch({ type: CREATE_CATEGORY_SUCCESS });
   } catch (error) {
     dispatch({

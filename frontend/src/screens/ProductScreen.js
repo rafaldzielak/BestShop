@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { Row, Col, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getProduct } from "../actions/productActions";
+import { getCategoryAction, getProduct, resetCategoryAction } from "../actions/productActions";
 import Loader from "../components/Loader";
 import AddToCartCounter from "../components/AddToCartCounter";
 import Rating from "../components/Rating";
+import CurrentPathComponent from "../components/CurrentPathComponent";
 
 const ProductScreen = ({ match }) => {
   const productId = match.params.id;
@@ -16,12 +17,18 @@ const ProductScreen = ({ match }) => {
   const listProduct = useSelector((state) => state.listProduct);
   const { error, loading, product } = listProduct;
 
+  useEffect(() => {
+    if (product) dispatch(getCategoryAction(product.category._id));
+    return () => dispatch(resetCategoryAction());
+  }, [dispatch, product]);
+
   return (
     <>
       {loading && <Loader marginTop={10} />}
       {error && <div>{error}</div>}
       {product && (
         <>
+          <CurrentPathComponent />
           <Row className='px-3 py-2 justify-content-center'></Row>
           <Row className='d-flex align-content-center'>
             <Col xl={6} lg={5} sm={12} className='d-flex align-content-center'>

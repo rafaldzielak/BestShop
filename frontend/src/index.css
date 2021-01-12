@@ -259,8 +259,8 @@ strong {
   text-align: center;
 }
 
-.row .fas,
-.row .far {
+.fas.fa-chevron-right,
+.fas.fa-chevron-left {
   color: var(--orange-color);
   width: 1.24rem;
 }

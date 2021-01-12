@@ -16,12 +16,12 @@ const CategoryComponent = ({ startCategory, keyword, setCategory }) => {
     if (startCategory) dispatch(getCategoryAction(startCategory));
     dispatch(getCategoriesAction());
     return () => dispatch(resetCategoryAction());
-  }, []);
+  }, [dispatch, startCategory]);
 
   const getCategories = useSelector((state) => state.getCategories);
-  const { loading, error, categories } = getCategories;
+  const { loading, categories } = getCategories;
   const getCategory = useSelector((state) => state.getCategory);
-  const { loading: loadingCategory, error: errorCategory, category } = getCategory;
+  const { loading: loadingCategory, category } = getCategory;
 
   const getSelectedCategory = (category) => {
     const id = category._id;
@@ -32,7 +32,7 @@ const CategoryComponent = ({ startCategory, keyword, setCategory }) => {
       } else {
         const searchObj = { category: id };
         if (keyword) searchObj.keyword = keyword;
-        dispatch(getProducts(searchObj));
+        // dispatch(getProducts(searchObj));
         const redirectPage = keyword ? `/search/${keyword}/category/${id}` : `/category/${id}`;
         history.push(redirectPage);
       }
@@ -77,7 +77,11 @@ const CategoryComponent = ({ startCategory, keyword, setCategory }) => {
           <FadeIn delay={20}>
             <div
               className='pointer'
-              onClick={() => getSelectedCategory(category.parents[0] ? category.parents[0] : "")}>
+              onClick={() =>
+                getSelectedCategory(
+                  category.parents.length > 0 ? category.parents[category.parents.length - 1] : ""
+                )
+              }>
               <i className='fas fa-chevron-left orange-font'></i> Go Back
             </div>
             <hr className='py-0 my-1' />

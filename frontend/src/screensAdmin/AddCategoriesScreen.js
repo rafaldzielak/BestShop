@@ -9,6 +9,7 @@ import {
 import { Form, Button } from "react-bootstrap";
 import FadeIn from "react-fade-in";
 import Loader from "../components/Loader";
+import Message from "../components/Message";
 
 const AddCategoriesScreen = ({ history }) => {
   const [newCategoryName, setNewCategoryName] = useState("");
@@ -17,7 +18,7 @@ const AddCategoriesScreen = ({ history }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCategoriesAction());
-  }, []);
+  }, [dispatch]);
 
   const getCategories = useSelector((state) => state.getCategories);
   const { loading, error, categories } = getCategories;
@@ -36,7 +37,7 @@ const AddCategoriesScreen = ({ history }) => {
       dispatch(getCategoryAction(parentCategory));
       setNewCategoryName("");
     }
-  }, [success]);
+  }, [dispatch, success, parentCategory]);
 
   const getSelectedCategory = (id) => {
     if (id) {
@@ -50,6 +51,7 @@ const AddCategoriesScreen = ({ history }) => {
   };
   return (
     <div className='d-flex justify-content-center'>
+      {(error || errorCategory || errorCreate) && <Message>{errorCategory || errorCreate || error}</Message>}
       <div className='mt-3'>
         <Form.Label>Choose Parent Category</Form.Label>
         <nav className='border px-3 py-3' style={{ minHeight: "300px", width: "300px", fontSize: "1rem" }}>
