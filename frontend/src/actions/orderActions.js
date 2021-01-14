@@ -20,6 +20,7 @@ import {
   GET_ALL_ORDERS_SUCCESS,
 } from "../constants/orderConstants.js";
 import axios from "axios";
+import { cleanCartAction } from "./cartActions.js";
 
 export const placeOrderAction = (orderDetails) => async (dispatch, getState) => {
   const {
@@ -31,7 +32,8 @@ export const placeOrderAction = (orderDetails) => async (dispatch, getState) => 
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
     };
     const { data } = await axios.post("/api/orders", orderDetails, config);
-    console.log(data);
+    // console.log(data);
+    dispatch(cleanCartAction());
     dispatch({ type: PLACE_ORDER_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

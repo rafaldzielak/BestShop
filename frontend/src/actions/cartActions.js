@@ -1,4 +1,4 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../constants/cartConstants";
+import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_REMOVE_ALL } from "../constants/cartConstants";
 import axios from "axios";
 
 export const addToCartAction = (product, quantity) => (dispatch) => {
@@ -55,4 +55,9 @@ export const removeProductFromCartAction = (product) => (dispatch) => {
   cartContent = cartContent.filter((p) => p._id !== product._id);
   localStorage.setItem("cartContent", JSON.stringify(cartContent));
   dispatch({ type: CART_REMOVE_ITEM, payload: product });
+};
+
+export const cleanCartAction = () => (dispatch) => {
+  localStorage.removeItem("cartContent");
+  dispatch({ type: CART_REMOVE_ALL });
 };

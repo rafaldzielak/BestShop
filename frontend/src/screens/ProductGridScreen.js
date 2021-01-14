@@ -88,9 +88,9 @@ const ProductGridScreen = () => {
           <Col
             className='mx-0 px-2'
             key={product._id}
-            sm={colSize + 3}
-            md={colSize + 3}
-            lg={colSize + 1}
+            sm={12}
+            md={colSize === 3 ? colSize + 3 : 12}
+            lg={colSize === 3 ? colSize + 1 : colSize + 2}
             xl={colSize}>
             <Link to={`/product/${product._id}`}>
               <Card className='my-2 py-2 rounded bg-light border-hover'>

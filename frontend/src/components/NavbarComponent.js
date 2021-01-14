@@ -36,11 +36,11 @@ const NavbarComponent = () => {
                 </NavDropdown.Item>
               </LinkContainer>
               <NavDropdown.Divider className='my-0' />
-              <LinkContainer to='/admin/categories'>
+              {/* <LinkContainer to='/admin/categories'>
                 <NavDropdown.Item>
                   <i className='fas fa-layer-group'></i> Categories
                 </NavDropdown.Item>
-              </LinkContainer>
+              </LinkContainer> */}
               <LinkContainer to='/admin/orders'>
                 <NavDropdown.Item>
                   <i className='fas fa-book-open'></i> Orders

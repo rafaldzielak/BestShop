@@ -12,6 +12,9 @@ const CartScreen = () => {
 
   const dispatch = useDispatch();
 
+  const loginUser = useSelector((loginUser) => loginUser.loginUser);
+  const { loggedUser } = loginUser;
+
   const totalItems = useMemo(() => cartContent.reduce((prev, curr) => prev + curr.count, 0), [cartContent]);
   const totalPrice = useMemo(() => cartContent.reduce((prev, curr) => prev + curr.price * curr.count, 0), [
     cartContent,
@@ -46,7 +49,14 @@ const CartScreen = () => {
             <span>Total Price: {(totalPrice + shippingPrice).toFixed(2)} PLN</span>
           </Card.Text>
           <Link to='/checkout'>
-            <Button block variant='primary' size='lg' className='mt-5 py-3 proceed'>
+            {!loggedUser && (
+              <Link to='/login'>
+                <Button block variant='primary' size='lg' className='mt-4 py-3 proceed'>
+                  Log In To Proceed
+                </Button>
+              </Link>
+            )}
+            <Button disabled={!loggedUser} block variant='primary' size='lg' className='mt-4 py-3 proceed'>
               Proceed To Checkout
             </Button>
           </Link>
