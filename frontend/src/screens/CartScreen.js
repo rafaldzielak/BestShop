@@ -1,6 +1,7 @@
 import React, { useMemo, useEffect } from "react";
 import { Row, Col, Image, ListGroup, Button, Card, OverlayTrigger, Tooltip } from "react-bootstrap";
 import AddToCartCounter from "../components/AddToCartCounter";
+import OrderProgress from "../components/OrderProgress";
 import { removeProductFromCartAction, updateCartItemsAction } from "../actions/cartActions";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -139,6 +140,7 @@ const CartScreen = () => {
 
   return (
     <>
+      <OrderProgress cart />
       <hr />
       <Row>
         {cartContent.length > 0 ? (

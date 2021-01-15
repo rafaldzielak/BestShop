@@ -91,14 +91,15 @@ const ProfileScreen = ({ history }) => {
               <ListGroup.Item className='mb-0  pb-2 orange-border-hover'>
                 <Row style={{ height: "12rem" }}>
                   <Col md='6' className='text-left my-0'>
-                    <i className='fas fa-fingerprint'> </i> ID: <b>{order._id}</b>
+                    <i className='orange-font fas fa-fingerprint'> </i> ID: <b>{order._id}</b>
                   </Col>
                   <Col md='6' className='my-0'>
-                    <i className='far fa-clock'></i> Date:{" "}
+                    <i className='orange-font far fa-clock'></i> Date:{" "}
                     <b>{order.createdAt.substring(0, 19).replace("T", " ")}</b>
                   </Col>
                   <Col md='6' className='text-left my-0'>
-                    <i className='fas fa-money-bill-wave'></i> Value: <b>{order.totalPrice} PLN</b>
+                    <i className='orange-font fas fa-money-bill-wave'></i> Value:{" "}
+                    <b>{order.totalPrice} PLN</b>
                   </Col>
                   <Col md='6' className='text-left my-0'>
                     <OrdersStatusBar order={order} size='small'></OrdersStatusBar>

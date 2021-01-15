@@ -9,7 +9,7 @@ const OrdersStatusBar = ({ order, size }) => {
     <Row className='mr-0'>
       {size === "small" && (
         <Col xl={6} lg={7} md={8} xs={6} className='mx-0'>
-          <i className='fas fa-spinner'></i>{" "}
+          <i className='orange-font fas fa-spinner'></i>{" "}
           {order.isDelivered ? (
             <b className='text-success'>Delivered</b>
           ) : order.isDispatched ? (

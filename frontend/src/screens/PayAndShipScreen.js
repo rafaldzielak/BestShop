@@ -4,6 +4,7 @@ import { Row, Col, Form, Button, Image } from "react-bootstrap";
 import { placeOrderAction, placeOrderReset } from "../actions/orderActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import OrderProgress from "../components/OrderProgress";
 
 const PayAndShipScreen = ({ history }) => {
   const [validated, setValidated] = useState(false);
@@ -61,6 +62,8 @@ const PayAndShipScreen = ({ history }) => {
 
   return (
     <>
+      <OrderProgress ship />
+      <hr />
       {error && <Message>{error}</Message>}
       {loading ? (
         <Loader marginTop={5} />

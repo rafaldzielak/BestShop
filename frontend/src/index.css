@@ -332,9 +332,14 @@ input[type="number"] {
 .category-elem:hover {
   background-color: #eee;
 }
-
+.orange-font.fas.fa-fingerprint,
 .orange-font {
+  /* display: none !important; */
   color: var(--orange-color);
+}
+
+.grey-font {
+  color: #aaa !important;
 }
 
 .pointer {
@@ -415,4 +420,14 @@ input[type="number"] {
   display: flex !important;
   justify-content: center;
   align-items: center;
+}
+
+.cart-current {
+  font-size: 1.3rem;
+  /* padding: 1rem;
+  margin: 1rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 4px var(--orange-color) solid; */
 }

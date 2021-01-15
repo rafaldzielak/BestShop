@@ -130,18 +130,18 @@ const OrderScreen = ({ match }) => {
       <hr />
       <Row style={{ fontSize: "1rem" }}>
         <Col md={12} className='text-left my-0'>
-          <i className='fas fa-fingerprint text-center'> </i> ID: <b>{orderDetails._id}</b>
+          <i className='orange-font fas fa-fingerprint text-center'> </i> ID: <b>{orderDetails._id}</b>
         </Col>
         <Col md={12} className='my-0 text-left'>
-          <i className='far fa-clock text-center'></i> Date:{" "}
+          <i className='orange-font far fa-clock text-center'></i> Date:{" "}
           <b>{orderDetails.createdAt.substring(0, 19).replace("T", " ")}</b>
         </Col>
         <Col md={12} className='text-left my-0'>
-          <i className='fas fa-money-bill-wave text-center'></i> Products Value:{" "}
+          <i className='orange-font fas fa-money-bill-wave text-center'></i> Products Value:{" "}
           <b>{orderDetails.itemsPrice.toFixed(2)} PLN</b>
         </Col>
         <Col md={12} className='text-left my-0'>
-          <i className='fas fa-shipping-fast text-center'></i> Shipping:{" "}
+          <i className='orange-font fas fa-shipping-fast text-center'></i> Shipping:{" "}
           <b>{orderDetails.shippingPrice > 0 ? `${orderDetails.shippingPrice} PLN` : "Free!"}</b>
         </Col>
       </Row>
@@ -154,20 +154,21 @@ const OrderScreen = ({ match }) => {
       <hr />
       <Row className='mt-3 text-left' style={{ fontSize: "1rem" }}>
         <Col md={12}>
-          <i className='fas fa-user text-center'></i> Name: <b>{orderDetails.shippingAddress.name}</b>
+          <i className='orange-font fas fa-user text-center'></i> Name:{" "}
+          <b>{orderDetails.shippingAddress.name}</b>
         </Col>
         <Col md={12}>
-          <i className='fas fa-map-marker-alt text-center'></i> Address:{" "}
+          <i className='orange-font fas fa-map-marker-alt text-center'></i> Address:{" "}
           <b>{orderDetails.shippingAddress.address}</b>
         </Col>
         <Col md={12}>
-          <i className='fas fa-city text-center'></i> Postal Code & City:{" "}
+          <i className='orange-font fas fa-city text-center'></i> Postal Code & City:{" "}
           <b>
             {orderDetails.shippingAddress.postalCode}, {orderDetails.shippingAddress.city}
           </b>
         </Col>
         <Col md={12}>
-          <i className='fas fa-globe-europe text-center'></i> Country:{" "}
+          <i className='orange-font fas fa-globe-europe text-center'></i> Country:{" "}
           <b>{orderDetails.shippingAddress.country}</b>
         </Col>
       </Row>
