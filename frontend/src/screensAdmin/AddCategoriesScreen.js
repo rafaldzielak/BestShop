@@ -34,7 +34,8 @@ const AddCategoriesScreen = ({ history }) => {
 
   useEffect(() => {
     if (success) {
-      dispatch(getCategoryAction(parentCategory));
+      if (parentCategory) dispatch(getCategoryAction(parentCategory));
+      else dispatch(getCategoriesAction());
       setNewCategoryName("");
     }
   }, [dispatch, success, parentCategory]);
@@ -50,76 +51,83 @@ const AddCategoriesScreen = ({ history }) => {
     }
   };
   return (
-    <div className='d-flex justify-content-center'>
+    <>
       {(error || errorCategory || errorCreate) && <Message>{errorCategory || errorCreate || error}</Message>}
-      <div className='mt-3'>
-        <Form.Label>Choose Parent Category</Form.Label>
-        <nav className='border px-3 py-3' style={{ minHeight: "300px", width: "300px", fontSize: "1rem" }}>
-          {!loading && !loadingCategory && (
-            <FadeIn delay={20}>
-              {!category && categories.length > 0 && (
-                <>
-                  <div>
-                    <b>Categories</b>
-                  </div>
-                  <hr className='py-0 my-1' />
-                  {categories.map((category) => (
-                    <div
-                      key={category._id}
-                      className='category-elem pointer pl-1 py-1'
-                      onClick={() => getSelectedCategory(category._id)}>
-                      {category.name}
+      <div className='d-flex justify-content-center'>
+        <div className='mt-3'>
+          <Form.Label>Choose Parent Category</Form.Label>
+          <nav className='border px-3 py-3' style={{ minHeight: "300px", width: "300px", fontSize: "1rem" }}>
+            {!loading && !loadingCategory && (
+              <FadeIn delay={20}>
+                {!category && categories.length > 0 && (
+                  <>
+                    <div>
+                      <b>Categories</b>
                     </div>
-                  ))}
-                </>
-              )}
-            </FadeIn>
-          )}
+                    <hr className='py-0 my-1' />
+                    {categories.map((category) => (
+                      <div
+                        key={category._id}
+                        className='category-elem pointer pl-1 py-1'
+                        onClick={() => getSelectedCategory(category._id)}>
+                        {category.name}
+                      </div>
+                    ))}
+                  </>
+                )}
+              </FadeIn>
+            )}
 
-          {category && (
-            <>
-              {loadingCreate ? (
-                <Loader marginTop={3} />
-              ) : (
-                <FadeIn delay={20}>
-                  <div className='pointer' onClick={() => getSelectedCategory(category.parents[0])}>
-                    <i className='fas fa-chevron-left orange-font'></i> Go Back
-                  </div>
-                  <hr className='py-0 my-1' />
-                  <div className='category-elem pl-1 py-1'>
-                    <b>{category.name}</b>
-                  </div>
-                  {category.subcategories.map((category) => (
+            {category && (
+              <>
+                {console.log("category")}
+                {console.log(category)}
+                {loadingCreate ? (
+                  <Loader marginTop={3} />
+                ) : (
+                  <FadeIn delay={20}>
                     <div
-                      key={category._id}
-                      className='category-elem pointer pl-3 py-1'
-                      onClick={() => getSelectedCategory(category._id)}>
-                      {category.name}
+                      className='pointer'
+                      onClick={() => getSelectedCategory(category.parents ? category.parents[0] : null)}>
+                      <i className='fas fa-chevron-left orange-font'></i> Go Back
                     </div>
-                  ))}
-                </FadeIn>
-              )}
-            </>
-          )}
-        </nav>
-        <Form onSubmit={submitHandler}>
-          <Form.Group className='mt-3' style={{ width: "300px" }}>
-            <Form.Label>Category Name</Form.Label>
-            <Form.Control
-              value={newCategoryName}
-              onChange={(e) => setNewCategoryName(e.target.value)}
-              size='lg'
-              type='text'
-              placeholder='Category Name'
-            />
-            <br />
-          </Form.Group>
-          <Button type='submit' block size='lg'>
-            Submit
-          </Button>
-        </Form>
+                    <hr className='py-0 my-1' />
+                    <div className='category-elem pl-1 py-1'>
+                      <b>{category.name}</b>
+                    </div>
+                    {category.subcategories &&
+                      category.subcategories.map((category) => (
+                        <div
+                          key={category._id}
+                          className='category-elem pointer pl-3 py-1'
+                          onClick={() => getSelectedCategory(category._id)}>
+                          {category.name}
+                        </div>
+                      ))}
+                  </FadeIn>
+                )}
+              </>
+            )}
+          </nav>
+          <Form onSubmit={submitHandler}>
+            <Form.Group className='mt-3' style={{ width: "300px" }}>
+              <Form.Label>Category Name</Form.Label>
+              <Form.Control
+                value={newCategoryName}
+                onChange={(e) => setNewCategoryName(e.target.value)}
+                size='lg'
+                type='text'
+                placeholder='Category Name'
+              />
+              <br />
+            </Form.Group>
+            <Button type='submit' block size='lg'>
+              Submit
+            </Button>
+          </Form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

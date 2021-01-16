@@ -204,8 +204,10 @@ export const createCategory = asyncHandler(async (req, res) => {
     level: parents.length,
     subcategories: [],
   });
-  parentCategory.subcategories.push(createdCategory);
-  await parentCategory.save();
+  if (parentCategory) {
+    parentCategory.subcategories.push(createdCategory);
+    await parentCategory.save();
+  }
 
   res.json(createdCategory);
 });

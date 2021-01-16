@@ -335,6 +335,7 @@ input[type="number"] {
 .orange-font.fas.fa-fingerprint,
 .orange-font {
   /* display: none !important; */
+  transition: all 1s ease;
   color: var(--orange-color);
 }
 
