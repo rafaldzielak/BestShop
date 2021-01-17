@@ -3,6 +3,7 @@ import categoryModel from "../models/categoryModel.js";
 import productModel from "../models/productModel.js";
 import asyncHandler from "express-async-handler";
 import orderModel from "../models/orderModel.js";
+import axios from "axios";
 
 export const getProducts = asyncHandler(async (req, res) => {
   //, hidden: false
@@ -211,3 +212,25 @@ export const createCategory = asyncHandler(async (req, res) => {
 
   res.json(createdCategory);
 });
+
+export const removeCategoryWithSubcategories = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+  const category = await categoryModel.findById(id);
+
+  await removeCategoryFromDb(id);
+
+  res.json("success");
+});
+
+const removeCategoryFromDb = async (id) => {
+  const category = await categoryModel.findById(id);
+  for (let subId of category.subcategories) await removeCategoryFromDb(subId);
+  const parentCat = category.parents[0] ? await categoryModel.findById(category.parents[0]) : null;
+  if (parentCat) {
+    parentCat.subcategories = parentCat.subcategories.filter(
+      (id) => id.toString() !== category._id.toString()
+    );
+    await parentCat.save();
+  }
+  await category.remove();
+};

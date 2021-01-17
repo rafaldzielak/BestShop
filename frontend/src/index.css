@@ -432,3 +432,7 @@ input[type="number"] {
   border-radius: 50%;
   border: 4px var(--orange-color) solid; */
 }
+.category-elem.pointer {
+  display: flex;
+  justify-content: space-between;
+}

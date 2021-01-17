@@ -9,6 +9,7 @@ import {
   updateProduct,
   getCategory,
   createCategory,
+  removeCategoryWithSubcategories,
 } from "../controllers/productController.js";
 import protect from "../middleware/authMiddleware.js";
 import adminProtect from "../middleware/adminMiddleware.js";
@@ -17,7 +18,10 @@ import productModel from "../models/productModel.js";
 
 const router = express.Router();
 
-router.route("/categories/:id").get(getCategory);
+router
+  .route("/categories/:id")
+  .get(getCategory)
+  .delete(protect, adminProtect, removeCategoryWithSubcategories);
 router.route("/categories/").get(getCategories).post(protect, adminProtect, createCategory);
 router.route("/:id/order/:orderId/review").put(protect, createReview);
 router

@@ -5,6 +5,7 @@ import {
   getCategoryAction,
   resetCategoryAction,
   createCategoryAction,
+  removeCategoryAction,
 } from "../actions/productActions";
 import { Form, Button } from "react-bootstrap";
 import FadeIn from "react-fade-in";
@@ -26,19 +27,27 @@ const AddCategoriesScreen = ({ history }) => {
   const { loading: loadingCategory, error: errorCategory, category } = getCategory;
   const createCategory = useSelector((state) => state.createCategory);
   const { loading: loadingCreate, error: errorCreate, success } = createCategory;
+  const removeCategory = useSelector((state) => state.removeCategory);
+  const { loading: loadingRemove, error: errorRemove, success: successRemove } = removeCategory;
 
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(createCategoryAction({ name: newCategoryName, parentId: parentCategory }));
   };
+  const removeHandler = (e, id) => {
+    if (window.confirm("Are you sure to delete this category with all it's subcategories?")) {
+      e.stopPropagation();
+      dispatch(removeCategoryAction(id));
+    }
+  };
 
   useEffect(() => {
-    if (success) {
+    if (success || successRemove) {
       if (parentCategory) dispatch(getCategoryAction(parentCategory));
       else dispatch(getCategoriesAction());
       setNewCategoryName("");
     }
-  }, [dispatch, success, parentCategory]);
+  }, [dispatch, success, parentCategory, successRemove]);
 
   const getSelectedCategory = (id) => {
     if (id) {
@@ -50,6 +59,7 @@ const AddCategoriesScreen = ({ history }) => {
       dispatch(getCategoriesAction());
     }
   };
+
   return (
     <>
       {(error || errorCategory || errorCreate) && <Message>{errorCategory || errorCreate || error}</Message>}
@@ -70,7 +80,10 @@ const AddCategoriesScreen = ({ history }) => {
                         key={category._id}
                         className='category-elem pointer pl-1 py-1'
                         onClick={() => getSelectedCategory(category._id)}>
-                        {category.name}
+                        <span>{category.name}</span>{" "}
+                        <span>
+                          <i onClick={(e) => removeHandler(e, category._id)} className='fas fa-trash'></i>
+                        </span>
                       </div>
                     ))}
                   </>
@@ -80,15 +93,17 @@ const AddCategoriesScreen = ({ history }) => {
 
             {category && (
               <>
-                {console.log("category")}
-                {console.log(category)}
                 {loadingCreate ? (
                   <Loader marginTop={3} />
                 ) : (
                   <FadeIn delay={20}>
                     <div
                       className='pointer'
-                      onClick={() => getSelectedCategory(category.parents ? category.parents[0] : null)}>
+                      onClick={() =>
+                        getSelectedCategory(
+                          category.parents && category.parents[0] ? category.parents[0]._id : null
+                        )
+                      }>
                       <i className='fas fa-chevron-left orange-font'></i> Go Back
                     </div>
                     <hr className='py-0 my-1' />
@@ -101,7 +116,10 @@ const AddCategoriesScreen = ({ history }) => {
                           key={category._id}
                           className='category-elem pointer pl-3 py-1'
                           onClick={() => getSelectedCategory(category._id)}>
-                          {category.name}
+                          <span>{category.name}</span>{" "}
+                          <span>
+                            <i onClick={(e) => removeHandler(e, category._id)} className='fas fa-trash'></i>
+                          </span>
                         </div>
                       ))}
                   </FadeIn>

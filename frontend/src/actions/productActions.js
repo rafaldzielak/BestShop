@@ -25,6 +25,9 @@ import {
   CREATE_CATEGORY_FAIL,
   CREATE_CATEGORY_REQUEST,
   CREATE_CATEGORY_SUCCESS,
+  REMOVE_CATEGORY_FAIL,
+  REMOVE_CATEGORY_REQUEST,
+  REMOVE_CATEGORY_SUCCESS,
 } from "../constants/productContants";
 import axios from "axios";
 
@@ -163,6 +166,25 @@ export const createCategoryAction = (categoryDetails) => async (dispatch, getSta
   } catch (error) {
     dispatch({
       type: CREATE_CATEGORY_FAIL,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const removeCategoryAction = (id) => async (dispatch, getState) => {
+  const {
+    loginUser: { loggedUser },
+  } = getState();
+  const config = {
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
+  };
+  try {
+    dispatch({ type: REMOVE_CATEGORY_REQUEST });
+    await axios.delete(`/api/products/categories/${id}`, config);
+    dispatch({ type: REMOVE_CATEGORY_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: REMOVE_CATEGORY_FAIL,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }

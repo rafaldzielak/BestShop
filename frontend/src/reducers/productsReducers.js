@@ -25,6 +25,9 @@ import {
   CREATE_CATEGORY_FAIL,
   CREATE_CATEGORY_REQUEST,
   CREATE_CATEGORY_SUCCESS,
+  REMOVE_CATEGORY_FAIL,
+  REMOVE_CATEGORY_REQUEST,
+  REMOVE_CATEGORY_SUCCESS,
 } from "../constants/productContants";
 
 export const createProductReducer = (state = {}, action) => {
@@ -119,6 +122,19 @@ export const createCategoryReducer = (state = {}, action) => {
     case CREATE_CATEGORY_SUCCESS:
       return { loading: false, success: true };
     case CREATE_CATEGORY_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const removeCategoryReducer = (state = {}, action) => {
+  switch (action.type) {
+    case REMOVE_CATEGORY_REQUEST:
+      return { loading: true };
+    case REMOVE_CATEGORY_SUCCESS:
+      return { loading: false, success: true };
+    case REMOVE_CATEGORY_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;
