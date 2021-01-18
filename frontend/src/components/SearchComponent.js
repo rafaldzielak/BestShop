@@ -3,8 +3,8 @@ import { Col, Form, FormControl, Button } from "react-bootstrap";
 
 const SearchComponent = ({ keyword, setKeyword, searchHandler, placeholder }) => {
   return (
-    <Form inline onSubmit={searchHandler} className='my-2 justify-content-center'>
-      <Col sm={10} xl={10} xs={7} className='m-0 p-0'>
+    <Form inline onSubmit={searchHandler} className='my-2 mx-0 px-0 justify-content-center'>
+      <Col sm={10} xl={10} xs={9} className='m-0 p-0'>
         <FormControl
           size='lg'
           style={{ width: "100%" }}
@@ -12,7 +12,7 @@ const SearchComponent = ({ keyword, setKeyword, searchHandler, placeholder }) =>
           placeholder={placeholder}
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
-          className='mr-3'
+          className='mr-0'
         />
       </Col>
       <Col xs={3} sm={2} xl={2}>

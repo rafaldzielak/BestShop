@@ -42,7 +42,7 @@ const ProductScreen = ({ match }) => {
                     <h3 className='text-center'>{product.price} PLN</h3>
                     <hr />
                     <p
-                      className='mx-2 px-3 py-2 desc text-justify'
+                      className='mx-2 px-0 py-2 desc text-justify'
                       style={{ maxHeight: "40vh", overflow: "auto" }}>
                       {product.description}
                     </p>

@@ -104,8 +104,8 @@ code {
   font-size: 2.1rem;
 }
 #dropdown-variants-primary.btn {
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
   height: 50px;
 }
 
@@ -439,4 +439,13 @@ input[type="number"] {
 .category-elem.pointer {
   display: flex;
   justify-content: space-between;
+}
+
+@media (max-width: 568) {
+  .border-right {
+    border-right: none !important;
+  }
+}
+.margin-small {
+  margin-top: 1rem;
 }

@@ -54,8 +54,8 @@ const ProductGridScreen = () => {
   };
 
   const showSearchAndFilter = () => (
-    <Row className='flex-sort mx-0'>
-      <Col className='px-0' lg={10} xs={9} md={7} sm={8}>
+    <Row className='flex-sort mx-0 px-0'>
+      <Col className='px-0 mx-0' lg={10} xs={9} md={7} sm={8}>
         <SearchComponent
           keyword={keyword}
           setKeyword={setKeyword}

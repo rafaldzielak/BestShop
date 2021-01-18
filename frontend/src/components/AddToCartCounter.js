@@ -50,7 +50,7 @@ const AddToCartCounter = ({ product, numberOfProducts = 1, updateOnClick = false
       {product.countInStock > 0 && (
         <Col sm={buttonColSize}>
           <Row className='ml-1'>
-            <Col sm={4} className='px-2'>
+            <Col xs={4} className='px-2'>
               <Button
                 onClick={decreaseCount}
                 variant='primary'
@@ -60,12 +60,12 @@ const AddToCartCounter = ({ product, numberOfProducts = 1, updateOnClick = false
                 <b>−</b>
               </Button>
             </Col>
-            <Col sm={4} className='px-2'>
+            <Col xs={4} className='px-2'>
               <h1 style={{ height, lineHeight: height, fontSize }} className='item-counter ml-auto'>
                 {product.count || cartCounter}
               </h1>
             </Col>
-            <Col sm={4} className='px-2'>
+            <Col xs={4} className='px-2'>
               <Button
                 className={`orange ${product.countInStock <= cartCounter && "disabled"}`}
                 onClick={increaseCount}
@@ -80,7 +80,7 @@ const AddToCartCounter = ({ product, numberOfProducts = 1, updateOnClick = false
       )}
 
       {!updateOnClick && product.countInStock > 0 && (
-        <Col sm={7} className='px-4 orange'>
+        <Col xs={12} sm={7} className='pl-4 pr-2 orange margin-small'>
           <OverlayTrigger trigger='click' placement='top' overlay={popover} show={showToolTip}>
             <Button onClick={addToCartHandler} variant='primary' block style={{ height, fontSize: "1.6rem" }}>
               Add To Cart
