@@ -12,9 +12,9 @@ connectDB();
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("API WORKING");
-});
+// app.get("/", (req, res) => {
+//   res.send("API WORKING");
+// });
 
 app.use("/api/products", productRoute);
 app.use("/api/auth", userRoute);
