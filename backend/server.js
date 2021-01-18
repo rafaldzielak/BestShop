@@ -1,6 +1,7 @@
 import express from "express";
 import colors from "colors";
 import morgan from "morgan";
+import path from "path";
 import connectDB from "./config/connectDb.js";
 import { errorHandler, notFound } from "./auth/errorMiddleware.js";
 import productRoute from "./routes/productRoutes.js";
@@ -12,14 +13,19 @@ connectDB();
 
 app.use(express.json());
 
-// app.get("/", (req, res) => {
-//   res.send("API WORKING");
-// });
-
 app.use("/api/products", productRoute);
 app.use("/api/auth", userRoute);
 app.use("/api/orders", orderRoute);
 app.get("/api/config/paypal", (req, res) => res.send(process.env.PAYPAL_CLIENT_ID));
+
+const __dirname = path.resolve();
+if (process.env.NODE_ENV == "production") {
+  console.log("PRODUCTION");
+  app.use(express.static(path.join(__dirname, "/frontend/build")));
+  console.log(__dirname, "frontend", "build", "index.html");
+  app.get("*", (req, res) => res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html")));
+} else app.get("/", (req, res) => res.send("API RUNNING"));
+
 app.use(notFound);
 app.use(errorHandler);
 

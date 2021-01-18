@@ -179,7 +179,7 @@ export const getCategory = asyncHandler(async (req, res) => {
 });
 
 export const createCategory = asyncHandler(async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const parentId = req.body.parentId;
   const name = req.body.name;
   const parentCategory = parentId
@@ -215,7 +215,7 @@ export const createCategory = asyncHandler(async (req, res) => {
 
 export const removeCategoryWithSubcategories = asyncHandler(async (req, res) => {
   const id = req.params.id;
-  const category = await categoryModel.findById(id);
+  // const category = await categoryModel.findById(id);
 
   await removeCategoryFromDb(id);
 

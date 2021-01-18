@@ -58,25 +58,29 @@ const ProductScreen = ({ match }) => {
               <h2>Reviews</h2>
             </Col>
             <Col sm={12} className='text-center'>
-              {product.reviews.map((review) => (
-                <div key={review._id}>
-                  <hr style={{ marginTop: "0.5rem", marginBottom: "0.5rem", width: "90%" }} />
-                  <Row className='container'>
-                    <Col md={4} lg={4}>
-                      <Col sm={12}>
-                        <h5 style={{ fontWeight: "bold" }}>{review.name}</h5>
+              {product.reviews.length > 0 ? (
+                product.reviews.map((review) => (
+                  <div key={review._id}>
+                    <hr style={{ marginTop: "0.5rem", marginBottom: "0.5rem", width: "90%" }} />
+                    <Row className='container'>
+                      <Col md={4} lg={4}>
+                        <Col sm={12}>
+                          <h5 style={{ fontWeight: "bold" }}>{review.name}</h5>
+                        </Col>
+                        <Col sm={12}>
+                          <Rating rating={review.rating}></Rating>
+                        </Col>
                       </Col>
-                      <Col sm={12}>
-                        <Rating rating={review.rating}></Rating>
+                      <Col md={8} lg={8} className='my-auto'>
+                        <p>{review.comment}</p>
                       </Col>
-                    </Col>
-                    <Col md={8} lg={8} className='my-auto'>
-                      <p>{review.comment}</p>
-                    </Col>
-                  </Row>
-                  <br />
-                </div>
-              ))}
+                    </Row>
+                    <br />
+                  </div>
+                ))
+              ) : (
+                <h4 className='my-4'> There are no reviews for this product yet</h4>
+              )}
             </Col>
           </Row>
         </>

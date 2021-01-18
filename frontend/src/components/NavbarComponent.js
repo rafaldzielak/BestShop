@@ -16,7 +16,7 @@ const NavbarComponent = () => {
   };
 
   return (
-    <Navbar expand='lg' bg='primary' variant='dark'>
+    <Navbar expand='lg' bg='primary' variant='dark' style={{ fontSize: "1rem" }}>
       <LinkContainer to='/'>
         <Navbar.Brand>BestShop!</Navbar.Brand>
       </LinkContainer>
@@ -25,12 +25,12 @@ const NavbarComponent = () => {
         <Nav className='ml-auto'>
           {loggedUser && loggedUser.isAdmin && (
             <NavDropdown
-              className='hover-orange pr-4'
+              className='hover-orange pr-4 text-center'
               title='Admin Settings'
               id='basic-nav-dropdown'
               variant='primary'>
               <NavDropdown.Divider className='my-0' />
-              <LinkContainer to='/admin/products'>
+              <LinkContainer className='text-center' to='/admin/products'>
                 <NavDropdown.Item>
                   <i className='fas fa-list'></i> Products
                 </NavDropdown.Item>
@@ -59,8 +59,8 @@ const NavbarComponent = () => {
             </NavDropdown>
           )}
 
-          <LinkContainer to='/cart'>
-            <Nav.Link className='hover-orange'>
+          <LinkContainer to='/cart' style={{ paddingLeft: "2rem" }}>
+            <Nav.Link className='hover-orange text-center'>
               <i className='fas fa-shopping-cart'></i> Cart
             </Nav.Link>
           </LinkContainer>
@@ -68,7 +68,7 @@ const NavbarComponent = () => {
           {loggedUser ? (
             <>
               <NavDropdown
-                className='hover-orange pl-4'
+                className='hover-orange pl-4 text-center'
                 title={loggedUser.name}
                 id='basic-nav-dropdown'
                 variant='primary'>
@@ -92,11 +92,18 @@ const NavbarComponent = () => {
             </>
           ) : (
             <>
-              <LinkContainer to='/login'>
-                <Nav.Link href='/login'>Login</Nav.Link>
+              <LinkContainer to='/login' style={{ paddingLeft: "2rem" }} className='text-center hover-orange'>
+                <Nav.Link href='/login'>
+                  <i className='fas fa-sign-in-alt'></i> Login
+                </Nav.Link>
               </LinkContainer>
-              <LinkContainer to='/register'>
-                <Nav.Link href='/register'>Register</Nav.Link>
+              <LinkContainer
+                to='/register'
+                style={{ paddingLeft: "2rem" }}
+                className='text-center hover-orange'>
+                <Nav.Link href='/register'>
+                  <i style={{ fontSize: "0.9rem" }} className='fas fa-user-plus'></i> Register
+                </Nav.Link>
               </LinkContainer>
             </>
           )}
