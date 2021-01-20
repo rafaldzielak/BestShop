@@ -30,24 +30,30 @@ const CartScreen = () => {
 
   const showSummary = () => (
     <Col lg={3} md={12} className='px-3'>
-      <Card style={{}} className='py-3'>
+      <Card style={{}} className='py-1'>
         <Card.Body>
           <Card.Title className='text-center'>
             <h3>Summary</h3>
           </Card.Title>
           <hr />
-          <Card.Text>
-            <span>Items: {totalItems}</span>
+          <Card.Text className='flex-spread'>
+            <span>Items: </span>
+            <span>{totalItems}</span>
           </Card.Text>
-          <Card.Text>
-            <span>Price: {totalPrice.toFixed(2)} PLN </span>
+          <Card.Text className='flex-spread'>
+            <span>Price:</span>
+            <span>{totalPrice.toFixed(2)} zł </span>
           </Card.Text>
-          <Card.Text>
-            <span>Shipping: {shippingPrice.toFixed(2)} PLN </span>
+          <Card.Text className='flex-spread'>
+            <span>Shipping: </span>
+            <span>{shippingPrice.toFixed(2)} zł </span>
           </Card.Text>
           <hr />
-          <Card.Text>
-            <span>Total Price: {(totalPrice + shippingPrice).toFixed(2)} PLN</span>
+          <Card.Text className='flex-spread'>
+            <span>Total Price:</span>
+            <span>
+              <b>{(totalPrice + shippingPrice).toFixed(2)} zł</b>
+            </span>
           </Card.Text>
           <Link to='/checkout'>
             {!loggedUser && (
@@ -101,7 +107,7 @@ const CartScreen = () => {
                 </Col>
                 <Col lg={{ span: 2, order: 4 }} xs={{ span: 6, order: 5 }} className='px-1'>
                   <h5 style={{ fontSize: "1.1rem" }}>
-                    {((product.price * product.count * 100) / 100).toFixed(2)} PLN
+                    {((product.price * product.count * 100) / 100).toFixed(2)} zł
                   </h5>
                 </Col>
                 <Col
@@ -131,7 +137,7 @@ const CartScreen = () => {
         <h3 style={{ textAlign: "center" }}>
           {totalPrice > 200
             ? "You Qualify For Free Shipping!"
-            : `You miss ${(freeShippingValue - totalPrice).toFixed(2)} PLN To Get Free Shipping`}
+            : `You miss ${(freeShippingValue - totalPrice).toFixed(2)} zł To Get Free Shipping`}
         </h3>
       </Col>
       {showSummary()}

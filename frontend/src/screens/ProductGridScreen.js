@@ -9,6 +9,7 @@ import SearchComponent from "../components/SearchComponent";
 import CategoryComponent from "../components/CategoryComponent";
 import CurrentPathComponent from "../components/CurrentPathComponent";
 import Pagination from "../components/Paginate";
+import FadeIn from "react-fade-in";
 
 const ProductGridScreen = () => {
   const { keyword: key } = useParams();
@@ -82,45 +83,51 @@ const ProductGridScreen = () => {
   );
 
   const showProducts = () => (
-    <Row className='mx-0 px-0'>
-      {products &&
-        sortedProducts.map((product) => (
-          <Col
-            className='mx-0 px-2'
-            key={product._id}
-            sm={12}
-            md={colSize === 3 ? colSize + 3 : 12}
-            lg={colSize === 3 ? colSize + 1 : colSize + 2}
-            xl={colSize}>
-            <Link to={`/product/${product._id}`}>
-              <Card className='my-2 py-2 rounded bg-light border-hover'>
-                <Card.Img
-                  className='px-1 py-1'
-                  src={product.image}
-                  variant='top'
-                  style={{ height: "250px", objectFit: "scale-down" }}
-                />
-                <Card.Body>
-                  <Card.Title as='div' className='py-0  text-center'>
-                    <strong className='two-lines' style={{ fontSize: "1rem" }}>
-                      {product.name}
-                    </strong>
-                  </Card.Title>
-                  <Card.Text as='div' className='py-0  text-center'>
-                    <Rating
-                      rating={product.rating}
-                      numReviews={`${product.numReviews} ${product.numReviews === 1 ? "review" : "reviews"}`}
-                    />
-                  </Card.Text>
-                  <Card.Text as='h4' className='py-1  text-center'>
-                    {product.price} PLN
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Link>
-          </Col>
-        ))}
-    </Row>
+    <FadeIn>
+      <Row className='mx-0 px-0'>
+        {products &&
+          sortedProducts.map((product) => (
+            <Col
+              className='mx-0 px-2'
+              key={product._id}
+              xs={12}
+              sm={6}
+              md={colSize === 3 ? colSize + 3 : 12}
+              lg={colSize === 3 ? colSize + 1 : colSize + 2}
+              xl={colSize}>
+              <Link to={`/product/${product._id}`}>
+                <Card className='my-2 py-2 rounded bg-light border-hover'>
+                  <Card.Img
+                    className='px-1 py-1'
+                    src={product.image}
+                    variant='top'
+                    style={{ height: colSize === 3 ? "200px" : "250px", objectFit: "scale-down" }}
+                  />
+                  <Card.Body>
+                    <Card.Title as='div' className='py-0  text-center'>
+                      <strong className='two-lines' style={{ fontSize: "1rem" }}>
+                        {product.name}
+                      </strong>
+                    </Card.Title>
+                    <Card.Text as='div' className='py-0  text-center'>
+                      <Rating
+                        rating={product.rating}
+                        numReviews={`${product.numReviews} ${
+                          product.numReviews === 1 ? "review" : "reviews"
+                        }`}
+                      />
+                    </Card.Text>
+                    <Card.Text as='h4' className='py-1 text-center'>
+                      {product.price} PLN
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Link>
+              <hr className='d-block d-md-none' />
+            </Col>
+          ))}
+      </Row>
+    </FadeIn>
   );
 
   return (

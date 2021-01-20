@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Row, Col, Button, OverlayTrigger, Popover } from "react-bootstrap";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { addToCartAction, addOneCartAction, removeOneCartAction } from "../actions/cartActions";
 
 const AddToCartCounter = ({ product, numberOfProducts = 1, updateOnClick = false }) => {
@@ -31,10 +32,12 @@ const AddToCartCounter = ({ product, numberOfProducts = 1, updateOnClick = false
   const fontSize = updateOnClick ? "1.4rem" : "2rem";
 
   const popover = (
-    <Popover id='popover-basic' className='my-2'>
-      <Popover.Content className='bg-success'>
-        <h5>Added to Cart!</h5>
-      </Popover.Content>
+    <Popover id='popover-basic' className='my-2' style={{ opacity: 0.93 }}>
+      <Link style={{ fontSize: "1.2rem" }} to='/cart'>
+        <Popover.Content className='bg-primary py-3 px-5 text-white hover-orange'>
+          Added To <i className='fas fa-shopping-cart'></i>
+        </Popover.Content>
+      </Link>
     </Popover>
   );
 
@@ -42,7 +45,7 @@ const AddToCartCounter = ({ product, numberOfProducts = 1, updateOnClick = false
     setShowToolTip(true);
     setTimeout(() => {
       setShowToolTip(false);
-    }, 1500);
+    }, 4000);
   };
 
   return (

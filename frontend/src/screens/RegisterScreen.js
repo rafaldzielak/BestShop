@@ -32,7 +32,10 @@ const RegisterScreen = ({ history }) => {
 
   return (
     <div className='d-flex justify-content-center '>
-      <Form style={{ width: "400px", paddingTop: "2rem" }} onSubmit={formSubmit}>
+      <Form
+        style={{ maxWidth: "400px", width: "100%", paddingTop: "2rem", fontSize: "1rem" }}
+        onSubmit={formSubmit}>
+        <h2 className='text-center'>Register</h2>
         {loading && <Loader />}
         {error && <Message>{error}</Message>}
         {passwordError && <Message>{passwordError}</Message>}
@@ -72,14 +75,14 @@ const RegisterScreen = ({ history }) => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </Form.Group>
-        <Form.Group controlId='rememberMe'>
-          <Form.Check type='checkbox' label='Remember Me' />
-        </Form.Group>
-        <Button block variant='primary' type='submit'>
-          Log In
+        <Button size='lg' block variant='primary' type='submit'>
+          Create Account
         </Button>
         <br />
-        Have an account? <Link to='/login'>Login</Link>
+        Have an account?{" "}
+        <Link className='text-info' to='/login'>
+          Login
+        </Link>
       </Form>
 
       {/* <LinkContainer to='/register'>Already have an acoount?</LinkContainer> */}

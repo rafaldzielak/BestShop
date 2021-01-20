@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import FormContainer from "../components/FormContainer";
 
 const LoginScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -26,8 +25,9 @@ const LoginScreen = ({ history }) => {
   };
 
   return (
-    <FormContainer>
-      <Form onSubmit={formSubmit}>
+    <div className='d-flex justify-content-center'>
+      <Form onSubmit={formSubmit} style={{ fontSize: "1rem", maxWidth: "400px", width: "100%" }}>
+        <h2 className='text-center mt-4'>Sign In</h2>
         {loading && <Loader />}
         {error && <Message>{error}</Message>}
         <Form.Check className='pt-5 px-0'>
@@ -49,17 +49,17 @@ const LoginScreen = ({ history }) => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>
-          <Form.Group controlId='rememberMe'>
-            <Form.Check type='checkbox' label='Remember Me' />
-          </Form.Group>
-          <Button block variant='primary' size='lg' type='submit'>
+          <Button block className='mt-4' variant='primary' size='lg' type='submit'>
             Log In
           </Button>
           <br />
-          Not registered? <Link to='/register'>Register</Link>
+          Not registered?{" "}
+          <Link className='text-info' to='/register'>
+            Register
+          </Link>
         </Form.Check>
       </Form>
-    </FormContainer>
+    </div>
   );
 };
 

@@ -43,7 +43,7 @@ const Paginate = ({ pagination, setPage }) => {
   );
 
   return (
-    <Pagination className='justify-content-center ' size='lg'>
+    <Pagination className='justify-content-center mt-4 mb-5' size='lg'>
       {showPages()}
     </Pagination>
   );

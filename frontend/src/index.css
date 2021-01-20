@@ -441,11 +441,20 @@ input[type="number"] {
   justify-content: space-between;
 }
 
-@media (max-width: 568) {
+.flex-spread {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+@media only screen and (max-width: 568) {
   .border-right {
     border-right: none !important;
   }
 }
 .margin-small {
   margin-top: 1rem;
+}
+.text-white {
+  color: #fff;
 }
