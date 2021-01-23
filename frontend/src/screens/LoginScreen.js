@@ -7,6 +7,8 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 
 const LoginScreen = ({ history }) => {
+  let redirect = new URLSearchParams(window.location.search).get("redirect") || "";
+  console.log(redirect);
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
@@ -16,7 +18,7 @@ const LoginScreen = ({ history }) => {
   const { loggedUser, loading, error } = loginUser;
 
   useEffect(() => {
-    if (loggedUser) history.push("/");
+    if (loggedUser) history.push(redirect ? `/${redirect}` : "/");
   }, [loggedUser, history]);
 
   const formSubmit = (e) => {
@@ -54,7 +56,7 @@ const LoginScreen = ({ history }) => {
           </Button>
           <br />
           Not registered?{" "}
-          <Link className='text-info' to='/register'>
+          <Link className='text-info' to={`/register${redirect && `?redirect=${redirect}`}`}>
             Register
           </Link>
         </Form.Check>

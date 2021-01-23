@@ -36,20 +36,20 @@ const CartScreen = () => {
             <h3>Summary</h3>
           </Card.Title>
           <hr />
-          <Card.Text className='flex-spread'>
+          <Card.Text className='flex-spread-row'>
             <span>Items: </span>
             <span>{totalItems}</span>
           </Card.Text>
-          <Card.Text className='flex-spread'>
+          <Card.Text className='flex-spread-row'>
             <span>Price:</span>
             <span>{totalPrice.toFixed(2)} zł </span>
           </Card.Text>
-          <Card.Text className='flex-spread'>
+          <Card.Text className='flex-spread-row'>
             <span>Shipping: </span>
             <span>{shippingPrice.toFixed(2)} zł </span>
           </Card.Text>
           <hr />
-          <Card.Text className='flex-spread'>
+          <Card.Text className='flex-spread-row'>
             <span>Total Price:</span>
             <span>
               <b>{(totalPrice + shippingPrice).toFixed(2)} zł</b>
@@ -57,7 +57,7 @@ const CartScreen = () => {
           </Card.Text>
           <Link to='/checkout'>
             {!loggedUser && (
-              <Link to='/login'>
+              <Link to='/login?redirect=cart'>
                 <Button block variant='primary' size='lg' className='mt-4 py-3 proceed'>
                   Log In To Proceed
                 </Button>

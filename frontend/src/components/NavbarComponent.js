@@ -28,7 +28,7 @@ const NavbarComponent = () => {
       <LinkContainer to='/'>
         <Navbar.Brand>BestShop!</Navbar.Brand>
       </LinkContainer>
-
+      <span className='d-lg-none '>{showCartIcon}</span>
       <Navbar.Toggle aria-controls='basic-navbar-nav' />
       <Navbar.Collapse id='basic-navbar-nav ' style={{ width: "auto" }}>
         <Nav className='ml-auto'>
@@ -71,7 +71,7 @@ const NavbarComponent = () => {
 
           {loggedUser && (
             <>
-              {showCartIcon}
+              <span className='d-none d-md-block'>{showCartIcon}</span>
               <NavDropdown
                 className='hover-orange pl-4 text-center'
                 title={loggedUser.name}

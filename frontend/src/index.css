@@ -441,7 +441,7 @@ input[type="number"] {
   justify-content: space-between;
 }
 
-.flex-spread {
+.flex-spread-row {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
