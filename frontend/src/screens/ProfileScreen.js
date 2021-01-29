@@ -7,6 +7,7 @@ import { Row, Col, Form, Button, ListGroup, Image } from "react-bootstrap";
 import { updateProfileAction } from "../actions/userActions";
 import { getUserOrdersAction } from "../actions/orderActions";
 import OrdersStatusBar from "../components/OrdersStatusBar";
+import { FaUserCheck } from "react-icons/fa";
 
 const ProfileScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -73,7 +74,7 @@ const ProfileScreen = ({ history }) => {
           />
         </Form.Group>
         <Button className='py-3 my-5 bigger' variant='primary' block type='submit'>
-          Submit
+          <FaUserCheck className='orange-font' style={{ fontSize: "1.75rem" }} /> Submit
         </Button>
       </Form>
     </>

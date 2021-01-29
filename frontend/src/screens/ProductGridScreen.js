@@ -84,7 +84,7 @@ const ProductGridScreen = () => {
 
   const showProducts = () => (
     <FadeIn>
-      <Row className='mx-0 px-0'>
+      <Row className='mx-0 px-0 border-left'>
         {products &&
           sortedProducts.map((product) => (
             <Col

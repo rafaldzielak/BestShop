@@ -48,9 +48,7 @@ const CategoryComponent = ({ startCategory, keyword, setCategory }) => {
     }
   };
   return (
-    <nav
-      className='border px-3 py-3 mt-2 mx-0'
-      style={{ minHeight: "300px", width: "100%", fontSize: "1.05rem" }}>
+    <nav className='border-left pl-3 pr-0 py-2 mt-2 mx-0' style={{ width: "100%", fontSize: "1.05rem" }}>
       {!loading && !loadingCategory && (
         <FadeIn delay={20}>
           {!category && categories.length > 0 && (
@@ -69,6 +67,7 @@ const CategoryComponent = ({ startCategory, keyword, setCategory }) => {
               ))}
             </>
           )}
+          <hr className='d-block d-md-none' />
         </FadeIn>
       )}
 

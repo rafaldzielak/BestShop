@@ -5,6 +5,7 @@ import OrderProgress from "../components/OrderProgress";
 import { removeProductFromCartAction, updateCartItemsAction } from "../actions/cartActions";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { IoBagCheckOutline } from "react-icons/io5";
 
 const CartScreen = () => {
   const freeShippingValue = 200;
@@ -59,12 +60,12 @@ const CartScreen = () => {
             {!loggedUser && (
               <Link to='/login?redirect=cart'>
                 <Button block variant='primary' size='lg' className='mt-4 py-3 proceed'>
-                  Log In To Proceed
+                  <i className='fas fa-sign-in-alt'></i> Log In To Proceed
                 </Button>
               </Link>
             )}
             <Button disabled={!loggedUser} block variant='primary' size='lg' className='mt-4 py-3 proceed'>
-              Proceed To Checkout
+              <IoBagCheckOutline style={{ fontSize: "1.5rem" }} /> Proceed To Checkout
             </Button>
           </Link>
         </Card.Body>

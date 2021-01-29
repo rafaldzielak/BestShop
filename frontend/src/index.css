@@ -447,14 +447,25 @@ input[type="number"] {
   flex-direction: row;
 }
 
-@media only screen and (max-width: 568) {
-  .border-right {
-    border-right: none !important;
-  }
-}
 .margin-small {
   margin-top: 1rem;
 }
 .text-white {
   color: #fff;
+}
+
+.react-icons {
+  vertical-align: sub;
+  padding-bottom: 0.1rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .border-left {
+    border-left: none !important;
+  }
+}
+@media only screen and (max-width: 568px) {
+  .border-left {
+    border-left: none !important;
+  }
 }

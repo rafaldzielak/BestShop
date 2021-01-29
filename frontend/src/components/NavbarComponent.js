@@ -74,7 +74,11 @@ const NavbarComponent = () => {
               <span className='d-none d-md-block'>{showCartIcon}</span>
               <NavDropdown
                 className='hover-orange pl-4 text-center'
-                title={loggedUser.name}
+                title={
+                  <>
+                    <i className='fas fa-user-alt'></i> {loggedUser.name}
+                  </>
+                }
                 id='basic-nav-dropdown'
                 variant='primary'>
                 <NavDropdown.Divider className='my-0' />

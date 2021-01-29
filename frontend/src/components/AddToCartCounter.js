@@ -3,6 +3,7 @@ import { Row, Col, Button, OverlayTrigger, Popover } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { addToCartAction, addOneCartAction, removeOneCartAction } from "../actions/cartActions";
+import { FaCartPlus } from "react-icons/fa";
 
 const AddToCartCounter = ({ product, numberOfProducts = 1, updateOnClick = false }) => {
   const dispatch = useDispatch();
@@ -86,7 +87,7 @@ const AddToCartCounter = ({ product, numberOfProducts = 1, updateOnClick = false
         <Col xs={12} sm={7} className='pl-4 pr-2 orange margin-small'>
           <OverlayTrigger trigger='click' placement='top' overlay={popover} show={showToolTip}>
             <Button onClick={addToCartHandler} variant='primary' block style={{ height, fontSize: "1.6rem" }}>
-              Add To Cart
+              <FaCartPlus /> Add To Cart
             </Button>
           </OverlayTrigger>
         </Col>
