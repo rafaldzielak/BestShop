@@ -65,7 +65,7 @@ const AllProductsScreen = () => {
         </Link>
       </div>
       {loading && <Loader marginTop={8} />}
-      {products && products.length > 0 && (
+      {products?.length > 0 && (
         <Table responsive striped hover size='sm' className='text-center'>
           <thead>
             <tr style={{ fontSize: "1rem" }}>

@@ -47,7 +47,7 @@ export const getProducts = (productDetails) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_PRODUCTS_FAIL,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+      payload: error.response?.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -66,7 +66,7 @@ export const createProductAction = (product) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: CREATE_PRODUCT_FAIL,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+      payload: error.response?.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -85,7 +85,7 @@ export const updateProductAction = (id, product) => async (dispatch, getState) =
   } catch (error) {
     dispatch({
       type: UPDATE_PRODUCT_FAIL,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+      payload: error.response?.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -104,7 +104,7 @@ export const removeProductAction = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: REMOVE_PRODUCT_FAIL,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+      payload: error.response?.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -117,7 +117,7 @@ export const getProduct = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_PRODUCT_FAIL,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+      payload: error.response?.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -134,7 +134,7 @@ export const getCategoriesAction = (id = "") => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_CATEGORIES_FAIL,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+      payload: error.response?.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -147,7 +147,7 @@ export const getCategoryAction = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_CATEGORY_FAIL,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+      payload: error.response?.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -166,7 +166,7 @@ export const createCategoryAction = (categoryDetails) => async (dispatch, getSta
   } catch (error) {
     dispatch({
       type: CREATE_CATEGORY_FAIL,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+      payload: error.response?.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -185,7 +185,7 @@ export const removeCategoryAction = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: REMOVE_CATEGORY_FAIL,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+      payload: error.response?.data.message ? error.response.data.message : error.message,
     });
   }
 };

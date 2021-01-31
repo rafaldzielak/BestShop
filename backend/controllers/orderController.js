@@ -21,7 +21,7 @@ const placeOrder = asyncHandler(async (req, res) => {
     name,
   } = req.body;
 
-  if (orderItems && orderItems.length === 0) {
+  if (orderItems?.orderItems.length === 0) {
     res.status(400);
     throw new Error("No items in the order!");
   }
