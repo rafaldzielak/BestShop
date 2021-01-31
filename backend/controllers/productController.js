@@ -121,7 +121,7 @@ export const createReview = asyncHandler(async (req, res) => {
   const product = await productModel.findById(req.params.id);
   let isProductBoughtByUser = false;
 
-  if (product && order?.orderItems && String(order.user) == String(user._id)) {
+  if (product && order && String(order.user) == String(user._id) && order.orderItems) {
     for (const orderItem of order.orderItems) {
       if (orderItem._id == productId) {
         isProductBoughtByUser = true;

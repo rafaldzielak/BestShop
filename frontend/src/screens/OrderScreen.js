@@ -262,7 +262,7 @@ const OrderScreen = ({ match }) => {
               {showOrderDetails()}
               {showAddress()}
               {showPaymentDetails()}
-              {loggedUser?.isAdmin && orderDetails.isPaid && showAdminDetails()}
+              {loggedUser && loggedUser.isAdmin && orderDetails.isPaid && showAdminDetails()}
             </>
           )}
         </Col>

@@ -5,7 +5,7 @@ const adminProtect = asyncHandler(async (req, res, next) => {
   const { user } = req;
   if (user) {
     const userFromDB = await userModel.findById(user._id);
-    if (userFromDB?.isAdmin) {
+    if (userFromDB && userFromDB.isAdmin) {
       next();
     } else {
       res.status(401);

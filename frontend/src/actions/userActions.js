@@ -25,7 +25,7 @@ export const loginAction = (email, password) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: LOGIN_USER_FAIL,
-      payload: error.response?.data.message ? error.response.data.message : error.message,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -41,7 +41,7 @@ export const registerAction = (name, email, password) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: REGISTER_USER_FAIL,
-      payload: error.response?.data.message ? error.response.data.message : error.message,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -62,7 +62,7 @@ export const updateProfileAction = (name = "", password = "") => async (dispatch
   } catch (error) {
     dispatch({
       type: UPDATE_PROFILE_FAIL,
-      payload: error.response?.data.message ? error.response.data.message : error.message,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -81,7 +81,7 @@ export const getAllUsersAction = (keyword = "") => async (dispatch, getState) =>
   } catch (error) {
     dispatch({
       type: GET_ALL_USERS_FAIL,
-      payload: error.response?.data.message ? error.response.data.message : error.message,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }
 };

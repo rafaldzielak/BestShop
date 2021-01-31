@@ -38,7 +38,7 @@ export const placeOrderAction = (orderDetails) => async (dispatch, getState) => 
   } catch (error) {
     dispatch({
       type: PLACE_ORDER_FAIL,
-      payload: error.response?.data.message ? error.response.data.message : error.message,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -57,7 +57,7 @@ export const getOrderAction = (orderId) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: GET_ORDER_FAIL,
-      payload: error.response?.data.message ? error.response.data.message : error.message,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -76,7 +76,7 @@ export const updateOrderAction = (orderId, fieldsToUpdate) => async (dispatch, g
   } catch (error) {
     dispatch({
       type: UPDATE_ORDER_FAIL,
-      payload: error.response?.data.message ? error.response.data.message : error.message,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -103,7 +103,7 @@ export const getAllOrdersAction = (
   } catch (error) {
     dispatch({
       type: GET_ALL_ORDERS_FAIL,
-      payload: error.response?.data.message ? error.response.data.message : error.message,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -128,7 +128,7 @@ export const payOrderViaPaypalAction = (orderId, paypalOrderId, create_time) => 
   } catch (error) {
     dispatch({
       type: GET_ORDER_FAIL,
-      payload: error.response?.data.message ? error.response.data.message : error.message,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -147,7 +147,7 @@ export const getUserOrdersAction = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: GET_USER_ORDERS_FAIL,
-      payload: error.response?.data.message ? error.response.data.message : error.message,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -168,7 +168,7 @@ export const reviewProductAction = (productId, orderId, review) => async (dispat
     console.log(error);
     dispatch({
       type: CREATE_REVIEW_FAIL,
-      payload: error.response?.data.message ? error.response.data.message : error.message,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }
 };

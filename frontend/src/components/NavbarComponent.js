@@ -32,7 +32,7 @@ const NavbarComponent = () => {
       <Navbar.Toggle aria-controls='basic-navbar-nav' />
       <Navbar.Collapse id='basic-navbar-nav ' style={{ width: "auto" }}>
         <Nav className='ml-auto'>
-          {loggedUser?.isAdmin && (
+          {loggedUser && loggedUser.isAdmin && (
             <NavDropdown
               className='hover-orange pr-4 text-center'
               title='Admin Settings'

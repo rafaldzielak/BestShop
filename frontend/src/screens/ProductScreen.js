@@ -18,7 +18,7 @@ const ProductScreen = ({ match }) => {
   const { error, loading, product } = listProduct;
 
   useEffect(() => {
-    if (product?.category) dispatch(getCategoryAction(product.category._id));
+    if (product && product.category) dispatch(getCategoryAction(product.category._id));
     return () => dispatch(resetCategoryAction());
   }, [dispatch, product]);
 
