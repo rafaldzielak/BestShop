@@ -14,13 +14,12 @@ import {
   GET_ALL_USERS_SUCCESS,
 } from "../constants/userConstants";
 import axios from "axios";
-import { axiosGet } from "./utils";
+import { axiosGet, axiosPost } from "./utils";
 
 export const loginAction = (email, password) => async (dispatch) => {
   try {
     dispatch({ type: LOGIN_USER_REQUEST });
-    const config = { headers: { "Content-Type": "application/json" } };
-    const { data } = await axios.post("/api/auth/login", { email, password }, config);
+    const { data } = await axiosPost("/api/auth/login", { email, password });
     dispatch({ type: LOGIN_USER_SUCCESS, payload: data });
     localStorage.setItem("userLogin", JSON.stringify(data));
   } catch (error) {
@@ -34,8 +33,7 @@ export const loginAction = (email, password) => async (dispatch) => {
 export const registerAction = (name, email, password) => async (dispatch) => {
   try {
     dispatch({ type: REGISTER_USER_REQUEST });
-    const config = { headers: { "Content-Type": "application/json" } };
-    const { data } = await axios.post("/api/auth/register", { name, email, password }, config);
+    const { data } = await axiosPost("/api/auth/register", { name, email, password });
     dispatch({ type: REGISTER_USER_SUCCESS, payload: data });
     dispatch({ type: LOGIN_USER_SUCCESS, payload: data });
     localStorage.setItem("userLogin", JSON.stringify(data));

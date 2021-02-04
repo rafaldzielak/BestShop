@@ -21,19 +21,12 @@ import {
 } from "../constants/orderConstants.js";
 import axios from "axios";
 import { cleanCartAction } from "./cartActions.js";
-import { axiosGet } from "./utils";
+import { axiosGet, axiosPost } from "./utils";
 
 export const placeOrderAction = (orderDetails) => async (dispatch, getState) => {
-  const {
-    loginUser: { loggedUser },
-  } = getState();
+  dispatch({ type: PLACE_ORDER_REQUEST });
   try {
-    dispatch({ type: PLACE_ORDER_REQUEST });
-    const config = {
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
-    };
-    const { data } = await axios.post("/api/orders", orderDetails, config);
-    // console.log(data);
+    const { data } = await axiosPost("/api/orders", orderDetails, getState);
     dispatch(cleanCartAction());
     dispatch({ type: PLACE_ORDER_SUCCESS, payload: data });
   } catch (error) {

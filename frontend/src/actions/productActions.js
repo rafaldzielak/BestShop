@@ -30,7 +30,7 @@ import {
   REMOVE_CATEGORY_SUCCESS,
 } from "../constants/productContants";
 import axios from "axios";
-import { axiosGet } from "./utils";
+import { axiosGet, axiosPost } from "./utils";
 export const getProducts = (productDetails = { limit: 12 }) => async (dispatch) => {
   productDetails.limit = productDetails.limit || 12;
 
@@ -47,15 +47,9 @@ export const getProducts = (productDetails = { limit: 12 }) => async (dispatch) 
 };
 
 export const createProductAction = (product) => async (dispatch, getState) => {
-  const {
-    loginUser: { loggedUser },
-  } = getState();
-  const config = {
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
-  };
   try {
     dispatch({ type: CREATE_PRODUCT_REQUEST });
-    const { data } = await axios.post(`/api/products/`, product, config);
+    const { data } = await axiosPost(`/api/products/`, product, getState);
     dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -147,15 +141,9 @@ export const getCategoryAction = (id) => async (dispatch) => {
 };
 
 export const createCategoryAction = (categoryDetails) => async (dispatch, getState) => {
-  const {
-    loginUser: { loggedUser },
-  } = getState();
-  const config = {
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
-  };
   try {
     dispatch({ type: CREATE_CATEGORY_REQUEST });
-    await axios.post(`/api/products/categories/`, categoryDetails, config);
+    await axiosPost(`/api/products/categories/`, categoryDetails, getState);
     dispatch({ type: CREATE_CATEGORY_SUCCESS });
   } catch (error) {
     dispatch({
