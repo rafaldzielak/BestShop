@@ -30,19 +30,13 @@ import {
   REMOVE_CATEGORY_SUCCESS,
 } from "../constants/productContants";
 import axios from "axios";
+import { axiosGet } from "./utils";
+export const getProducts = (productDetails = { limit: 12 }) => async (dispatch) => {
+  productDetails.limit = productDetails.limit || 12;
 
-export const getProducts = (productDetails) => async (dispatch) => {
-  const keyword = productDetails.keyword || "";
-  const sort = productDetails.sort || "";
-  const hidden = productDetails.hidden || false;
-  const category = productDetails.category || "";
-  const page = productDetails.page || 1;
-  const limit = productDetails.limit || 12;
   try {
     dispatch({ type: GET_PRODUCTS_REQUEST });
-    const { data } = await axios.get(
-      `/api/products/?keyword=${keyword}&sort=${sort}&hidden=${hidden}&category=${category}&page=${page}&limit=${limit}`
-    );
+    const { data } = await axiosGet("/api/products/", productDetails);
     dispatch({ type: GET_PRODUCTS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

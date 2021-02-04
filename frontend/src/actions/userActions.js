@@ -14,6 +14,7 @@ import {
   GET_ALL_USERS_SUCCESS,
 } from "../constants/userConstants";
 import axios from "axios";
+import { axiosGet } from "./utils";
 
 export const loginAction = (email, password) => async (dispatch) => {
   try {
@@ -68,15 +69,9 @@ export const updateProfileAction = (name = "", password = "") => async (dispatch
 };
 
 export const getAllUsersAction = (keyword = "") => async (dispatch, getState) => {
-  const {
-    loginUser: { loggedUser },
-  } = getState();
   try {
     dispatch({ type: GET_ALL_USERS_REQUEST });
-    const config = {
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
-    };
-    const { data } = await axios.get(`/api/auth/users?keyword=${keyword}`, config);
+    const { data } = await axiosGet("/api/auth/users", { keyword }, getState);
     dispatch({ type: GET_ALL_USERS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

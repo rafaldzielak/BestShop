@@ -21,6 +21,7 @@ import {
 } from "../constants/orderConstants.js";
 import axios from "axios";
 import { cleanCartAction } from "./cartActions.js";
+import { axiosGet } from "./utils";
 
 export const placeOrderAction = (orderDetails) => async (dispatch, getState) => {
   const {
@@ -87,18 +88,15 @@ export const getAllOrdersAction = (
   notSentOnly = false,
   notDeliveredOnly = false
 ) => async (dispatch, getState) => {
-  const {
-    loginUser: { loggedUser },
-  } = getState();
   try {
     dispatch({ type: GET_ALL_ORDERS_REQUEST });
-    const config = {
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
+    const params = {
+      user: userId,
+      notpaid: notPaidOnly,
+      notsent: notSentOnly,
+      notdelivered: notDeliveredOnly,
     };
-    const { data } = await axios.get(
-      `/api/orders?user=${userId}&notpaid=${notPaidOnly}&notsent=${notSentOnly}&notdelivered=${notDeliveredOnly}`,
-      config
-    );
+    const { data } = await axiosGet("/api/orders", params, getState);
     dispatch({ type: GET_ALL_ORDERS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -134,15 +132,9 @@ export const payOrderViaPaypalAction = (orderId, paypalOrderId, create_time) => 
 };
 
 export const getUserOrdersAction = () => async (dispatch, getState) => {
-  const {
-    loginUser: { loggedUser },
-  } = getState();
   try {
     dispatch({ type: GET_USER_ORDERS_REQUEST });
-    const config = {
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
-    };
-    const { data } = await axios.get(`/api/auth/orders/`, config);
+    const { data } = await axiosGet("/api/auth/orders", {}, getState);
     dispatch({ type: GET_USER_ORDERS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
