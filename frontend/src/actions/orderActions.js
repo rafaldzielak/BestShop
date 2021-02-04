@@ -21,7 +21,7 @@ import {
 } from "../constants/orderConstants.js";
 import axios from "axios";
 import { cleanCartAction } from "./cartActions.js";
-import { axiosGet, axiosPost } from "./utils";
+import { axiosGet, axiosPost, axiosPut } from "./utils";
 
 export const placeOrderAction = (orderDetails) => async (dispatch, getState) => {
   dispatch({ type: PLACE_ORDER_REQUEST });
@@ -38,15 +38,9 @@ export const placeOrderAction = (orderDetails) => async (dispatch, getState) => 
 };
 
 export const getOrderAction = (orderId) => async (dispatch, getState) => {
-  const {
-    loginUser: { loggedUser },
-  } = getState();
   try {
     dispatch({ type: GET_ORDER_REQUEST });
-    const config = {
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
-    };
-    const { data } = await axios.get(`/api/orders/${orderId}`, config);
+    const { data } = await axiosGet(`/api/orders/${orderId}`, {}, getState);
     dispatch({ type: GET_ORDER_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -57,15 +51,9 @@ export const getOrderAction = (orderId) => async (dispatch, getState) => {
 };
 
 export const updateOrderAction = (orderId, fieldsToUpdate) => async (dispatch, getState) => {
-  const {
-    loginUser: { loggedUser },
-  } = getState();
   try {
     dispatch({ type: UPDATE_ORDER_REQUEST });
-    const config = {
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
-    };
-    const { data } = await axios.put(`/api/orders/${orderId}`, fieldsToUpdate, config);
+    const { data } = await axiosPut(`/api/orders/${orderId}`, fieldsToUpdate, getState);
     dispatch({ type: UPDATE_ORDER_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -103,17 +91,11 @@ export const payOrderViaPaypalAction = (orderId, paypalOrderId, create_time) => 
   dispatch,
   getState
 ) => {
-  const {
-    loginUser: { loggedUser },
-  } = getState();
   try {
-    const config = {
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
-    };
-    const { data } = await axios.put(
+    const { data } = await axiosPut(
       `/api/orders/${orderId}/pay/paypal`,
       { paypalOrderId, create_time },
-      config
+      getState
     );
     dispatch({ type: GET_ORDER_SUCCESS, payload: data });
   } catch (error) {
@@ -138,15 +120,9 @@ export const getUserOrdersAction = () => async (dispatch, getState) => {
 };
 
 export const reviewProductAction = (productId, orderId, review) => async (dispatch, getState) => {
-  const {
-    loginUser: { loggedUser },
-  } = getState();
   try {
     dispatch({ type: CREATE_REVIEW_REQUEST });
-    const config = {
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
-    };
-    const { data } = await axios.put(`/api/products/${productId}/order/${orderId}/review`, review, config);
+    const { data } = await axiosPut(`/api/products/${productId}/order/${orderId}/review`, review, getState);
     dispatch({ type: CREATE_REVIEW_SUCCESS, payload: data });
     dispatch(getOrderAction(orderId));
   } catch (error) {

@@ -102,7 +102,7 @@ const OrderScreen = ({ match }) => {
                 {((orderItem.price * orderItem.count * 100) / 100).toFixed(2)} PLN
               </h5>
             </Col>
-            {orderDetails.isDelivered && !loggedUser.isAdmin && (
+            {orderDetails.isDelivered && loggedUser && !loggedUser.isAdmin && (
               <Col sm={12}>
                 {orderItem.isReviewed ? (
                   <Button disabled> Product Already Reviewed</Button>

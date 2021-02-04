@@ -14,7 +14,7 @@ import {
   GET_ALL_USERS_SUCCESS,
 } from "../constants/userConstants";
 import axios from "axios";
-import { axiosGet, axiosPost } from "./utils";
+import { axiosGet, axiosPost, axiosPut } from "./utils";
 
 export const loginAction = (email, password) => async (dispatch) => {
   try {
@@ -46,15 +46,9 @@ export const registerAction = (name, email, password) => async (dispatch) => {
 };
 
 export const updateProfileAction = (name = "", password = "") => async (dispatch, getState) => {
-  const {
-    loginUser: { loggedUser },
-  } = getState();
   try {
     dispatch({ type: UPDATE_PROFILE_REQUEST });
-    const config = {
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
-    };
-    const { data } = await axios.put("/api/auth/profile", { name, password }, config);
+    const { data } = await axiosPut("/api/auth/profile", { name, password }, getState);
     dispatch({ type: UPDATE_PROFILE_SUCCESS });
     dispatch({ type: LOGIN_USER_SUCCESS, payload: data });
     localStorage.setItem("userLogin", JSON.stringify(data));

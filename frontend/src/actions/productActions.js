@@ -30,7 +30,7 @@ import {
   REMOVE_CATEGORY_SUCCESS,
 } from "../constants/productContants";
 import axios from "axios";
-import { axiosGet, axiosPost } from "./utils";
+import { axiosGet, axiosPost, axiosPut } from "./utils";
 export const getProducts = (productDetails = { limit: 12 }) => async (dispatch) => {
   productDetails.limit = productDetails.limit || 12;
 
@@ -60,15 +60,9 @@ export const createProductAction = (product) => async (dispatch, getState) => {
 };
 
 export const updateProductAction = (id, product) => async (dispatch, getState) => {
-  const {
-    loginUser: { loggedUser },
-  } = getState();
-  const config = {
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
-  };
   try {
     dispatch({ type: UPDATE_PRODUCT_REQUEST });
-    const { data } = await axios.put(`/api/products/${id}`, product, config);
+    const { data } = await axiosPut(`/api/products/${id}`, product, getState);
     dispatch({ type: UPDATE_PRODUCT_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
