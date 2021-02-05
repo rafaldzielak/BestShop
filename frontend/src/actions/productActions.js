@@ -30,7 +30,7 @@ import {
   REMOVE_CATEGORY_SUCCESS,
 } from "../constants/productContants";
 import axios from "axios";
-import { axiosGet, axiosPost, axiosPut } from "./utils";
+import { axiosGet, axiosPost, axiosPut, axiosDelete } from "./utils";
 export const getProducts = (productDetails = { limit: 12 }) => async (dispatch) => {
   productDetails.limit = productDetails.limit || 12;
 
@@ -73,15 +73,9 @@ export const updateProductAction = (id, product) => async (dispatch, getState) =
 };
 
 export const removeProductAction = (id) => async (dispatch, getState) => {
-  const {
-    loginUser: { loggedUser },
-  } = getState();
-  const config = {
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
-  };
   try {
     dispatch({ type: REMOVE_PRODUCT_REQUEST });
-    const { data } = await axios.delete(`/api/products/${id}`, config);
+    const { data } = await axiosDelete(`/api/products/${id}`, getState);
     dispatch({ type: REMOVE_PRODUCT_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -148,15 +142,9 @@ export const createCategoryAction = (categoryDetails) => async (dispatch, getSta
 };
 
 export const removeCategoryAction = (id) => async (dispatch, getState) => {
-  const {
-    loginUser: { loggedUser },
-  } = getState();
-  const config = {
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${loggedUser.token}` },
-  };
   try {
     dispatch({ type: REMOVE_CATEGORY_REQUEST });
-    await axios.delete(`/api/products/categories/${id}`, config);
+    await axiosDelete(`/api/products/categories/${id}`, getState);
     dispatch({ type: REMOVE_CATEGORY_SUCCESS });
   } catch (error) {
     dispatch({
