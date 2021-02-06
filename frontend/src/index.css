@@ -458,6 +458,26 @@ input[type="number"] {
   vertical-align: sub;
   padding-bottom: 0.1rem;
 }
+.day-picker {
+  font-size: 1.1rem;
+}
+.react-date-picker__wrapper {
+  padding: 0.25rem 0.5rem;
+  border-radius: 5px;
+}
+.react-calendar {
+  padding: 1rem;
+  border-radius: 5px;
+}
+.react-calendar__navigation {
+  border-bottom: 1px var(--orange-color) solid;
+}
+.react-calendar__tile--now {
+  background-color: var(--orange-lightest) !important;
+}
+.react-calendar__month-view__days__day--weekend {
+  font-weight: 600;
+}
 
 @media only screen and (max-width: 768px) {
   .border-left {

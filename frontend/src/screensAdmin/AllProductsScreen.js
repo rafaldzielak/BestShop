@@ -89,7 +89,7 @@ const AllProductsScreen = () => {
                 <td className='text-left'>
                   <Link to={`/product/${product._id}`}>{product.name}</Link>
                 </td>
-                <td>
+                <td className='text-right'>
                   <b>{product.price}</b> PLN
                 </td>
                 <td>{product.category ? product.category.name : failureCross}</td>

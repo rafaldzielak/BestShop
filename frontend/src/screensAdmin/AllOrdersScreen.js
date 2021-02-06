@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom";
 import { getAllOrdersAction, updateOrderAction } from "../actions/orderActions";
 import { Table, Button, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import SearchComponent from "../components/SearchComponent";
+import DatePicker from "react-date-picker";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 
@@ -12,6 +14,8 @@ const AllOrdersScreen = () => {
   const [notPaidOnly, setNotPaidOnly] = useState(false);
   const [notSentOnly, setNotSentOnly] = useState(false);
   const [notDeliveredOnly, setNotDeliveredOnly] = useState(false);
+  const [startDate, setStartDate] = useState(null);
+  const [keyword, setKeyword] = useState("");
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -68,7 +72,44 @@ const AllOrdersScreen = () => {
           <h3 className='text-center'>
             {notPaidOnly ? "Not Paid" : notSentOnly ? "Not Sent" : notDeliveredOnly ? "Not Delivered" : "All"}{" "}
             Orders
+            <hr />
           </h3>
+
+          <Row className='day-picker'>
+            <Col md='12' lg='6' xl='4' className='my-auto'>
+              From:{" "}
+              <DatePicker
+                format='dd/MM/yyyy'
+                dayPlaceholder='DD'
+                monthPlaceholder='MM'
+                yearPlaceholder='YYYY'
+                showLeadingZeros={true}
+                calendarIcon={null}
+                onChange={setStartDate}
+                value={startDate}
+              />{" "}
+              To:{" "}
+              <DatePicker
+                format='dd/MM/yyyy'
+                dayPlaceholder='DD'
+                monthPlaceholder='MM'
+                yearPlaceholder='YYYY'
+                showLeadingZeros={true}
+                calendarIcon={null}
+                onChange={setStartDate}
+                value={startDate}
+              />{" "}
+            </Col>
+            <Col md='12' lg='6' xl='8'>
+              <SearchComponent
+                keyword={keyword}
+                setKeyword={setKeyword}
+                placeholder='Search With User Email'
+              />
+            </Col>
+          </Row>
+
+          <hr />
         </Col>
       </Row>
       <Row className='pb-3'>
