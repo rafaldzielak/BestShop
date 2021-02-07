@@ -489,3 +489,8 @@ input[type="number"] {
     border-left: none !important;
   }
 }
+
+.react-calendar__navigation__label__labelText {
+  font-weight: 600;
+  font-size: 1.15rem;
+}

@@ -2,7 +2,6 @@ import axios from "axios";
 
 export const axiosGet = async (url, params = {}, getLoggedUserFromStateMethod) => {
   const config = { params };
-  console.log(getLoggedUserFromStateMethod);
   if (getLoggedUserFromStateMethod) {
     config.headers = { Authorization: setAuthorization(getLoggedUserFromStateMethod) };
   }

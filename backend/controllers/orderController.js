@@ -6,6 +6,7 @@ import axios from "axios";
 import stripeImp from "stripe";
 import orderModel from "../models/orderModel.js";
 import productModel from "../models/productModel.js";
+import userModel from "../models/userModel.js";
 
 const placeOrder = asyncHandler(async (req, res) => {
   const userId = req.user._id;
@@ -113,9 +114,15 @@ const getAllOrders = asyncHandler(async (req, res) => {
   if (query.notsent === "true") searchQuery.isDispatched = false;
   if (query.notdelivered === "true") searchQuery.isDelivered = false;
   if (query.user) searchQuery.user = query.user;
+  if (query.startDate) searchQuery.createdAt = { $gte: query.startDate };
+  if (query.endDate) {
+    let endDate = new Date(query.endDate);
+    endDate = endDate.setDate(endDate.getDate() + 1);
+    searchQuery.createdAt = { ...searchQuery.createdAt, $lte: endDate };
+  }
+  if (query.keyword) searchQuery.user = await userModel.find({ email: new RegExp(query.keyword, "i") });
 
   const orders = await OrderModel.find(searchQuery).populate("user", "email").sort({ createdAt: "desc" });
-  // console.log(orders);
   Promise.all(
     orders.map(async (order) => {
       if (order.paymentMethod === "Stripe" && !order.isPaid) {

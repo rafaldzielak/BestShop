@@ -15,6 +15,7 @@ const AllOrdersScreen = () => {
   const [notSentOnly, setNotSentOnly] = useState(false);
   const [notDeliveredOnly, setNotDeliveredOnly] = useState(false);
   const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [keyword, setKeyword] = useState("");
 
   const dispatch = useDispatch();
@@ -26,8 +27,24 @@ const AllOrdersScreen = () => {
   const { orderDetails } = orderGet;
 
   useEffect(() => {
-    dispatch(getAllOrdersAction(user, notPaidOnly, notSentOnly, notDeliveredOnly));
+    searchForOrders();
   }, [notPaidOnly, notSentOnly, notDeliveredOnly, user, dispatch, orderDetails]);
+  const searchHandler = (e) => {
+    e.preventDefault();
+    searchForOrders();
+  };
+  const searchForOrders = () =>
+    dispatch(
+      getAllOrdersAction({
+        startDate,
+        endDate,
+        keyword,
+        userId: user,
+        notPaidOnly,
+        notSentOnly,
+        notDeliveredOnly,
+      })
+    );
 
   useEffect(() => {
     setUser(new URLSearchParams(window.location.search).get("user") || "");
@@ -96,8 +113,8 @@ const AllOrdersScreen = () => {
                 yearPlaceholder='YYYY'
                 showLeadingZeros={true}
                 calendarIcon={null}
-                onChange={setStartDate}
-                value={startDate}
+                onChange={setEndDate}
+                value={endDate}
               />{" "}
             </Col>
             <Col md='12' lg='6' xl='8'>
@@ -105,6 +122,7 @@ const AllOrdersScreen = () => {
                 keyword={keyword}
                 setKeyword={setKeyword}
                 placeholder='Search With User Email'
+                searchHandler={searchHandler}
               />
             </Col>
           </Row>

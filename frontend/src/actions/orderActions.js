@@ -63,15 +63,22 @@ export const updateOrderAction = (orderId, fieldsToUpdate) => async (dispatch, g
   }
 };
 
-export const getAllOrdersAction = (
+export const getAllOrdersAction = ({
   userId = "",
   notPaidOnly = false,
   notSentOnly = false,
-  notDeliveredOnly = false
-) => async (dispatch, getState) => {
+  notDeliveredOnly = false,
+  startDate,
+  endDate,
+  keyword,
+}) => async (dispatch, getState) => {
+  console.log(startDate);
   try {
     dispatch({ type: GET_ALL_ORDERS_REQUEST });
     const params = {
+      startDate,
+      endDate,
+      keyword,
       user: userId,
       notpaid: notPaidOnly,
       notsent: notSentOnly,
