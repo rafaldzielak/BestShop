@@ -19,7 +19,7 @@ const LoginScreen = ({ history }) => {
 
   useEffect(() => {
     if (loggedUser) history.push(redirect ? `/${redirect}` : "/");
-  }, [loggedUser, history]);
+  }, [loggedUser, history, redirect]);
 
   const formSubmit = (e) => {
     e.preventDefault();

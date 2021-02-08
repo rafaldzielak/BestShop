@@ -28,7 +28,7 @@ const AddCategoriesScreen = ({ history }) => {
   const createCategory = useSelector((state) => state.createCategory);
   const { loading: loadingCreate, error: errorCreate, success } = createCategory;
   const removeCategory = useSelector((state) => state.removeCategory);
-  const { loading: loadingRemove, error: errorRemove, success: successRemove } = removeCategory;
+  const { error: errorRemove, success: successRemove } = removeCategory;
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -62,7 +62,9 @@ const AddCategoriesScreen = ({ history }) => {
 
   return (
     <>
-      {(error || errorCategory || errorCreate) && <Message>{errorCategory || errorCreate || error}</Message>}
+      {(error || errorCategory || errorCreate || errorRemove) && (
+        <Message>{errorCategory || errorCreate || error || errorRemove}</Message>
+      )}
       <div className='d-flex justify-content-center'>
         <div className='mt-3'>
           <Form.Label>Choose Parent Category</Form.Label>

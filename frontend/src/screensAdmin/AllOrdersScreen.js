@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getAllOrdersAction, updateOrderAction } from "../actions/orderActions";
@@ -23,28 +23,30 @@ const AllOrdersScreen = () => {
 
   const orderGetAll = useSelector((state) => state.orderGetAll);
   const { loading, error, orders } = orderGetAll;
-  const orderGet = useSelector((state) => state.orderGet);
-  const { orderDetails } = orderGet;
+
+  const searchForOrders = useCallback(
+    () =>
+      dispatch(
+        getAllOrdersAction({
+          startDate,
+          endDate,
+          keyword,
+          userId: user,
+          notPaidOnly,
+          notSentOnly,
+          notDeliveredOnly,
+        })
+      ),
+    [dispatch, startDate, endDate, keyword, user, notPaidOnly, notSentOnly, notDeliveredOnly]
+  );
 
   useEffect(() => {
     searchForOrders();
-  }, [notPaidOnly, notSentOnly, notDeliveredOnly, user, dispatch, orderDetails]);
+  }, [searchForOrders]);
   const searchHandler = (e) => {
     e.preventDefault();
     searchForOrders();
   };
-  const searchForOrders = () =>
-    dispatch(
-      getAllOrdersAction({
-        startDate,
-        endDate,
-        keyword,
-        userId: user,
-        notPaidOnly,
-        notSentOnly,
-        notDeliveredOnly,
-      })
-    );
 
   useEffect(() => {
     setUser(new URLSearchParams(window.location.search).get("user") || "");

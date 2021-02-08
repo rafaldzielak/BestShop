@@ -13,7 +13,6 @@ import {
   GET_ALL_USERS_REQUEST,
   GET_ALL_USERS_SUCCESS,
 } from "../constants/userConstants";
-import axios from "axios";
 import { axiosGet, axiosPost, axiosPut } from "./utils";
 
 export const loginAction = (email, password) => async (dispatch) => {

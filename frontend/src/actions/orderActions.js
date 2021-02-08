@@ -19,7 +19,6 @@ import {
   GET_ALL_ORDERS_REQUEST,
   GET_ALL_ORDERS_SUCCESS,
 } from "../constants/orderConstants.js";
-import axios from "axios";
 import { cleanCartAction } from "./cartActions.js";
 import { axiosGet, axiosPost, axiosPut } from "./utils";
 
@@ -72,7 +71,6 @@ export const getAllOrdersAction = ({
   endDate,
   keyword,
 }) => async (dispatch, getState) => {
-  console.log(startDate);
   try {
     dispatch({ type: GET_ALL_ORDERS_REQUEST });
     const params = {

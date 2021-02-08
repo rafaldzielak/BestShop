@@ -1,5 +1,6 @@
 import React from "react";
 import { Pagination } from "react-bootstrap";
+import FadeIn from "react-fade-in";
 const Paginate = ({ pagination, setPage }) => {
   const { page, next, prev, total, limit } = pagination;
 
@@ -43,9 +44,11 @@ const Paginate = ({ pagination, setPage }) => {
   );
 
   return (
-    <Pagination className='justify-content-center mt-4 mb-5' size='lg'>
-      {showPages()}
-    </Pagination>
+    <FadeIn>
+      <Pagination className='justify-content-center mt-4 mb-5' size='lg'>
+        {showPages()}
+      </Pagination>
+    </FadeIn>
   );
 };
 
