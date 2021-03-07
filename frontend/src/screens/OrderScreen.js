@@ -52,9 +52,7 @@ const OrderScreen = ({ match }) => {
 
   useEffect(() => {
     if (!loading) setPaymentLoading(false);
-    if (orderDetails) {
-      setModalShow(Array.from({ length: orderDetails.orderItems.length }, () => false));
-    }
+    if (orderDetails) setModalShow(Array.from({ length: orderDetails.orderItems.length }, () => false));
   }, [loading, orderDetails]);
 
   useEffect(() => {

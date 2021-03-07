@@ -7,6 +7,8 @@ import stripeImp from "stripe";
 import orderModel from "../models/orderModel.js";
 import productModel from "../models/productModel.js";
 import userModel from "../models/userModel.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const placeOrder = asyncHandler(async (req, res) => {
   const userId = req.user._id;
@@ -187,8 +189,8 @@ const createStripeOrder = async (order, email = "") => {
 
   const stripeObj = await stripe.checkout.sessions.create({
     customer_email: email,
-    success_url: `http://localhost:3000/order/${order._id}/`,
-    cancel_url: `http://localhost:3000/order/${order._id}/`,
+    success_url: `${process.env.PAGE_URL}/order/${order._id}/`,
+    cancel_url: `${process.env.PAGE_URL}/order/${order._id}/`,
     payment_method_types: ["p24", "card"],
     line_items: line_items,
     mode: "payment",
