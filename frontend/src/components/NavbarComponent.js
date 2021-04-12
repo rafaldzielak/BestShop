@@ -29,7 +29,7 @@ const NavbarComponent = () => {
         <Navbar.Brand>BestShop!</Navbar.Brand>
       </LinkContainer>
       <span className='d-lg-none '>{showCartIcon}</span>
-      <Navbar.Toggle aria-controls='basic-navbar-nav' />
+      <Navbar.Toggle aria-controls='basic-navbar-nav' className={`${!loggedUser && "hide"}`} />
       <Navbar.Collapse id='basic-navbar-nav ' style={{ width: "auto" }}>
         <Nav className='ml-auto'>
           {loggedUser && loggedUser.isAdmin && (
@@ -104,7 +104,7 @@ const NavbarComponent = () => {
       </Navbar.Collapse>
       {!loggedUser && (
         <>
-          {showCartIcon}
+          {/* {showCartIcon} */}
           <LinkContainer
             to='/login'
             style={{ paddingLeft: "2rem" }}
