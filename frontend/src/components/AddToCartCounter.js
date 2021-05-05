@@ -29,12 +29,12 @@ const AddToCartCounter = ({ product, numberOfProducts = 1, updateOnClick = false
     }
   };
 
-  const height = updateOnClick ? "2.5rem" : "3.5rem";
-  const fontSize = updateOnClick ? "1.4rem" : "2rem";
+  const height = updateOnClick ? "2rem" : "3rem";
+  const fontSize = updateOnClick ? "1.2rem" : "1.5rem";
 
   const popover = (
     <Popover id='popover-basic' className='my-2' style={{ opacity: 0.93 }}>
-      <Link style={{ fontSize: "1.2rem" }} to='/cart'>
+      <Link style={{ fontSize: "1rem" }} to='/cart'>
         <Popover.Content className='bg-primary py-3 px-5 text-white hover-orange'>
           Added To <i className='fas fa-shopping-cart'></i>
         </Popover.Content>
@@ -86,7 +86,7 @@ const AddToCartCounter = ({ product, numberOfProducts = 1, updateOnClick = false
       {!updateOnClick && product.countInStock > 0 && (
         <Col xs={12} sm={7} className='pl-4 pr-2 orange margin-small'>
           <OverlayTrigger trigger='click' placement='top' overlay={popover} show={showToolTip}>
-            <Button onClick={addToCartHandler} variant='primary' block style={{ height, fontSize: "1.6rem" }}>
+            <Button onClick={addToCartHandler} variant='primary' block style={{ height, fontSize: "1.4rem" }}>
               <FaCartPlus /> Add To Cart
             </Button>
           </OverlayTrigger>

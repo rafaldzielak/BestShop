@@ -46,6 +46,7 @@ code {
 }
 
 .navbar-brand {
+  line-height: 2.1rem;
   text-transform: none;
   font-size: 2rem;
 }
@@ -59,6 +60,9 @@ code {
 .navbar-dark .navbar-brand:hover {
   color: var(--orange-color);
   font-size: 2.1rem;
+}
+.sort-span {
+  font-size: 1.25rem;
 }
 .card {
   /* transition: all 0.4s ease-in; */
@@ -74,7 +78,11 @@ code {
 }
 .fa-star,
 .fa-star-half-alt {
+  font-size: 1rem;
   color: var(--orange-color);
+}
+.dropdown-item .fa-star {
+  font-size: 1.2rem;
 }
 .flex-sort {
   display: flex;
@@ -118,7 +126,7 @@ code {
 }
 .fa-dollar-sign {
   color: #00836d !important;
-  font-size: 2.2rem;
+  font-size: 1.25rem;
 }
 .dropdown-menu {
   border: 1px solid var(--orange-lighter);
@@ -126,7 +134,7 @@ code {
 }
 
 h3 {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   text-transform: none;
   letter-spacing: 1px;
   font-weight: 500;
@@ -136,7 +144,7 @@ h3 {
   text-transform: none;
   letter-spacing: 1px;
   font-weight: 500;
-  font-size: 1.25rem;
+  font-size: 1rem;
 }
 
 /* .bottom {
@@ -184,7 +192,7 @@ strong {
   background-color: var(--orange-lighter);
   color: black;
   /* font-size: 10rem; */
-  line-height: 1.8rem;
+  line-height: 1rem;
   width: 100%;
   min-width: 33px;
 }

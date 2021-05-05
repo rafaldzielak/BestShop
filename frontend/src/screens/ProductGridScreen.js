@@ -71,11 +71,15 @@ const ProductGridScreen = () => {
       <Col lg={1} sm={2} xs={3}>
         <DropdownButton id='dropdown-variants-primary' variant='' title={<i className='fas fa-filter'></i>}>
           <Dropdown.Item className='border-bottom' onClick={() => setSort("price")}>
-            <i className='fas fa-dollar-sign'></i> <i className='fas fa-dollar-sign'></i>{" "}
-            <i className='fas fa-dollar-sign'></i>
+            <i className='fas fa-dollar-sign'></i>{" "}
+            <span className='sort-span'>
+              <b> Price</b>
+            </span>
           </Dropdown.Item>
           <Dropdown.Item style={{ fontSize: "1.6rem" }} onClick={() => setSort("rating")}>
-            <i className='fas fa-star'></i> <i className='fas fa-star'></i> <i className='fas fa-star'></i>
+            <span className='sort-span'>
+              <i className='fas fa-star'></i> <b> Rating</b>
+            </span>
           </Dropdown.Item>
         </DropdownButton>
       </Col>
